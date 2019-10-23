@@ -7,17 +7,30 @@ package com.sownbanana.view;
 
 import com.sownbanana.controller.WordController;
 import com.sownbanana.model.Word;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author SownBanana
  */
 public class AddWUI extends javax.swing.JFrame {
-
+    
+        String imageURL = null;
+        String voiceURL = null;
 
     /**
      * Creates new form AddWUI
@@ -30,6 +43,7 @@ public class AddWUI extends javax.swing.JFrame {
         insertHintLbl.setVisible(false);
         insertMeanLbl.setVisible(false);
         insertWordLbl.setVisible(false);
+        imgLable.setSize(210, 244);
     }
 
     /**
@@ -49,23 +63,23 @@ public class AddWUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         hintTextArea = new javax.swing.JTextArea();
         imgLable = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        pickImg = new javax.swing.JButton();
         insertMeanLbl = new javax.swing.JLabel();
         typeCombo = new javax.swing.JComboBox<>();
         addButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        pickVoice = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         insertWordLbl = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         insertHintLbl = new javax.swing.JLabel();
+        voiceFileURL = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thêm Từ/Cụm Từ");
-        setUndecorated(true);
 
         jLabel6.setText("Hashtag");
 
@@ -108,10 +122,10 @@ public class AddWUI extends javax.swing.JFrame {
         imgLable.setText("Thêm ảnh");
         imgLable.setOpaque(true);
 
-        jButton2.setText("Chọn ảnh");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        pickImg.setText("Chọn ảnh");
+        pickImg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                pickImgActionPerformed(evt);
             }
         });
 
@@ -120,6 +134,11 @@ public class AddWUI extends javax.swing.JFrame {
         insertMeanLbl.setText("*Bạn cần điền nghĩa");
 
         typeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Noun", "Verd", "Adjective", "Adverb", "Pronouns", "Phrase" }));
+        typeCombo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                typeComboItemStateChanged(evt);
+            }
+        });
         typeCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typeComboActionPerformed(evt);
@@ -142,7 +161,12 @@ public class AddWUI extends javax.swing.JFrame {
 
         jLabel7.setText("Speech");
 
-        jButton1.setText("Chọn File");
+        pickVoice.setText("Chọn File");
+        pickVoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pickVoiceActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Từ/Cụm từ");
 
@@ -160,6 +184,8 @@ public class AddWUI extends javax.swing.JFrame {
         insertHintLbl.setForeground(new java.awt.Color(255, 51, 51));
         insertHintLbl.setText("*Bạn cần điền gợi ý");
 
+        voiceFileURL.setText("File Name");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -174,14 +200,16 @@ public class AddWUI extends javax.swing.JFrame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(wordField)
-                        .addComponent(meanField, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                        .addComponent(hashtagField, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1)
-                        .addComponent(typeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(wordField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(meanField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                    .addComponent(hashtagField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(typeCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(voiceFileURL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pickVoice)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -192,21 +220,21 @@ public class AddWUI extends javax.swing.JFrame {
                             .addComponent(insertHashtagLbl))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(imgLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(imgLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(60, 60, 60))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(pickImg)
                         .addGap(121, 121, 121))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(70, 70, 70)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -233,17 +261,18 @@ public class AddWUI extends javax.swing.JFrame {
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(hashtagField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(insertHashtagLbl)))
-                    .addComponent(imgLable, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(imgLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pickVoice)
+                    .addComponent(pickImg)
+                    .addComponent(voiceFileURL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
                     .addComponent(cancelButton))
-                .addGap(70, 70, 70))
+                .addGap(52, 52, 52))
         );
 
         pack();
@@ -261,9 +290,28 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_meanFieldActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void pickImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickImgActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        int chose = -1;
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("Image files (*.jpg, *.jpeg, *.png, *.gif, *.svg)", "jpg", "jpeg", "png", "gif", "svg");
+        fileChooser.setFileFilter(imgFilter);
+        fileChooser.setDialogTitle("Chọn ảnh");
+        chose = fileChooser.showOpenDialog(null);
+        if(chose == JFileChooser.APPROVE_OPTION){
+            try {
+                File img = fileChooser.getSelectedFile();
+                imageURL = img.getPath();
+//            Image image = new ImageIcon(imageURL).getImage();
+                BufferedImage image = ImageIO.read(img);
+                ImageIcon icon = new ImageIcon(image.getScaledInstance(210, 244, BufferedImage.SCALE_SMOOTH));
+                imgLable.setIcon(icon);
+                imgLable.setText("");          
+            } catch (IOException ex) {
+                Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_pickImgActionPerformed
 
     private void typeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeComboActionPerformed
         // TODO add your handling code here:
@@ -276,9 +324,7 @@ public class AddWUI extends javax.swing.JFrame {
         String word = wordField.getText().trim().replaceAll("\\s+", " ");
         String mean = meanField.getText().trim().replaceAll("\\s+", " ");
         String ipa = "sth";
-        String type = "noun";
-        String imageURL = null;
-        String voiceURL = null;
+        String type = (String)typeCombo.getSelectedItem();
         String hint = hintTextArea.getText().trim().replaceAll("\\s+", " ");
         String[] hashtag = hashtagField.getText().trim().split("\\s+");
         LocalDate dateModified;
@@ -337,8 +383,10 @@ public class AddWUI extends javax.swing.JFrame {
             hintTextArea.setText("");
             meanField.setText("");
             hashtagField.setText("");
-            imageURL = "img";
-            voiceURL = "voice";
+            imageURL = null;
+            voiceURL = null;
+            imgLable.setText("Thêm ảnh");
+            imgLable.setIcon(null);
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -346,6 +394,27 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void typeComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typeComboItemStateChanged
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_typeComboItemStateChanged
+
+    private void pickVoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickVoiceActionPerformed
+        // TODO add your handling code here:
+            int chose = -1;
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("Voice files (*.mp3, *.m4a, *.flac, *.wav, *.mp4)", "mp3", "mp4", "m4a", "flac", "wav");
+            fileChooser.setFileFilter(imgFilter);
+            fileChooser.setDialogTitle("Chọn âm thanh");
+            chose = fileChooser.showOpenDialog(null);
+            if(chose == JFileChooser.APPROVE_OPTION){
+            File voice = fileChooser.getSelectedFile();
+            voiceURL = voice.getPath();
+            ImageIcon showimg = new ImageIcon(voiceURL);
+            voiceFileURL.setText(voice.getName());
+        }
+    }//GEN-LAST:event_pickVoiceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -392,8 +461,6 @@ public class AddWUI extends javax.swing.JFrame {
     private javax.swing.JLabel insertHintLbl;
     private javax.swing.JLabel insertMeanLbl;
     private javax.swing.JLabel insertWordLbl;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -402,7 +469,10 @@ public class AddWUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField meanField;
+    private javax.swing.JButton pickImg;
+    private javax.swing.JButton pickVoice;
     private javax.swing.JComboBox<String> typeCombo;
+    private javax.swing.JLabel voiceFileURL;
     private javax.swing.JTextField wordField;
     // End of variables declaration//GEN-END:variables
 }
