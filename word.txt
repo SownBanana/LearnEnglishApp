@@ -1,0 +1,4 @@
+0
+1#one#một#oăn#Noun#image url 1#voice url 1#cái cơ bản vl#test@basic@number@#2019-10-21
+1#two#hai#tu#Noun#image url 2#voice url 2#cái cơ bản#test2@basic@number@#2019-10-21
+3#three#ba#thờ ri#Noun#image url 3#voice url 3#cái cơ bản 3#test3@notbasic@number@#2019-10-21
