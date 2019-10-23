@@ -18,21 +18,11 @@ import javax.swing.JOptionPane;
  */
 public class AddWUI extends javax.swing.JFrame {
 
-    private int id;
-    private String word;
-    private String mean;
-    private String ipa;
-    private String type;
-    private String imageURL;
-    private String voiceURL;
-    private String hint;
-    private String[] hashtag;
-    private LocalDate dateModified;
+
     /**
      * Creates new form AddWUI
      */
     public AddWUI() {
-        imageURL = "img";
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -75,6 +65,7 @@ public class AddWUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thêm Từ/Cụm Từ");
+        setUndecorated(true);
 
         jLabel6.setText("Hashtag");
 
@@ -103,9 +94,13 @@ public class AddWUI extends javax.swing.JFrame {
         });
 
         hashtagField.setText("Hashtag");
+        hashtagField.setDragEnabled(true);
 
         hintTextArea.setColumns(20);
+        hintTextArea.setLineWrap(true);
         hintTextArea.setRows(5);
+        hintTextArea.setWrapStyleWord(true);
+        hintTextArea.setDragEnabled(true);
         jScrollPane1.setViewportView(hintTextArea);
 
         imgLable.setBackground(new java.awt.Color(255, 255, 255));
@@ -277,20 +272,29 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+        int id;
+        String word = wordField.getText().trim().replaceAll("\\s+", " ");
+        String mean = meanField.getText().trim().replaceAll("\\s+", " ");
+        String ipa = "sth";
+        String type = "noun";
+        String imageURL = null;
+        String voiceURL = null;
+        String hint = hintTextArea.getText().trim().replaceAll("\\s+", " ");
+        String[] hashtag = hashtagField.getText().trim().split("\\s+");
+        LocalDate dateModified;
         //Thiếu từ
         boolean check = true;
-        if (!"".equals(wordField.getText())) {
+        if (!"".equals(word)) {
             insertWordLbl.setVisible(false);
-            word = wordField.getText();
+            
         }
         else{
             insertWordLbl.setVisible(true);
             check = false;
         }
         //Thiếu nghĩa
-        if (!"".equals(meanField.getText())) {
+        if (!"".equals(mean)) {
             insertMeanLbl.setVisible(false);
-            mean = meanField.getText();
         }
         else{
             insertMeanLbl.setVisible(true);
@@ -298,18 +302,17 @@ public class AddWUI extends javax.swing.JFrame {
 
         }
         //Thiếu gợi ý
-        if (!"".equals(hintTextArea.getText())) {
-            insertHintLbl.setVisible(false);
-            hint = hintTextArea.getText();
+        if (!"".equals(hint)) {
+            insertHintLbl.setVisible(false);          
         }
         else{
             insertHintLbl.setVisible(true);
             check = false;
         }
         //Thiếu hashtag
-        if (!"".equals(hashtagField.getText())) {
+        if (!"".equals(hashtagField.getText().trim())) {
             insertHashtagLbl.setVisible(false);
-            hashtag = hashtagField.getText().split(" ");
+            
         }
         else{
             insertHashtagLbl.setVisible(true);
@@ -324,7 +327,7 @@ public class AddWUI extends javax.swing.JFrame {
 //            System.out.println( WordController.total);
             id = WordController.total++;
             dateModified = LocalDate.now();
-            Word initword = new Word(this.id, this.word, this.mean, this.ipa, this.type, this.imageURL, this.voiceURL, this.hint, this.hashtag, this.dateModified);
+            Word initword = new Word(id, word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified);
             List<Word> ws = new ArrayList<>();
             ws = WordController.words;
             ws.add(initword);

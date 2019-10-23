@@ -46,7 +46,7 @@ public class ListWord extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Từ/Cụm Từ", "Nghĩa", "Phiên Âm", "Từ Vựng", "Gợi ý", "Hashtag", "Hình Ảnh", "Âm Thanh", "Ngày sửa cuối", "Chỉnh sửa", "Xoá"
+                "Từ/Cụm Từ", "Nghĩa", "Phiên Âm", "Từ Vựng", "Gợi ý", "Hashtag", "Hình Ảnh", "Âm Thanh", "Ngày sửa cuối", "Chỉnh sửa", "Chọn"
             }
         ) {
             Class[] types = new Class [] {
@@ -58,7 +58,9 @@ public class ListWord extends javax.swing.JFrame {
             }
         });
         jTable1.setToolTipText("");
+        jTable1.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         cancelBtn.setText("Cancel");
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
