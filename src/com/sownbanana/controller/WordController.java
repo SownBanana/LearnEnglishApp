@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,6 +36,26 @@ public class WordController {
         String path = System.getProperty("user.dir") + "\\data\\text.txt"; 
         return path;
     }
+      public static String getConfigPath(){
+        String path = System.getProperty("user.dir") + "\\data\\cfg\\cfg.txt"; 
+        return path;
+    }
+       
+    public static boolean checkDataFolder(){
+        boolean check = false;
+        File dataFolder = new File(getPath("\\data\\cfg"));
+        if (dataFolder.exists()) {
+            check = true;
+        }
+        else{
+            if (dataFolder.mkdirs()) {
+                System.out.println("Create " + dataFolder + " Success");
+                check = true;
+            }
+        }
+        
+        return check;
+    }
     public static int writeWord(String path){
         int rs = -1;
         if (words != null){
@@ -55,7 +77,8 @@ public class WordController {
         return rs;
     }
 
-    public static void readFile(String path){
+    public static boolean readFile(String path){
+        boolean check = true;
         List<Word> wordArrayList = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
@@ -72,11 +95,27 @@ public class WordController {
                 line = reader.readLine();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+                check = false;
+                e.printStackTrace();
+            try {
+                File data_text = new File(getDataPath());
+                data_text.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Tạo text.txt thất bại");
+            }
+            System.out.println("Tạo text.txt thành công");
+            
         } catch (IOException e) {
+            check = false;
+            e.printStackTrace();
+        }
+        catch(NumberFormatException e){
             e.printStackTrace();
         }
         words = wordArrayList;
+        
+        return check;
     }
 
     public static Word findWord(int id){

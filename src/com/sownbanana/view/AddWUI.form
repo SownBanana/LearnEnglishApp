@@ -154,7 +154,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="wordField">
       <Properties>
-        <Property name="text" type="java.lang.String" value="A word or a phrase in English"/>
         <Property name="autoscrolls" type="boolean" value="false"/>
       </Properties>
       <Events>
@@ -163,16 +162,12 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="meanField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Ngh&#x129;a c&#x1ee7;a t&#x1eeb; ho&#x1eb7;c c&#x1ee5;m t&#x1eeb;"/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="meanFieldActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="hashtagField">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hashtag"/>
         <Property name="dragEnabled" type="boolean" value="true"/>
       </Properties>
     </Component>

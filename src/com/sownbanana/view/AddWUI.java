@@ -87,7 +87,6 @@ public class AddWUI extends javax.swing.JFrame {
         insertHashtagLbl.setForeground(new java.awt.Color(255, 51, 51));
         insertHashtagLbl.setText("*Thêm ít nhất một hashtag");
 
-        wordField.setText("A word or a phrase in English");
         wordField.setAutoscrolls(false);
         wordField.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -100,14 +99,12 @@ public class AddWUI extends javax.swing.JFrame {
             }
         });
 
-        meanField.setText("Nghĩa của từ hoặc cụm từ");
         meanField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 meanFieldActionPerformed(evt);
             }
         });
 
-        hashtagField.setText("Hashtag");
         hashtagField.setDragEnabled(true);
 
         hintTextArea.setColumns(20);
