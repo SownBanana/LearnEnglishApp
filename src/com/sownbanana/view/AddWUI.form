@@ -37,14 +37,16 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                   <Component id="wordField" alignment="0" max="32767" attributes="0"/>
-                  <Component id="meanField" alignment="0" pref="275" max="32767" attributes="0"/>
-                  <Component id="hashtagField" alignment="0" pref="275" max="32767" attributes="0"/>
+                  <Component id="meanField" alignment="0" max="32767" attributes="0"/>
+                  <Component id="hashtagField" alignment="0" max="32767" attributes="0"/>
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Component id="typeCombo" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="voiceFileURL" max="32767" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
                       <Component id="pickVoice" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -121,8 +123,9 @@
                   <Component id="voiceFileURL" alignment="1" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel7" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="pickVoice" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="pickImg" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButton1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="pickVoice" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
@@ -154,20 +157,27 @@
     </Component>
     <Component class="javax.swing.JTextField" name="wordField">
       <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="&#x110;i&#x1ec1;n t&#x1eeb; ho&#x1eb7;c c&#x1ee5;m t&#x1eeb; b&#x1ea1;n mu&#x1ed1;n ghi nh&#x1edb;"/>
         <Property name="autoscrolls" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="wordFieldMouseClicked"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="wordFieldActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="wordFieldKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="meanField">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="&#x110;i&#x1ec1;n ngh&#x129;a Ti&#x1ebf;ng Vi&#x1ec7;t t&#x1eeb; ho&#x1eb7;c c&#x1ee5;m t&#x1eeb; b&#x1ea1;n mu&#x1ed1;n ghi nh&#x1edb;"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="meanFieldActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="hashtagField">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Hashtag"/>
+        <Property name="toolTipText" type="java.lang.String" value="Th&#xea;m &#xed;t nh&#x1ea5;t m&#x1ed9;t hashtag cho t&#x1eeb;/c&#x1ee5;m t&#x1eeb;, c&#xe1;c hashtag ng&#x103;n c&#xe1;ch b&#x1edb;i d&#x1ea5;u c&#xe1;ch &quot; &quot;"/>
         <Property name="dragEnabled" type="boolean" value="true"/>
       </Properties>
     </Component>
@@ -183,6 +193,7 @@
             <Property name="columns" type="int" value="20"/>
             <Property name="lineWrap" type="boolean" value="true"/>
             <Property name="rows" type="int" value="5"/>
+            <Property name="toolTipText" type="java.lang.String" value="&#x110;i&#x1ec1;n g&#x1ee3;i &#xfd; cho t&#x1eeb;/c&#x1ee5;m t&#x1eeb; c&#x1ee7;a b&#x1ea1;n"/>
             <Property name="wrapStyleWord" type="boolean" value="true"/>
             <Property name="dragEnabled" type="boolean" value="true"/>
           </Properties>
@@ -202,6 +213,8 @@
     <Component class="javax.swing.JButton" name="pickImg">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ch&#x1ecd;n &#x1ea3;nh"/>
+        <Property name="toolTipText" type="java.lang.String" value="Ch&#x1ecd;n m&#x1ed9;t &#x1ea3;nh minh ho&#x1ea1; cho t&#x1eeb;/c&#x1ee5;m t&#x1eeb; c&#x1ee7;a b&#x1ea1;n"/>
+        <Property name="borderPainted" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pickImgActionPerformed"/>
@@ -230,6 +243,7 @@
             <StringItem index="5" value="Phrase"/>
           </StringArray>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Ch&#x1ecd;n m&#x1ed9;t t&#x1eeb; lo&#x1ea1;i cho t&#x1eeb; ho&#x1eb7;c ch&#x1ecd;n c&#x1ee5;m t&#x1eeb;"/>
       </Properties>
       <Events>
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="typeComboItemStateChanged"/>
@@ -241,7 +255,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="addButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Add"/>
+        <Property name="text" type="java.lang.String" value="Th&#xea;m"/>
+        <Property name="toolTipText" type="java.lang.String" value="Th&#xea;m t&#x1eeb;/c&#x1ee5;m t&#x1eeb; v&#xe0;o t&#x1eeb; &#x111;i&#x1ec3;n c&#x1ee7;a b&#x1ea1;n"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addButtonActionPerformed"/>
@@ -249,7 +264,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="cancelButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cancel"/>
+        <Property name="text" type="java.lang.String" value="Tho&#xe1;t"/>
+        <Property name="toolTipText" type="java.lang.String" value="Quay l&#x1ea1;i trang ch&#x1ee7;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
@@ -263,6 +279,8 @@
     <Component class="javax.swing.JButton" name="pickVoice">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ch&#x1ecd;n File"/>
+        <Property name="toolTipText" type="java.lang.String" value="Ch&#x1ecd;n m&#x1ed9;t file &#xe2;m thanh cho gi&#x1ecd;ng n&#xf3;i ho&#x1eb7;c gi&#x1ecd;ng n&#xf3;i s&#x1ebd; &#x111;&#x1b0;&#x1ee3;c sinh t&#x1ef1; &#x111;&#x1ed9;ng"/>
+        <Property name="autoscrolls" type="boolean" value="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pickVoiceActionPerformed"/>
@@ -313,7 +331,17 @@
     <Component class="javax.swing.JLabel" name="voiceFileURL">
       <Properties>
         <Property name="text" type="java.lang.String" value="File Name"/>
+        <Property name="toolTipText" type="java.lang.String" value="Ch&#x1ecd;n m&#x1ed9;t file &#xe2;m thanh cho gi&#x1ecd;ng n&#xf3;i ho&#x1eb7;c gi&#x1ecd;ng n&#xf3;i s&#x1ebd; &#x111;&#x1b0;&#x1ee3;c sinh t&#x1ef1; &#x111;&#x1ed9;ng"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ph&#xe1;t"/>
+        <Property name="toolTipText" type="java.lang.String" value="Ph&#xe1;t file &#x111;&#xe3; ch&#x1ecd;n ho&#x1eb7;c &#xe2;m thanh sinh t&#x1ef1; &#x111;&#x1ed9;ng"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

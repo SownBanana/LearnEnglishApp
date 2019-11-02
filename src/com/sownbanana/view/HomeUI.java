@@ -64,7 +64,7 @@ public class HomeUI extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("English's never FUN!!!");
+        setTitle("Main Menu");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N

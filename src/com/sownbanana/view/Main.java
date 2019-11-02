@@ -6,12 +6,6 @@
 package com.sownbanana.view;
 
 import com.sownbanana.controller.WordController;
-import com.sownbanana.model.Word;
-import java.awt.FlowLayout;
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFrame;
 
 /**

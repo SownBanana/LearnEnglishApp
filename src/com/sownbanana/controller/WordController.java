@@ -6,6 +6,8 @@
 package com.sownbanana.controller;
 
 import com.sownbanana.model.Word;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -14,11 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
-/**
- *
- * @author SownBanana
- */
 public class WordController {
     public static int total;
     public static List<Word> words;
@@ -218,5 +218,23 @@ public class WordController {
             }
         }
         return rs;
+    }
+    public static void text2speech(String word){
+        Voice voice = VoiceManager.getInstance().getVoice("kevin");
+        voice.allocate();
+        voice.speak(word);      
+        System.out.println(voice.toString());
+    }
+    public static void playSound(String filePath){
+        try {
+           File file = new File(filePath);
+            System.out.println(file.toURI().toString());
+           Media voice = new Media(file.toURI().toString());
+           MediaPlayer mediaPlayer = new MediaPlayer(voice);
+           mediaPlayer.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 }
