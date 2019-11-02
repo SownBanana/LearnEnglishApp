@@ -263,11 +263,12 @@ public class AddWUI extends javax.swing.JFrame {
                             .addComponent(insertHashtagLbl)))
                     .addComponent(imgLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pickVoice)
-                    .addComponent(pickImg)
-                    .addComponent(voiceFileURL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(voiceFileURL, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pickVoice)
+                        .addComponent(pickImg)))
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
@@ -320,7 +321,6 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        int id;
         String word = wordField.getText().trim().replaceAll("\\s+", " ");
         String mean = meanField.getText().trim().replaceAll("\\s+", " ");
         String ipa = "sth";
@@ -371,14 +371,13 @@ public class AddWUI extends javax.swing.JFrame {
         }
         if (check) {
 //            System.out.println( WordController.total);
-            id = WordController.total++;
             dateModified = LocalDate.now();
-            Word initword = new Word(id, word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified);
+            Word initword = new Word(word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified);
             List<Word> ws = new ArrayList<>();
             ws = WordController.words;
             ws.add(initword);
             WordController.words = ws;
-            WordController.writeWord(WordController.getPath());
+            WordController.writeWord(WordController.getDataPath());
             wordField.setText("");
             hintTextArea.setText("");
             meanField.setText("");

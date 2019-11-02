@@ -5,6 +5,7 @@
  */
 package com.sownbanana.view;
 
+import com.sownbanana.controller.WordController;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -175,6 +176,8 @@ public class HomeUI extends javax.swing.JFrame {
 
     private void startBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBtnActionPerformed
         // TODO add your handling code here:
+
+        JOptionPane.showMessageDialog(rootPane,WordController.getPath());
         System.out.println("Start");
     }//GEN-LAST:event_startBtnActionPerformed
 

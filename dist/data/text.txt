@@ -1,12 +1,13 @@
-12
+13
 1#one#một#oăn#Noun#image url 1#voice url 1#cái cơ bản vl#test@basic@number@#2019-10-21
 2#two#hai#tu#Noun#image url 2#voice url 2#cái cơ bản#test2@basic@number@#2019-10-21
-3#three#ba#thờ ri#Noun#image url 3#voice url 3#cái cơ bản 3#test3@notbasic@number@#2019-10-21
+3#three#ba#th�? ri#Noun#image url 3#voice url 3#cái cơ bản 3#test3@notbasic@number@#2019-10-21
 4#A word or a phrase in English#Nghĩa của từ hoặc cụm từ#null#null#img#null#dwadasdsd#Hashtag@#2019-10-23
 5#đâsd#ádasdasd#null#null#img#voice#ádasd#adadasd@#2019-10-23
 6#ádasda#adadas#null#null#img#voice#adad#ádadas@#2019-10-23
 7#Lock#Khoá#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\45563347_2282023068474683_51833967430598656_n.jpg#null#Ngăn trộm#house@#2019-10-24
-8#Tee Shirt#Áo phông#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39442045_1790957390953262_5368519458539175936_n.jpg#null#che cơ thể#cloth@#2019-10-24
+8#Tee Shirt#�?o phông#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39442045_1790957390953262_5368519458539175936_n.jpg#null#che cơ thể#cloth@#2019-10-24
 9#Pussy#Mèo con#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39007494_216859289172838_6503138544129671168_n.jpg#null#A cute one#Animal@cute@#2019-10-29
 10#go#đi#sth#Verd#C:\Users\SownBanana\Pictures\Saved Pictures\52598958_989548127916823_3794753530439401472_n.jpg#null#di chuyển#casual@#2019-10-29
 11#nyan#cat#sth#Noun#C:\Users\SownBanana\Pictures\66292812_1130028467205538_9044717451928928256_n.jpg#null#cat#Hashtag@#2019-10-29
+12#M?i ?�y n�y#Ngh?a c?a t? ho?c c?m t?#sth#Noun#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#null#s�sa#Hashtag@#2019-11-02

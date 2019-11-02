@@ -64,7 +64,7 @@ public class Main {
 ////
 //        WordController.words = words;
 //
-        String path = System.getProperty("user.dir") + "///data/text.txt";      //lấy path hiện tại
+        String path = System.getProperty("user.dir") + "\\data\\text.txt";      //lấy path hiện tại
 //        WordController.writeWord(path);
         WordController.readFile(path);
 
@@ -74,6 +74,7 @@ public class Main {
 //        WordController.addWord(thisWord2);
 //        WordController.writeWord();
         System.out.println(WordController.findHashtagContainAll("number", "basic"));
+           System.out.println(WordController.findWord(2).toString());
 //        Path path = new Path();
 
         

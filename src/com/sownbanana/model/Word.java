@@ -30,6 +30,7 @@ public class Word {
     public Word(String word, String mean, String ipa, String type, String imageURL, String voiceURL, String hint,
                 String[] hashtag, LocalDate dateModified)
     {
+        this.id = WordController.total++;
         this.word = word;
         this.mean = mean;
         this.ipa = ipa;

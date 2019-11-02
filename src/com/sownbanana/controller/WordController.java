@@ -20,10 +20,18 @@ import java.util.List;
 public class WordController {
     public static int total;
     public static List<Word> words;
-
     
-    public static String getPath(){
-        String path = System.getProperty("user.dir") + "///data/text.txt"; 
+    
+    public static String getPath(){   
+        return System.getProperty("user.dir"); 
+    }
+
+    public static String getPath(String name){   
+        return System.getProperty("user.dir") + name; 
+    }
+    
+    public static String getDataPath(){
+        String path = System.getProperty("user.dir") + "\\data\\text.txt"; 
         return path;
     }
     public static int writeWord(String path){
