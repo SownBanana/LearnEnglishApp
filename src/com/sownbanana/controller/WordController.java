@@ -237,4 +237,8 @@ public class WordController {
         }
         
     }
+    public static String getPhonetic(String word){
+       String phonetic = "";
+       return phonetic;
+    }
 }
