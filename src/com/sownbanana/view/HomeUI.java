@@ -21,8 +21,6 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class HomeUI extends javax.swing.JFrame {
 
-
-
     /**
      * Creates new form HomeUI
      */
@@ -41,8 +39,8 @@ public class HomeUI extends javax.swing.JFrame {
         }
         this.setLocationRelativeTo(null);
         startBtn.setMnemonic(KeyEvent.VK_S);
-        ImageIcon icon = new ImageIcon("C:\\Users\\SownBanana\\Pictures\\Annotation 2019-09-15 192611.png");
-        testLable.setIcon(icon);
+//        ImageIcon icon = new ImageIcon("C:\\Users\\SownBanana\\Pictures\\Annotation 2019-09-15 192611.png");
+//        testLable.setIcon(icon);
     }
 
     /**
@@ -60,12 +58,12 @@ public class HomeUI extends javax.swing.JFrame {
         addBtn = new javax.swing.JButton();
         showListWordBtn = new javax.swing.JButton();
         quitBtn = new javax.swing.JButton();
-        testLable = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Main Menu");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Learning English");
@@ -106,8 +104,6 @@ public class HomeUI extends javax.swing.JFrame {
             }
         });
 
-        testLable.setText("jLabel2");
-
         jCheckBox1.setText("   Dùng AI");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,23 +123,18 @@ public class HomeUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(testLable, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(quitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(showListWordBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(108, 108, 108))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(startBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jCheckBox1))))
-                        .addGap(243, 243, 243))))
+                            .addComponent(quitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showListWordBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(108, 108, 108))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(startBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBox1))))
+                .addGap(243, 243, 243))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,9 +154,7 @@ public class HomeUI extends javax.swing.JFrame {
                 .addComponent(showListWordBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(quitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
-                .addComponent(testLable, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleName("homeUI");
@@ -176,9 +165,10 @@ public class HomeUI extends javax.swing.JFrame {
 
     private void startBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBtnActionPerformed
         // TODO add your handling code here:
-
-        JOptionPane.showMessageDialog(rootPane,WordController.getPath());
         System.out.println("Start");
+        if (WordController.words == null) {
+            new wordsEmptyDialog(this, rootPaneCheckingEnabled).setVisible(true);
+        }
     }//GEN-LAST:event_startBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -186,7 +176,7 @@ public class HomeUI extends javax.swing.JFrame {
         System.out.println("Add Menu");
         new AddWUI().setVisible(true);
 //        this.dispose();
-        
+
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void showListWordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showListWordBtnActionPerformed
@@ -202,7 +192,7 @@ public class HomeUI extends javax.swing.JFrame {
 
     private void startBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_startBtnKeyPressed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_startBtnKeyPressed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
@@ -250,7 +240,6 @@ public class HomeUI extends javax.swing.JFrame {
     private javax.swing.JButton quitBtn;
     private javax.swing.JButton showListWordBtn;
     private javax.swing.JButton startBtn;
-    private javax.swing.JLabel testLable;
     // End of variables declaration//GEN-END:variables
 
 }

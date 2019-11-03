@@ -1,4 +1,4 @@
-12
+13
 1#one#một#oăn#Noun#image url 1#voice url 1#cái cơ bản vl#test@basic@number@#2019-10-21
 2#two#hai#tu#Noun#image url 2#voice url 2#cái cơ bản#test2@basic@number@#2019-10-21
 3#three#ba#thờ ri#Noun#image url 3#voice url 3#cái cơ bản 3#test3@notbasic@number@#2019-10-21
@@ -10,3 +10,4 @@
 9#Pussy#Mèo con#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39007494_216859289172838_6503138544129671168_n.jpg#null#A cute one#Animal@cute@#2019-10-29
 10#go#đi#sth#Verd#C:\Users\SownBanana\Pictures\Saved Pictures\52598958_989548127916823_3794753530439401472_n.jpg#null#di chuyển#casual@#2019-10-29
 11#nyan#cat#sth#Noun#C:\Users\SownBanana\Pictures\66292812_1130028467205538_9044717451928928256_n.jpg#null#cat#Hashtag@#2019-10-29
+12#go#ddi#gəʊ#Verd#C:\Users\SownBanana\Documents\q.jpg#null#di chuyển#regular@#2019-11-03

@@ -90,6 +90,7 @@ public class AddWUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thêm Từ/Cụm Từ");
+        setResizable(false);
 
         jLabel6.setText("Hashtag");
 
@@ -294,9 +295,9 @@ public class AddWUI extends javax.swing.JFrame {
                             .addComponent(imgLable, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(48, 48, 48))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(pickImg)
-                        .addGap(118, 118, 118))))
+                        .addGap(119, 119, 119))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,7 +336,7 @@ public class AddWUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
                         .addComponent(pickImg))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -378,7 +379,7 @@ public class AddWUI extends javax.swing.JFrame {
                 imageURL = img.getPath();
 //            Image image = new ImageIcon(imageURL).getImage();
                 BufferedImage image = ImageIO.read(img);
-                ImageIcon icon = new ImageIcon(image.getScaledInstance(210, 244, BufferedImage.SCALE_SMOOTH));
+                ImageIcon icon = new ImageIcon(image.getScaledInstance(imgLable.getWidth(), imgLable.getHeight(), BufferedImage.SCALE_SMOOTH));
                 imgLable.setIcon(icon);
                 imgLable.setText("");          
             } catch (IOException ex) {
@@ -500,7 +501,7 @@ public class AddWUI extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if ("File Name".equals(voiceFileURL.getText())) {
-            WordController.text2speech(phoneticField.getText());
+            WordController.text2speech(wordField.getText());
         }    
         else{
             System.out.println(voiceURL);
