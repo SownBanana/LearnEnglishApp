@@ -8,7 +8,11 @@ package com.sownbanana.view;
 import com.sownbanana.controller.WordController;
 import com.sownbanana.model.Word;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,8 +24,14 @@ import java.util.logging.Logger;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -29,9 +39,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author SownBanana
  */
 public class AddWUI extends javax.swing.JFrame {
-    
-        String imageURL = null;
-        String voiceURL = null;
+
+    String imageURL = null;
+    String voiceURL = null;
+    boolean checkExistWord = false;
+    boolean isEdit = false;
 
     /**
      * Creates new form AddWUI
@@ -65,7 +77,6 @@ public class AddWUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         insertHashtagLbl = new javax.swing.JLabel();
         phoneticField = new javax.swing.JTextField();
-        meanField = new javax.swing.JTextField();
         hashtagField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         hintTextArea = new javax.swing.JTextArea();
@@ -87,6 +98,8 @@ public class AddWUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         wordField = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        meanField = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thêm Từ/Cụm Từ");
@@ -122,18 +135,16 @@ public class AddWUI extends javax.swing.JFrame {
             }
         });
 
-        meanField.setToolTipText("Điền nghĩa Tiếng Việt từ hoặc cụm từ bạn muốn ghi nhớ");
-        meanField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                meanFieldActionPerformed(evt);
-            }
-        });
-
         hashtagField.setToolTipText("Thêm ít nhất một hashtag cho từ/cụm từ, các hashtag ngăn cách bới dấu cách \" \"");
         hashtagField.setDragEnabled(true);
         hashtagField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 hashtagFieldFocusGained(evt);
+            }
+        });
+        hashtagField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                hashtagFieldKeyPressed(evt);
             }
         });
 
@@ -143,6 +154,11 @@ public class AddWUI extends javax.swing.JFrame {
         hintTextArea.setToolTipText("Điền gợi ý cho từ/cụm từ của bạn");
         hintTextArea.setWrapStyleWord(true);
         hintTextArea.setDragEnabled(true);
+        hintTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                hintTextAreaKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(hintTextArea);
 
         imgLable.setBackground(new java.awt.Color(255, 255, 255));
@@ -211,7 +227,7 @@ public class AddWUI extends javax.swing.JFrame {
 
         insertWordLbl.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         insertWordLbl.setForeground(new java.awt.Color(255, 51, 51));
-        insertWordLbl.setText("*Hãy điền từ Tiếng Anh");
+        insertWordLbl.setText("*");
 
         jLabel5.setText("Gợi ý");
 
@@ -221,6 +237,7 @@ public class AddWUI extends javax.swing.JFrame {
 
         voiceFileURL.setText("File Name");
         voiceFileURL.setToolTipText("Chọn một file âm thanh cho giọng nói hoặc giọng nói sẽ được sinh tự động");
+        voiceFileURL.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jButton1.setText("Phát");
         jButton1.setToolTipText("Phát file đã chọn hoặc âm thanh sinh tự động");
@@ -234,6 +251,14 @@ public class AddWUI extends javax.swing.JFrame {
 
         wordField.setToolTipText("Điền từ hoặc cụm từ bạn muốn ghi nhớ");
         wordField.setAutoscrolls(false);
+        wordField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                wordFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                wordFieldFocusLost(evt);
+            }
+        });
         wordField.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 wordFieldMouseClicked(evt);
@@ -245,10 +270,27 @@ public class AddWUI extends javax.swing.JFrame {
             }
         });
         wordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                wordFieldKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 wordFieldKeyReleased(evt);
             }
         });
+
+        meanField.setColumns(20);
+        meanField.setRows(5);
+        meanField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                meanFieldFocusGained(evt);
+            }
+        });
+        meanField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                meanFieldKeyPressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(meanField);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -268,7 +310,6 @@ public class AddWUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(wordField)
                     .addComponent(phoneticField)
-                    .addComponent(meanField)
                     .addComponent(hashtagField)
                     .addComponent(jScrollPane1)
                     .addComponent(typeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -277,7 +318,8 @@ public class AddWUI extends javax.swing.JFrame {
                         .addGap(87, 87, 87)
                         .addComponent(pickVoice)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -315,10 +357,11 @@ public class AddWUI extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(phoneticField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(meanField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(insertMeanLbl))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(insertMeanLbl))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -361,10 +404,6 @@ public class AddWUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_phoneticFieldActionPerformed
 
-    private void meanFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meanFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_meanFieldActionPerformed
-
     private void pickImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickImgActionPerformed
         // TODO add your handling code here:
         int chose = -1;
@@ -373,7 +412,7 @@ public class AddWUI extends javax.swing.JFrame {
         fileChooser.setFileFilter(imgFilter);
         fileChooser.setDialogTitle("Chọn ảnh");
         chose = fileChooser.showOpenDialog(null);
-        if(chose == JFileChooser.APPROVE_OPTION){
+        if (chose == JFileChooser.APPROVE_OPTION) {
             try {
                 File img = fileChooser.getSelectedFile();
                 imageURL = img.getPath();
@@ -381,7 +420,7 @@ public class AddWUI extends javax.swing.JFrame {
                 BufferedImage image = ImageIO.read(img);
                 ImageIcon icon = new ImageIcon(image.getScaledInstance(imgLable.getWidth(), imgLable.getHeight(), BufferedImage.SCALE_SMOOTH));
                 imgLable.setIcon(icon);
-                imgLable.setText("");          
+                imgLable.setText("");
             } catch (IOException ex) {
                 Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -396,80 +435,105 @@ public class AddWUI extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         String word = wordField.getText().trim().replaceAll("\\s+", " ");
-        String ipa = phoneticField.getText().trim().replaceAll("\\s+", " ");           
+        String ipa = phoneticField.getText().trim().replaceAll("\\s+", " ");
         String mean = meanField.getText().trim().replaceAll("\\s+", " ");
-        String type = (String)typeCombo.getSelectedItem();
+        String type = (String) typeCombo.getSelectedItem();
         String hint = hintTextArea.getText().trim().replaceAll("\\s+", " ");
         String[] hashtag = hashtagField.getText().trim().split("\\s+");
         LocalDate dateModified;
         //Thiếu từ
         boolean check = true;
         if (!"".equals(word)) {
-            insertWordLbl.setVisible(false);
-            if (phoneticField.getForeground() == Color.GRAY || "".equals(ipa)) {
-                phoneticField.setText(WordController.getPhonetic(word));
-                phoneticField.setForeground(Color.BLACK);
-                ipa = phoneticField.getText();
+            if (!checkExistWord) {
+                insertWordLbl.setVisible(false);
+                if (phoneticField.getForeground() == Color.GRAY || "".equals(ipa)) {
+                    phoneticField.setText(WordController.getPhonetic(word));
+                    phoneticField.setForeground(Color.BLACK);
+                    ipa = phoneticField.getText();
+                }
             }
-        }
-        else{
+
+        } else {
+            insertWordLbl.setText("*Hãy điền từ Tiếng Anh");
             insertWordLbl.setVisible(true);
             check = false;
         }
         //Thiếu nghĩa
         if (!"".equals(mean)) {
             insertMeanLbl.setVisible(false);
-        }
-        else{
+        } else {
             insertMeanLbl.setVisible(true);
             check = false;
 
         }
         //Thiếu gợi ý
         if (!"".equals(hint)) {
-            insertHintLbl.setVisible(false);          
-        }
-        else{
+            insertHintLbl.setVisible(false);
+        } else {
             insertHintLbl.setVisible(true);
             check = false;
         }
         //Thiếu hashtag
         if (!"".equals(hashtagField.getText().trim()) && hashtagField.getForeground() != Color.GRAY) {
             insertHashtagLbl.setVisible(false);
-            
-        }
-        else{
+
+        } else {
             insertHashtagLbl.setVisible(true);
             check = false;
         }
         //thiếu ảnh
-        if(imageURL == null) {
+        if (imageURL == null) {
             JOptionPane.showMessageDialog(rootPane, "Bạn cần thêm ảnh");
             check = false;
         }
-        if (check) {
-//            System.out.println( WordController.total);
-            dateModified = LocalDate.now();
-            Word initword = new Word(word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified);
-            List<Word> ws = new ArrayList<>();
-            ws = WordController.words;
-            ws.add(initword);
-            WordController.words = ws;
-            WordController.writeWord(WordController.getDataPath());
-            wordField.setText("");
-            hintTextArea.setText("");
-            meanField.setText("");
-            hashtagField.setText("");
-            imageURL = null;
-            voiceURL = null;
-            imgLable.setText("Thêm ảnh");
-            imgLable.setIcon(null);
-            voiceFileURL.setText("File Name");
-            phoneticField.setForeground(Color.GRAY);
-            phoneticField.setText("Phiêm âm được sinh tự động nếu bạn bỏ trống");
-            hashtagField.setForeground(Color.GRAY);
-            hashtagField.setText("Hashtag ngăn cách bởi dấu cách");
-            
+        if (check && !checkExistWord) {
+
+            if (isEdit) {
+                try {
+                    Word w = WordController.findWord(word);
+                    int index = WordController.words.indexOf(w);
+                    w.setIpa(ipa);
+                    w.setMean(mean);
+                    w.setType(type);
+                    w.setHint(hint);
+                    w.setHashtag(hashtag);
+                    w.setImageURL(imageURL);
+                    w.setVoiceURL(voiceURL);
+                    w.setDateModified(LocalDate.now());
+                    WordController.words.set(index, w);
+                    WordController.writeWord(WordController.getDataPath());
+                    this.dispose();
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(rootPane, "Hãy giữ nguyên từ/cụm từ muốn sửa");
+                }
+
+            } else {
+                List<Word> ws = new ArrayList<>();
+                ws = WordController.words;
+                WordController.words = ws;
+                dateModified = LocalDate.now();
+                Word initword = new Word(word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified);
+                ws.add(initword);
+                WordController.words = ws;
+                WordController.writeWord(WordController.getDataPath());
+                wordField.setText("");
+                hintTextArea.setText("");
+                meanField.setText("");
+                hashtagField.setText("");
+                imageURL = null;
+                voiceURL = null;
+                imgLable.setText("Thêm ảnh");
+                imgLable.setIcon(null);
+                voiceFileURL.setText("File Name");
+                phoneticField.setForeground(Color.GRAY);
+                phoneticField.setText("Phiêm âm được sinh tự động nếu bạn bỏ trống");
+                hashtagField.setForeground(Color.GRAY);
+                hashtagField.setText("Hashtag ngăn cách bởi dấu cách");
+                checkExistWord = false;
+            }
+
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -485,13 +549,13 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void pickVoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickVoiceActionPerformed
         // TODO add your handling code here:
-            int chose = -1;
-            JFileChooser fileChooser = new JFileChooser();
-            FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("Voice files (*.mp3, *.m4a, *.flac, *.wav, *.mp4)", "mp3", "mp4", "m4a", "flac", "wav");
-            fileChooser.setFileFilter(imgFilter);
-            fileChooser.setDialogTitle("Chọn âm thanh");
-            chose = fileChooser.showOpenDialog(null);
-            if(chose == JFileChooser.APPROVE_OPTION){
+        int chose = -1;
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("Voice files (*.mp3, *.m4a, *.flac, *.wav, *.mp4)", "mp3", "mp4", "m4a", "flac", "wav");
+        fileChooser.setFileFilter(imgFilter);
+        fileChooser.setDialogTitle("Chọn âm thanh");
+        chose = fileChooser.showOpenDialog(null);
+        if (chose == JFileChooser.APPROVE_OPTION) {
             File voice = fileChooser.getSelectedFile();
             voiceURL = voice.getPath();
             voiceFileURL.setText(voice.getName());
@@ -502,8 +566,7 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         if ("File Name".equals(voiceFileURL.getText())) {
             WordController.text2speech(wordField.getText());
-        }    
-        else{
+        } else {
             System.out.println(voiceURL);
             WordController.playSound(voiceURL);
         }
@@ -537,11 +600,61 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void hashtagFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_hashtagFieldFocusGained
         // TODO add your handling code here:
-         if (hashtagField.getForeground() == Color.GRAY) {
+        if (hashtagField.getForeground() == Color.GRAY) {
             hashtagField.setText("");
             hashtagField.setForeground(Color.BLACK);
         }
     }//GEN-LAST:event_hashtagFieldFocusGained
+
+    private void wordFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wordFieldFocusLost
+        // TODO add your handling code here:
+        if (!isEdit) {
+            String inputWord = wordField.getText();
+            if (WordController.isExistWord(inputWord)) {
+                checkExistWord = true;
+                insertWordLbl.setText("<html>*Đã tồn tại. <a href = ''>Click</a> để sửa</html>");
+                insertWordLbl.setVisible(true);
+                insertWordLbl.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                insertWordLbl.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                        WordController.editWord(inputWord);
+                    }
+
+                });
+            }
+        }
+    }//GEN-LAST:event_wordFieldFocusLost
+
+    private void wordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wordFieldFocusGained
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_wordFieldFocusGained
+
+    private void meanFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_meanFieldFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_meanFieldFocusGained
+
+    private void wordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_wordFieldKeyPressed
+        // TODO add your handling code here:
+        insertWordLbl.setVisible(false);
+    }//GEN-LAST:event_wordFieldKeyPressed
+
+    private void meanFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_meanFieldKeyPressed
+        // TODO add your handling code here:
+        insertMeanLbl.setVisible(false);
+    }//GEN-LAST:event_meanFieldKeyPressed
+
+    private void hintTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hintTextAreaKeyPressed
+        // TODO add your handling code here:
+        insertHintLbl.setVisible(false);
+    }//GEN-LAST:event_hintTextAreaKeyPressed
+
+    private void hashtagFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hashtagFieldKeyPressed
+        // TODO add your handling code here:
+        insertHashtagLbl.setVisible(false);
+    }//GEN-LAST:event_hashtagFieldKeyPressed
 
     /**
      * @param args the command line arguments
@@ -597,7 +710,8 @@ public class AddWUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField meanField;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea meanField;
     private javax.swing.JTextField phoneticField;
     private javax.swing.JButton pickImg;
     private javax.swing.JButton pickVoice;
@@ -605,4 +719,245 @@ public class AddWUI extends javax.swing.JFrame {
     private javax.swing.JLabel voiceFileURL;
     private javax.swing.JTextField wordField;
     // End of variables declaration//GEN-END:variables
+
+    public boolean isIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public String getVoiceURL() {
+        return voiceURL;
+    }
+
+    public void setVoiceURL(String voiceURL) {
+        this.voiceURL = voiceURL;
+    }
+
+    public boolean isCheckExistWord() {
+        return checkExistWord;
+    }
+
+    public void setCheckExistWord(boolean checkExistWord) {
+        this.checkExistWord = checkExistWord;
+    }
+
+    public JButton getAddButton() {
+        return addButton;
+    }
+
+    public void setAddButton(JButton addButton) {
+        this.addButton = addButton;
+    }
+
+    public JButton getCancelButton() {
+        return cancelButton;
+    }
+
+    public void setCancelButton(JButton cancelButton) {
+        this.cancelButton = cancelButton;
+    }
+
+    public JTextField getHashtagField() {
+        return hashtagField;
+    }
+
+    public void setHashtagField(JTextField hashtagField) {
+        this.hashtagField = hashtagField;
+    }
+
+    public JTextArea getHintTextArea() {
+        return hintTextArea;
+    }
+
+    public void setHintTextArea(JTextArea hintTextArea) {
+        this.hintTextArea = hintTextArea;
+    }
+
+    public JLabel getImgLable() {
+        return imgLable;
+    }
+
+    public void setImgLable(JLabel imgLable) {
+        this.imgLable = imgLable;
+    }
+
+    public JLabel getInsertHashtagLbl() {
+        return insertHashtagLbl;
+    }
+
+    public void setInsertHashtagLbl(JLabel insertHashtagLbl) {
+        this.insertHashtagLbl = insertHashtagLbl;
+    }
+
+    public JLabel getInsertHintLbl() {
+        return insertHintLbl;
+    }
+
+    public void setInsertHintLbl(JLabel insertHintLbl) {
+        this.insertHintLbl = insertHintLbl;
+    }
+
+    public JLabel getInsertMeanLbl() {
+        return insertMeanLbl;
+    }
+
+    public void setInsertMeanLbl(JLabel insertMeanLbl) {
+        this.insertMeanLbl = insertMeanLbl;
+    }
+
+    public JLabel getInsertWordLbl() {
+        return insertWordLbl;
+    }
+
+    public void setInsertWordLbl(JLabel insertWordLbl) {
+        this.insertWordLbl = insertWordLbl;
+    }
+
+    public JButton getjButton1() {
+        return jButton1;
+    }
+
+    public void setjButton1(JButton jButton1) {
+        this.jButton1 = jButton1;
+    }
+
+    public JLabel getjLabel1() {
+        return jLabel1;
+    }
+
+    public void setjLabel1(JLabel jLabel1) {
+        this.jLabel1 = jLabel1;
+    }
+
+    public JLabel getjLabel2() {
+        return jLabel2;
+    }
+
+    public void setjLabel2(JLabel jLabel2) {
+        this.jLabel2 = jLabel2;
+    }
+
+    public JLabel getjLabel3() {
+        return jLabel3;
+    }
+
+    public void setjLabel3(JLabel jLabel3) {
+        this.jLabel3 = jLabel3;
+    }
+
+    public JLabel getjLabel4() {
+        return jLabel4;
+    }
+
+    public void setjLabel4(JLabel jLabel4) {
+        this.jLabel4 = jLabel4;
+    }
+
+    public JLabel getjLabel5() {
+        return jLabel5;
+    }
+
+    public void setjLabel5(JLabel jLabel5) {
+        this.jLabel5 = jLabel5;
+    }
+
+    public JLabel getjLabel6() {
+        return jLabel6;
+    }
+
+    public void setjLabel6(JLabel jLabel6) {
+        this.jLabel6 = jLabel6;
+    }
+
+    public JLabel getjLabel7() {
+        return jLabel7;
+    }
+
+    public void setjLabel7(JLabel jLabel7) {
+        this.jLabel7 = jLabel7;
+    }
+
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    public void setjScrollPane1(JScrollPane jScrollPane1) {
+        this.jScrollPane1 = jScrollPane1;
+    }
+
+    public JScrollPane getjScrollPane2() {
+        return jScrollPane2;
+    }
+
+    public void setjScrollPane2(JScrollPane jScrollPane2) {
+        this.jScrollPane2 = jScrollPane2;
+    }
+
+    public JTextArea getMeanField() {
+        return meanField;
+    }
+
+    public void setMeanField(JTextArea meanField) {
+        this.meanField = meanField;
+    }
+
+    public JTextField getPhoneticField() {
+        return phoneticField;
+    }
+
+    public void setPhoneticField(JTextField phoneticField) {
+        this.phoneticField = phoneticField;
+    }
+
+    public JButton getPickImg() {
+        return pickImg;
+    }
+
+    public void setPickImg(JButton pickImg) {
+        this.pickImg = pickImg;
+    }
+
+    public JButton getPickVoice() {
+        return pickVoice;
+    }
+
+    public void setPickVoice(JButton pickVoice) {
+        this.pickVoice = pickVoice;
+    }
+
+    public JComboBox<String> getTypeCombo() {
+        return typeCombo;
+    }
+
+    public void setTypeCombo(JComboBox<String> typeCombo) {
+        this.typeCombo = typeCombo;
+    }
+
+    public JLabel getVoiceFileURL() {
+        return voiceFileURL;
+    }
+
+    public void setVoiceFileURL(JLabel voiceFileURL) {
+        this.voiceFileURL = voiceFileURL;
+    }
+
+    public JTextField getWordField() {
+        return wordField;
+    }
+
+    public void setWordField(JTextField wordField) {
+        this.wordField = wordField;
+    }
+
 }
