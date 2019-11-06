@@ -156,7 +156,7 @@ public class WordController {
     public static boolean isExistWord(String name) {
         for (Word w
                 : words) {
-            if (w.getWord().equals(name)) {
+            if (w.getWord().toLowerCase().equals(name.toLowerCase())) {
                 return true;
             }
         }
