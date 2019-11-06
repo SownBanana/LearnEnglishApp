@@ -81,7 +81,7 @@ public class HomeUI extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Very Easy", "Easy", "Medium", "Hard", "NightMare" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Very Easy", "Easy", "Medium", "Hard", "Very Hard", "NightMare", "Madness" }));
 
         addBtn.setText("Add Word");
         addBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -104,7 +104,7 @@ public class HomeUI extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox1.setText("   Dùng AI");
+        jCheckBox1.setText("   Using AI");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox1ActionPerformed(evt);

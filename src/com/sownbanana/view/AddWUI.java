@@ -179,7 +179,7 @@ public class AddWUI extends javax.swing.JFrame {
         insertMeanLbl.setForeground(new java.awt.Color(255, 51, 51));
         insertMeanLbl.setText("*Bạn cần điền nghĩa");
 
-        typeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Noun", "Verd", "Adjective", "Adverb", "Pronouns", "Phrase" }));
+        typeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Noun", "Verb", "Adjective", "Adverb", "Pronoun", "Noun Phrase", "Verb Phrase", "Idioms", "Clause" }));
         typeCombo.setToolTipText("Chọn một từ loại cho từ hoặc chọn cụm từ");
         typeCombo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -434,7 +434,7 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        String word = wordField.getText().trim().replaceAll("\\s+", " ");
+        String word = wordField.getText().trim().replaceAll("\\s+", " ").toLowerCase();
         String ipa = phoneticField.getText().trim().replaceAll("\\s+", " ");
         String mean = meanField.getText().trim().replaceAll("\\s+", " ");
         String type = (String) typeCombo.getSelectedItem();
@@ -514,7 +514,7 @@ public class AddWUI extends javax.swing.JFrame {
                 ws = WordController.words;
                 WordController.words = ws;
                 dateModified = LocalDate.now();
-                Word initword = new Word(word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified);
+                Word initword = new Word(word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified, 1);
                 ws.add(initword);
                 WordController.words = ws;
                 WordController.writeWord(WordController.getDataPath());
@@ -619,7 +619,7 @@ public class AddWUI extends javax.swing.JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                        WordController.editWord(inputWord);
+                        WordController.editWord(inputWord.toLowerCase());
                     }
 
                 });

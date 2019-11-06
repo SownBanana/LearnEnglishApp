@@ -72,7 +72,11 @@ public class WordController {
             }
             System.out.println(s);
             try {
-                Writer writer = new FileWriter(path);
+//                Writer writer = new FileWriter(path);
+//                writer.write(s);
+//                writer.close();
+//                rs = 1;
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
                 writer.write(s);
                 writer.close();
                 rs = 1;
@@ -96,7 +100,7 @@ public class WordController {
                 String[] hashtags = output[8].split("@");
                 LocalDate datemdf = LocalDate.parse(output[9]);
                 Word word = new Word(Integer.parseInt(output[0]), output[1], output[2], output[3], output[4],
-                        output[5], output[6], output[7], hashtags, datemdf);
+                        output[5], output[6], output[7], hashtags, datemdf, Integer.parseInt(output[10]));
                 wordArrayList.add(word);
                 line = reader.readLine();
             }

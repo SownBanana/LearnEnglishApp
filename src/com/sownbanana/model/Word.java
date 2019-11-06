@@ -23,12 +23,13 @@ public class Word {
     private String hint;
     private String[] hashtag;
     private LocalDate dateModified;
+    private int freq;
 
     public Word() {
     }
 
     public Word(String word, String mean, String ipa, String type, String imageURL, String voiceURL, String hint,
-                String[] hashtag, LocalDate dateModified)
+                String[] hashtag, LocalDate dateModified, int freq)
     {
         this.id = WordController.total++;
         this.word = word;
@@ -40,11 +41,13 @@ public class Word {
         this.hint = hint;
         this.hashtag = hashtag;
         this.dateModified = dateModified;
+        this.freq = freq;
     }
 
     public Word(int id, String word, String mean, String ipa,String type, String imageURL, String voiceURL, String hint,
-                String[] hashtag, LocalDate dateModified)
+                String[] hashtag, LocalDate dateModified, int freq)
     {
+        this.freq = freq;
         this.id = id;
         this.word = word;
         this.mean = mean;
@@ -139,6 +142,14 @@ public class Word {
     public void setType(String type) {
         this.type = type;
     }
+
+    public int getFreq() {
+        return freq;
+    }
+
+    public void setFreq(int freq) {
+        this.freq = freq;
+    }
     
 
     @Override
@@ -152,7 +163,8 @@ public class Word {
                 "#" + voiceURL +
                 "#" + hint +
                 "#" + WordController.hashtag2String(hashtag) +
-                "#" + dateModified +"\n";
+                "#" + dateModified +
+                "#" + freq +"\n";
     }
 
 }
