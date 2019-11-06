@@ -23,6 +23,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javazoom.jl.player.Player;
 
 public class WordController {
 
@@ -311,11 +312,8 @@ public class WordController {
 
     public static void playSound(String filePath) {
         try {
-            File file = new File(filePath);
-            System.out.println(file.toURI().toString());
-            Media voice = new Media(file.toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(voice);
-            mediaPlayer.play();
+            Player player = new Player(new FileInputStream(new File(filePath)));
+            player.play();          
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -551,7 +551,7 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         int chose = -1;
         JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("Voice files (*.mp3, *.m4a, *.flac, *.wav, *.mp4)", "mp3", "mp4", "m4a", "flac", "wav");
+        FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("Support .mp3", "mp3");
         fileChooser.setFileFilter(imgFilter);
         fileChooser.setDialogTitle("Chọn âm thanh");
         chose = fileChooser.showOpenDialog(null);
