@@ -43,14 +43,14 @@ public class WordController {
         return path;
     }
 
-    public static String getConfigPath() {
-        String path = System.getProperty("user.dir") + "\\data\\cfg\\cfg.txt";
+    public static String getDictPath() {
+        String path = System.getProperty("user.dir") + "\\data\\dict\\wordsapi_sample.json.txt";
         return path;
     }
 
     public static boolean checkDataFolder() {
         boolean check = false;
-        File dataFolder = new File(getPath("\\data\\cfg"));
+        File dataFolder = new File(getPath("\\data\\dict"));
         if (dataFolder.exists()) {
             check = true;
         } else {
@@ -242,6 +242,7 @@ public class WordController {
 //    }
     public static void editWord(String inputWord) {
         Word w = WordController.findWord(inputWord);
+        System.out.println(w);
         AddWUI editUI = new AddWUI();
         editUI.setIsEdit(true);
         editUI.getWordField().setText(w.getWord());
@@ -254,6 +255,7 @@ public class WordController {
         editUI.getHashtagField().setForeground(Color.BLACK);
         editUI.getVoiceFileURL().setText(w.getVoiceURL());
         editUI.setVoiceURL(w.getVoiceURL());
+        editUI.getWordField().setEnabled(false);
         //image
 
         try {
@@ -303,11 +305,13 @@ public class WordController {
         return rs;
     }
 
-    public static void text2speech(String word) {
+    public static Voice text2speech(String word) {
         Voice voice = VoiceManager.getInstance().getVoice("kevin");
         voice.allocate();
         voice.speak(word);
+        System.out.println(voice.getAge());
         System.out.println(voice.toString());
+        return voice;
     }
 
     public static void playSound(String filePath) {
@@ -324,4 +328,5 @@ public class WordController {
         String phonetic = "";
         return phonetic;
     }
+   
 }

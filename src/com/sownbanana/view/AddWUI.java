@@ -52,17 +52,8 @@ public class AddWUI extends javax.swing.JFrame {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        insertHashtagLbl.setVisible(false);
-        insertHintLbl.setVisible(false);
-        insertMeanLbl.setVisible(false);
-        insertWordLbl.setVisible(false);
         imgLable.setSize(210, 244);
-        //Ô phiên âm
-        phoneticField.setForeground(Color.GRAY);
-        phoneticField.setText("Phiêm âm được sinh tự động nếu bạn bỏ trống");
-        //Ô hashtag
-        hashtagField.setForeground(Color.GRAY);
-        hashtagField.setText("Hashtag ngăn cách bởi dấu cách");
+        clearField();
     }
 
     /**
@@ -518,20 +509,7 @@ public class AddWUI extends javax.swing.JFrame {
                 ws.add(initword);
                 WordController.words = ws;
                 WordController.writeWord(WordController.getDataPath());
-                wordField.setText("");
-                hintTextArea.setText("");
-                meanField.setText("");
-                hashtagField.setText("");
-                imageURL = null;
-                voiceURL = null;
-                imgLable.setText("Thêm ảnh");
-                imgLable.setIcon(null);
-                voiceFileURL.setText("File Name");
-                phoneticField.setForeground(Color.GRAY);
-                phoneticField.setText("Phiêm âm được sinh tự động nếu bạn bỏ trống");
-                hashtagField.setForeground(Color.GRAY);
-                hashtagField.setText("Hashtag ngăn cách bởi dấu cách");
-                checkExistWord = false;
+                clearField();
             }
 
         }
@@ -620,6 +598,7 @@ public class AddWUI extends javax.swing.JFrame {
                     public void mouseClicked(MouseEvent e) {
                         super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
                         WordController.editWord(inputWord.toLowerCase());
+                        clearField();
                     }
 
                 });
@@ -958,6 +937,27 @@ public class AddWUI extends javax.swing.JFrame {
 
     public void setWordField(JTextField wordField) {
         this.wordField = wordField;
+    }
+    
+    public void clearField(){
+        this.wordField.setText("");
+        this.phoneticField.setForeground(Color.GRAY);
+        this.phoneticField.setText("Phiêm âm được sinh tự động nếu bạn bỏ trống");
+        //Ô hashtag
+        this.hashtagField.setForeground(Color.GRAY);
+        this.hashtagField.setText("Hashtag ngăn cách bởi dấu cách");
+        this.meanField.setText("");
+        this.hintTextArea.setText("");
+        this.insertWordLbl.setVisible(false);
+        this.insertMeanLbl.setVisible(false);
+        this.insertHintLbl.setVisible(false);
+        this.insertHashtagLbl.setVisible(false);
+        imageURL = null;
+        voiceURL = null;
+        imgLable.setText("Thêm ảnh");
+        imgLable.setIcon(null);
+        checkExistWord = false;
+                
     }
 
 }
