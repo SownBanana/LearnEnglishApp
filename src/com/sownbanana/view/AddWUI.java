@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +45,8 @@ public class AddWUI extends javax.swing.JFrame {
     String voiceURL = null;
     boolean checkExistWord = false;
     boolean isEdit = false;
+    boolean checkCreateEditUI = false;
+    MouseListener clkEdit;
 
     /**
      * Creates new form AddWUI
@@ -493,6 +496,7 @@ public class AddWUI extends javax.swing.JFrame {
                     w.setDateModified(LocalDate.now());
                     WordController.words.set(index, w);
                     WordController.writeWord(WordController.getDataPath());
+                    clearField();
                     this.dispose();
                 }
                 catch(Exception e){
@@ -593,15 +597,16 @@ public class AddWUI extends javax.swing.JFrame {
                 insertWordLbl.setText("<html>*Đã tồn tại. <a href = ''>Click</a> để sửa</html>");
                 insertWordLbl.setVisible(true);
                 insertWordLbl.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                insertWordLbl.addMouseListener(new MouseAdapter() {
+                clkEdit = new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                        WordController.editWord(inputWord.toLowerCase());
-                        clearField();
+                       checkCreateEditUI = WordController.editWord(inputWord.toLowerCase());
+                       clearField();
+                       removeClkEdit();
                     }
 
-                });
+                };
+                insertWordLbl.addMouseListener(clkEdit);     
             }
         }
     }//GEN-LAST:event_wordFieldFocusLost
@@ -960,4 +965,10 @@ public class AddWUI extends javax.swing.JFrame {
                 
     }
 
+    public void removeClkEdit(){
+        if(checkCreateEditUI){
+        System.out.println("Bỏ mouse listener");
+        insertWordLbl.removeMouseListener(clkEdit);
+        }             
+    }
 }

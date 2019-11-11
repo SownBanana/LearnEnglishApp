@@ -240,9 +240,9 @@ public class WordController {
 //            }
 //        }
 //    }
-    public static void editWord(String inputWord) {
+    public static boolean editWord(String inputWord) {
         Word w = WordController.findWord(inputWord);
-        System.out.println(w);
+        System.out.println("w là: "+w);
         AddWUI editUI = new AddWUI();
         editUI.setIsEdit(true);
         editUI.getWordField().setText(w.getWord());
@@ -271,6 +271,7 @@ public class WordController {
 
         //
         editUI.setVisible(true);
+        return true;
     }
 
     public static void deleteWord(int id) {
