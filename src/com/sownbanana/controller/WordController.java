@@ -240,7 +240,7 @@ public class WordController {
 //            }
 //        }
 //    }
-    public static boolean editWord(String inputWord) {
+    public static void editWord(String inputWord) {
         Word w = WordController.findWord(inputWord);
         System.out.println("w là: "+w);
         AddWUI editUI = new AddWUI();
@@ -271,7 +271,6 @@ public class WordController {
 
         //
         editUI.setVisible(true);
-        return true;
     }
 
     public static void deleteWord(int id) {
@@ -284,14 +283,6 @@ public class WordController {
     }
 
     public static String hashtag2String(String[] hashtag) {
-//        String rs = "";
-//        if (hashtag != null){
-//            for (String hg:
-//                    hashtag) {
-//                rs += hg + "@";
-//            }
-//        }
-//        return rs;
         return stringArray2String(hashtag, "@");
     }
 

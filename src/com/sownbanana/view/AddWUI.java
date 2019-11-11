@@ -45,7 +45,6 @@ public class AddWUI extends javax.swing.JFrame {
     String voiceURL = null;
     boolean checkExistWord = false;
     boolean isEdit = false;
-    boolean checkCreateEditUI = false;
     MouseListener clkEdit;
 
     /**
@@ -597,12 +596,12 @@ public class AddWUI extends javax.swing.JFrame {
                 insertWordLbl.setText("<html>*Đã tồn tại. <a href = ''>Click</a> để sửa</html>");
                 insertWordLbl.setVisible(true);
                 insertWordLbl.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                insertWordLbl.removeMouseListener(clkEdit);
                 clkEdit = new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                       checkCreateEditUI = WordController.editWord(inputWord.toLowerCase());
+                       WordController.editWord(inputWord.toLowerCase());
                        clearField();
-                       removeClkEdit();
                     }
 
                 };
@@ -963,12 +962,5 @@ public class AddWUI extends javax.swing.JFrame {
         imgLable.setIcon(null);
         checkExistWord = false;
                 
-    }
-
-    public void removeClkEdit(){
-        if(checkCreateEditUI){
-        System.out.println("Bỏ mouse listener");
-        insertWordLbl.removeMouseListener(clkEdit);
-        }             
     }
 }
