@@ -48,6 +48,7 @@ public class AddWUI extends javax.swing.JFrame {
     boolean checkExistWord = false;
     boolean isEdit = false;
     MouseListener clkEdit;
+    boolean isAutoPhonetic = false;
 
     /**
      * Creates new form AddWUI
@@ -58,6 +59,7 @@ public class AddWUI extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         imgLable.setSize(210, 244);
         voiceFileURL.setPreferredSize(new Dimension(60, 32));
+        pickImg.setEnabled(isEdit);
         clearField();
     }
 
@@ -113,6 +115,9 @@ public class AddWUI extends javax.swing.JFrame {
         phoneticField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 phoneticFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                phoneticFieldFocusLost(evt);
             }
         });
         phoneticField.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -280,6 +285,9 @@ public class AddWUI extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 meanFieldFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                meanFieldFocusLost(evt);
+            }
         });
         meanField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -411,8 +419,8 @@ public class AddWUI extends javax.swing.JFrame {
         if (chose == JFileChooser.APPROVE_OPTION) {
             try {
                 File img = fileChooser.getSelectedFile();
-                imageURL = img.getPath();
-//            Image image = new ImageIcon(imageURL).getImage();
+                WordController.saveImage(img, wordField.getText());
+                imageURL = WordController.getImageFolder() + wordField.getText().replaceAll("\\s+", "") + ".jpg";
                 BufferedImage image = ImageIO.read(img);
                 ImageIcon icon = new ImageIcon(image.getScaledInstance(imgLable.getWidth(), imgLable.getHeight(), BufferedImage.SCALE_SMOOTH));
                 imgLable.setIcon(icon);
@@ -444,6 +452,7 @@ public class AddWUI extends javax.swing.JFrame {
                 insertWordLbl.setVisible(false);
                 if (phoneticField.getForeground() == Color.GRAY || "".equals(ipa)) {
                     phoneticField.setText(WordController.getPhonetic(word));
+                    System.out.println("done phonetic");
                     phoneticField.setForeground(Color.BLACK);
                     ipa = phoneticField.getText();
                 }
@@ -483,14 +492,15 @@ public class AddWUI extends javax.swing.JFrame {
             check = false;
         }
         //voice
-        if (voiceURL == null || "null".equals(voiceURL)){
+        if (voiceURL == null || "null".equals(voiceURL)) {
             WordController.saveVoice(word);
-            voiceURL = getVoiceFolder()+word.replaceAll("\\s+", "")+".mp3";
+            voiceURL = getVoiceFolder() + word.replaceAll("\\s+", "") + ".mp3";
+            System.out.println("done voice");
         }
         if (check && !checkExistWord) {
             System.out.println(voiceURL);
             if (isEdit) {
-                
+
                 try {
                     Word w = WordController.findWord(word);
                     int index = WordController.words.indexOf(w);
@@ -506,8 +516,7 @@ public class AddWUI extends javax.swing.JFrame {
                     WordController.writeWord(WordController.getDataPath());
                     clearField();
                     this.dispose();
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(rootPane, "Hãy giữ nguyên từ/cụm từ muốn sửa");
                 }
@@ -609,13 +618,26 @@ public class AddWUI extends javax.swing.JFrame {
                 clkEdit = new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                       WordController.editWord(inputWord.toLowerCase());
-                       clearField();
+                        WordController.editWord(inputWord.toLowerCase());
+                        clearField();
                     }
 
                 };
-                insertWordLbl.addMouseListener(clkEdit);     
+                insertWordLbl.addMouseListener(clkEdit);
             }
+        }
+        if ("".equals(wordField.getText().trim())) {
+            pickImg.setEnabled(false);
+        } else {
+            pickImg.setEnabled(true);
+        }
+        if (isAutoPhonetic) {
+            Thread thread = new Thread(() -> {
+                System.out.println("Sinh");
+                phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                phoneticField.setForeground(Color.BLACK);
+            });
+            thread.start();
         }
     }//GEN-LAST:event_wordFieldFocusLost
 
@@ -625,7 +647,16 @@ public class AddWUI extends javax.swing.JFrame {
     }//GEN-LAST:event_wordFieldFocusGained
 
     private void meanFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_meanFieldFocusGained
-        // TODO add your handling code here:
+        // TODO add your handling code here:    
+        if (phoneticField.getForeground() == Color.GRAY) {
+            isAutoPhonetic = true;
+            Thread thread = new Thread(() -> {
+                System.out.println("Sinh");
+                phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                phoneticField.setForeground(Color.BLACK);
+            });
+            thread.start();
+        }
     }//GEN-LAST:event_meanFieldFocusGained
 
     private void wordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_wordFieldKeyPressed
@@ -647,6 +678,27 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         insertHashtagLbl.setVisible(false);
     }//GEN-LAST:event_hashtagFieldKeyPressed
+
+    private void meanFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_meanFieldFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_meanFieldFocusLost
+
+    private void phoneticFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneticFieldFocusLost
+        // TODO add your handling code here:
+        if ("".equals(phoneticField.getText().replaceAll("\\s+", ""))) {
+            isAutoPhonetic = true;
+
+            Thread thread = new Thread(() -> {
+                System.out.println("Sinh");
+                phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                phoneticField.setForeground(Color.BLACK);
+            });
+            thread.start();
+
+        }
+        else
+            isAutoPhonetic = false;
+    }//GEN-LAST:event_phoneticFieldFocusLost
 
     /**
      * @param args the command line arguments
@@ -951,8 +1003,8 @@ public class AddWUI extends javax.swing.JFrame {
     public void setWordField(JTextField wordField) {
         this.wordField = wordField;
     }
-    
-    public void clearField(){
+
+    public void clearField() {
         this.wordField.setText("");
         this.phoneticField.setForeground(Color.GRAY);
         this.phoneticField.setText("Phiêm âm được sinh tự động nếu bạn bỏ trống");
@@ -970,6 +1022,6 @@ public class AddWUI extends javax.swing.JFrame {
         imgLable.setText("Thêm ảnh");
         imgLable.setIcon(null);
         checkExistWord = false;
-                
+
     }
 }

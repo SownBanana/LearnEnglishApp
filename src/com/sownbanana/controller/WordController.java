@@ -395,17 +395,18 @@ public class WordController {
         s.text2Speech(word);          
     }
     public static void saveVoice(String word){
-        try {
-              Synthesizer s = new Synthesizer();
-              DataController dc = new DataController();
-              dc.writeMp3(s.getVoiceInputStream(word), word);
-             } catch (IOException ex) {
-                    Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-             }
+        Synthesizer s = new Synthesizer();
+        DataController dc = new DataController();
+        dc.writeMp3(s.getVoiceInputStream(word), word);
     }
     public static String getPhonetic(String word) {
         Phonetic phonetic = new Phonetic();
         return phonetic.getPhonetic(word);
+    }
+    
+    public static void saveImage(File image, String word){
+        DataController dataController = new DataController();
+        dataController.writeJpg(image, word);
     }
 
 }

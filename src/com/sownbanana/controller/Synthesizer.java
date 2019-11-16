@@ -35,7 +35,6 @@ public class Synthesizer {
     }
 
     public InputStream getVoiceInputStream(String word) {
-//        Thread thread = new Thread(() -> {
             InputStream is = null;
             String text = word;
             try {
@@ -49,12 +48,11 @@ public class Synthesizer {
                 ex.printStackTrace();
             } catch (MalformedURLException ex) {
                 ex.printStackTrace();
-//            return getVoiceInputStream(word, 1);
+            return getVoiceInputStream(word, 1);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
             return is;          
-//        });
         
     }
 
@@ -141,6 +139,7 @@ public class Synthesizer {
     }
 
     public void text2Speech(String word) {
+        
         playSound(getVoiceInputStream(word));
     }
 

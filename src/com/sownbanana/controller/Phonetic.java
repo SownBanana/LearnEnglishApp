@@ -33,6 +33,7 @@ public class Phonetic {
          String fullPhonetic = "";
          for (String w : eachWord) {
              try {
+//                 System.out.println(w);
                  String getPhoneticURL = GOOGLE_WORD_DEF_URL + w;
                  URL url = new URL(getPhoneticURL);
                  URLConnection uRLConnection = url.openConnection();
@@ -46,8 +47,9 @@ public class Phonetic {
 //                     sb.append(s);
 //                 }
 //                 System.out.println(sb);
-//</editor-fold>               
-             
+//</editor-fold>                           
+                 
+
                  JsonReader jsonReader = Json.createReader(is);
                  JsonArray ja = jsonReader.readArray();
                  JsonObject json = ja.getJsonObject(0);
@@ -61,7 +63,7 @@ public class Phonetic {
                  Logger.getLogger(Phonetic.class.getName()).log(Level.SEVERE, null, ex);
              }
          }
-         System.out.println(fullPhonetic);
+//         System.out.println(fullPhonetic);
          return fullPhonetic;
      }
      
