@@ -1,0 +1,2 @@
+level Easy
+point 1

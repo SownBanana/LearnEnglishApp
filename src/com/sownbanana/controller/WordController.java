@@ -7,8 +7,6 @@ package com.sownbanana.controller;
 
 import com.sownbanana.model.Word;
 import com.sownbanana.view.AddWUI;
-import com.sun.speech.freetts.Voice;
-import com.sun.speech.freetts.VoiceManager;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -19,16 +17,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javazoom.jl.player.Player;
 
 public class WordController {
 
     public static int total;
     public static List<Word> words;
+    public Synthesizer synthesizer = new Synthesizer();
 
     public static String getPath() {
         return System.getProperty("user.dir");
@@ -48,9 +44,29 @@ public class WordController {
         return path;
     }
 
-    public static boolean checkDataFolder() {
+    public static String getConfigPath() {
+        String path = System.getProperty("user.dir") + "\\data\\cfg\\config.txt";
+        return path;
+    }
+    
+    public static String getConfigFolder() {
+        String path = System.getProperty("user.dir") + "\\data\\cfg\\";
+        return path;
+    }
+    
+    public static String getVoiceFolder() {
+        String path = System.getProperty("user.dir") + "\\data\\voice\\";
+        return path;
+    }
+    
+    public static String getImageFolder() {
+        String path = System.getProperty("user.dir") + "\\data\\img\\";
+        return path;
+    }
+    
+    public static boolean checkFolder(String path) {
         boolean check = false;
-        File dataFolder = new File(getPath("\\data\\dict"));
+        File dataFolder = new File(path);
         if (dataFolder.exists()) {
             check = true;
         } else {
@@ -59,7 +75,61 @@ public class WordController {
                 check = true;
             }
         }
+        return check;
+    }
+    
+    public static void checkDataFolder() {
+        checkFolder(getVoiceFolder());
+        checkFolder(getImageFolder());
+        checkFolder(getConfigFolder());
+    }
+    
+    public static boolean createConfigFile() {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getConfigPath())));
+            String s = "gì đó";
+            bufferedWriter.write(s);
+            return true;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (IOException ex) {
+            Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 
+    public static boolean checkConfigFolder() {
+        boolean check = false;
+        File dataFolder = new File(getPath("\\data\\cfg"));
+        if (dataFolder.exists()) {
+            check = true;
+        } else {
+            System.out.println("Chưa có folder cfg");
+            if (dataFolder.mkdirs()) {
+                System.out.println("Create " + dataFolder + " Success");
+                check = createConfigFile();
+ //<editor-fold defaultstate="collapsed">               
+//                File configFile = new File(getConfigPath());
+//                try {
+//                    configFile.createNewFile();
+//                    System.out.println("Tạo file config thành công");
+//                } catch (IOException ex) {
+//                    System.out.println("Tạo file config thất bại");
+//                    check = false;
+//                }
+            }
+        }        
+//                String s = "level Easy\n" +"point 1";
+//                FileOutputStream config_text = new FileOutputStream(getConfigPath());
+//                config_text.write(s.getBytes());
+//            } catch (FileNotFoundException ex) {
+//                Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (IOException ex) {
+//                Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//</editor-fold>  
         return check;
     }
 
@@ -223,7 +293,7 @@ public class WordController {
         word.setId(total);
         words.add(word);
     }
-
+//<editor-fold defaultstate="collapsed">
 //    public static void editWord(int id, String word, String mean, String ipa, String type, String imageURL, String voiceURL, String hint,
 //                                String[] hashtag, LocalDate dateModified){
 //        for (int i = 0; i < words.size(); i++) {
@@ -240,9 +310,10 @@ public class WordController {
 //            }
 //        }
 //    }
+//</editor-fold>
     public static void editWord(String inputWord) {
         Word w = WordController.findWord(inputWord);
-        System.out.println("w là: "+w);
+        System.out.println("w là: " + w);
         AddWUI editUI = new AddWUI();
         editUI.setIsEdit(true);
         editUI.getWordField().setText(w.getWord());
@@ -296,29 +367,45 @@ public class WordController {
         }
         return rs;
     }
-
-    public static Voice text2speech(String word) {
-        Voice voice = VoiceManager.getInstance().getVoice("kevin");
-        voice.allocate();
-        voice.speak(word);
-        System.out.println(voice.getAge());
-        System.out.println(voice.toString());
-        return voice;
-    }
-
-    public static void playSound(String filePath) {
-        try {
-            Player player = new Player(new FileInputStream(new File(filePath)));
-            player.play();          
-        } catch (Exception e) {
-            e.printStackTrace();
+    
+    public static void playSound(Word word){
+        Synthesizer s = new Synthesizer();
+        if("".equals(word.getVoiceURL())){
+            s.playSound(s.getVoiceInputStream(word.getWord()));
         }
-
+        else{
+            s.playSound(word.getVoiceURL());
+        }
+    }
+    public static void playSound(String url){
+        Synthesizer s = new Synthesizer();
+        s.playSound(url);
     }
 
+    public static void text2speech(String word) {
+        //<editor-fold defaultstate="collapsed" desc=" Free TTS ">
+//        Voice voice = VoiceManager.getInstance().getVoice("kevin");
+//        voice.allocate();
+//        voice.speak(word);
+//        System.out.println(voice.getAge());
+//        System.out.println(voice.toString());
+//</editor-fold>
+
+        Synthesizer s = new Synthesizer();
+        s.text2Speech(word);          
+    }
+    public static void saveVoice(String word){
+        try {
+              Synthesizer s = new Synthesizer();
+              DataController dc = new DataController();
+              dc.writeMp3(s.getVoiceInputStream(word), word);
+             } catch (IOException ex) {
+                    Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
+             }
+    }
     public static String getPhonetic(String word) {
-        String phonetic = "";
-        return phonetic;
+        Phonetic phonetic = new Phonetic();
+        return phonetic.getPhonetic(word);
     }
-   
+
 }

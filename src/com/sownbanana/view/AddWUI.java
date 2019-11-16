@@ -6,9 +6,11 @@
 package com.sownbanana.view;
 
 import com.sownbanana.controller.WordController;
+import static com.sownbanana.controller.WordController.getVoiceFolder;
 import com.sownbanana.model.Word;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -55,6 +57,7 @@ public class AddWUI extends javax.swing.JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         imgLable.setSize(210, 244);
+        voiceFileURL.setPreferredSize(new Dimension(60, 32));
         clearField();
     }
 
@@ -434,8 +437,8 @@ public class AddWUI extends javax.swing.JFrame {
         String hint = hintTextArea.getText().trim().replaceAll("\\s+", " ");
         String[] hashtag = hashtagField.getText().trim().split("\\s+");
         LocalDate dateModified;
-        //Thiếu từ
         boolean check = true;
+        //Thiếu từ
         if (!"".equals(word)) {
             if (!checkExistWord) {
                 insertWordLbl.setVisible(false);
@@ -479,9 +482,15 @@ public class AddWUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Bạn cần thêm ảnh");
             check = false;
         }
+        //voice
+        if (voiceURL == null || "null".equals(voiceURL)){
+            WordController.saveVoice(word);
+            voiceURL = getVoiceFolder()+word.replaceAll("\\s+", "")+".mp3";
+        }
         if (check && !checkExistWord) {
-
+            System.out.println(voiceURL);
             if (isEdit) {
+                
                 try {
                     Word w = WordController.findWord(word);
                     int index = WordController.words.indexOf(w);
@@ -545,7 +554,7 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if ("File Name".equals(voiceFileURL.getText())) {
+        if ("File Name".equals(voiceFileURL.getText()) || "null".equals(voiceFileURL.getText())) {
             WordController.text2speech(wordField.getText());
         } else {
             System.out.println(voiceURL);

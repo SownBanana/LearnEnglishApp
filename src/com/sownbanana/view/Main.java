@@ -15,9 +15,31 @@ import javax.swing.JFrame;
 public class Main {
     public static void main(String[] args) {
         String path = WordController.getDataPath();
-        System.out.println(WordController.checkDataFolder());
+        WordController.checkDataFolder();
+        System.out.println(WordController.checkConfigFolder());
         System.out.println(WordController.readFile(path));
         System.out.println(WordController.words);
+        
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+           
+        } catch (InstantiationException ex) {
+           
+        } catch (IllegalAccessException ex) {
+            
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            
+        }
+        //</editor-fold>
+        /* Create and display the form */
         
         HomeUI ui = new HomeUI();
         ui.show();
