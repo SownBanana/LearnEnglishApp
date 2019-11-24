@@ -1,5 +1,5 @@
-31
-1#one#một#oăn#Noun#image url 1#null#cái cơ bản vl#test@basic@number@#2019-10-21#1
+35
+1#one#một#wʌn#Noun#P:\EnglishLearningWithUI\data\img\one.jpg#P:\EnglishLearningWithUI\data\voice\one.mp3#cái cơ bản vl#test@basic@number@#2019-11-24#1
 2#two#hai#tu#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#null#cái cơ bản#test2@basic@number@#2019-11-06#1
 3#three#ba#thờ ri#Noun#image url 3#null#cái cơ bản 3#test3@notbasic@number@#2019-10-21#1
 4#a word or a phrase in English#Nghĩa của từ hoặc cụm từ#null#null#img##dwadasdsd#Hashtag@#2019-10-23#1
@@ -8,7 +8,7 @@
 7#lock#Khoá#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\45563347_2282023068474683_51833967430598656_n.jpg#null#Ngăn trộm#house@#2019-10-24#1
 8#tee Shirt#Áo phông#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39442045_1790957390953262_5368519458539175936_n.jpg#null#che cơ thể#cloth@#2019-10-24#1
 9#pussy#Mèo con#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39007494_216859289172838_6503138544129671168_n.jpg#null#A cute one#Animal@cute@#2019-10-29#1
-10#go#đi#gâu#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\52598958_989548127916823_3794753530439401472_n.jpg#P:\EnglishLearningWithUI\data\voice\go.mp3#di chuyển#casual@#2019-11-16#1
+10#go#đi#ɡəʊ#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\52598958_989548127916823_3794753530439401472_n.jpg#P:\EnglishLearningWithUI\data\voice\go.mp3#di chuyển#casual@#2019-11-24#1
 11#nyan#cat#ni an#Noun#C:\Users\SownBanana\Pictures\66292812_1130028467205538_9044717451928928256_n.jpg#null#cat#Hashtag@#2019-11-10#1
 12#go#ddi#gəʊ#Verd#C:\Users\SownBanana\Documents\q.jpg#null#di chuyển#regular@#2019-11-03#1
 13#test#Thử nghiệm#test#Noun#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#P:\EnglishLearningWithUI\data\voice\test.mp3#thì nghiệm#test@#2019-11-16#1
@@ -29,3 +29,4 @@
 28#another test speed of getting phonetic#ds#əˈnʌðə tɛst spiːd ɒv ɡɛt fəˈnɛtɪk #Noun#P:\EnglishLearningWithUI\data\img\anothertestspeedofgettingphonetic.jpg#P:\EnglishLearningWithUI\data\voice\anothertestspeedofgettingphonetic.mp3#ds#ds@#2019-11-16#1
 29#test one more time#ds#tɛst wʌn mɔː tʌɪm #Noun#P:\EnglishLearningWithUI\data\img\testonemoretime.jpg#P:\EnglishLearningWithUI\data\voice\testonemoretime.mp3#ds#dsd@#2019-11-16#1
 30#this is final test#đây là thwur nghiệm sinh pphieen âm#ðɪs ɪz ˈfʌɪn(ə)l tɛst#Noun#P:\EnglishLearningWithUI\data\img\thisisfinaltest.jpg#P:\EnglishLearningWithUI\data\voice\thisisfinaltest.mp3#đây là nghĩa#has@#2019-11-16#1
+34#new line#dòng mới%newline%thêm chức năng dòng#njuː lʌɪn#Noun#P:\EnglishLearningWithUI\data\img\newline.jpg#P:\EnglishLearningWithUI\data\voice\newline.mp3#+ví dụ:%newline%-thêm dòng 1%newline%-thêm dòng 2%newline%-thêm dòng 3#system@line@#2019-11-24#1

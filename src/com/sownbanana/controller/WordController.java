@@ -364,15 +364,16 @@ public class WordController {
         System.out.println("w là: " + w);
         AddWUI editUI = new AddWUI();
         editUI.setIsEdit(true);
+        editUI.getPickImg().setEnabled(true);
         editUI.getWordField().setText(w.getWord());
         editUI.getPhoneticField().setText(w.getIpa());
         editUI.getPhoneticField().setForeground(Color.BLACK);
-        editUI.getMeanField().setText(w.getMean());
+        editUI.getMeanField().setText(w.getMean().replaceAll("%newline%", "\n"));
         editUI.getTypeCombo().setSelectedItem(w.getType());
-        editUI.getHintTextArea().setText(w.getHint());
+        editUI.getHintTextArea().setText(w.getHint().replaceAll("%newline%", "\n"));
         editUI.getHashtagField().setText(WordController.stringArray2String(w.getHashtag(), " "));
         editUI.getHashtagField().setForeground(Color.BLACK);
-        editUI.getVoiceFileURL().setText(w.getVoiceURL());
+        editUI.getVoiceFileURL().setText(w.getVoiceURL().equals("null")?"File Name":"Sound");
         editUI.setVoiceURL(w.getVoiceURL());
         editUI.getWordField().setEnabled(false);
         //image

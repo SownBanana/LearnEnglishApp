@@ -59,7 +59,7 @@ public class AddWUI extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         imgLable.setSize(210, 244);
         voiceFileURL.setPreferredSize(new Dimension(60, 32));
-        pickImg.setEnabled(isEdit);
+        pickImg.setEnabled(false);
         clearField();
     }
 
@@ -93,12 +93,11 @@ public class AddWUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         insertHintLbl = new javax.swing.JLabel();
         voiceFileURL = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        playSound = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         wordField = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         meanField = new javax.swing.JTextArea();
-        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thêm Từ/Cụm Từ");
@@ -241,11 +240,11 @@ public class AddWUI extends javax.swing.JFrame {
         voiceFileURL.setToolTipText("Chọn một file âm thanh cho giọng nói hoặc giọng nói sẽ được sinh tự động");
         voiceFileURL.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jButton1.setText("Phát");
-        jButton1.setToolTipText("Phát file đã chọn hoặc âm thanh sinh tự động");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        playSound.setText("Phát");
+        playSound.setToolTipText("Phát file đã chọn hoặc âm thanh sinh tự động");
+        playSound.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                playSoundActionPerformed(evt);
             }
         });
 
@@ -278,6 +277,7 @@ public class AddWUI extends javax.swing.JFrame {
         });
 
         meanField.setColumns(20);
+        meanField.setLineWrap(true);
         meanField.setRows(5);
         meanField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -294,51 +294,34 @@ public class AddWUI extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(meanField);
 
-        jButton2.setText("jButton2");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
-            }
-        });
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(wordField)
+                    .addComponent(phoneticField)
+                    .addComponent(hashtagField)
+                    .addComponent(jScrollPane1)
+                    .addComponent(typeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(voiceFileURL)
+                        .addGap(87, 87, 87)
+                        .addComponent(pickVoice)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(wordField)
-                            .addComponent(phoneticField)
-                            .addComponent(hashtagField)
-                            .addComponent(jScrollPane1)
-                            .addComponent(typeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(voiceFileURL)
-                                .addGap(87, 87, 87)
-                                .addComponent(pickVoice)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(242, 242, 242)))
+                        .addComponent(playSound))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -398,23 +381,17 @@ public class AddWUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
+                        .addComponent(playSound)
                         .addComponent(pickImg))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(pickVoice))
                     .addComponent(voiceFileURL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(addButton)
-                            .addComponent(cancelButton))
-                        .addContainerGap(52, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(24, 24, 24))))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addButton)
+                    .addComponent(cancelButton))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
@@ -461,9 +438,11 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String word = wordField.getText().trim().replaceAll("\\s+", " ").toLowerCase();
         String ipa = phoneticField.getText().trim().replaceAll("\\s+", " ");
-        String mean = meanField.getText().trim().replaceAll("\\s+", " ");
+        String mean = meanField.getText().trim();
+        mean = mean.replaceAll("(?!\\r)\\n", "%newline%");
         String type = (String) typeCombo.getSelectedItem();
-        String hint = hintTextArea.getText().trim().replaceAll("\\s+", " ");
+        String hint = hintTextArea.getText().trim();
+        hint = hint.replaceAll("(?!\\r)\\n", "%newline%");
         String[] hashtag = hashtagField.getText().trim().split("\\s+");
         LocalDate dateModified;
         boolean check = true;
@@ -521,8 +500,8 @@ public class AddWUI extends javax.swing.JFrame {
         if (check && !checkExistWord) {
             System.out.println(voiceURL);
             if (isEdit) {
-
                 try {
+                    System.out.println("Edit mode");
                     Word w = WordController.findWord(word);
                     int index = WordController.words.indexOf(w);
                     w.setIpa(ipa);
@@ -543,6 +522,7 @@ public class AddWUI extends javax.swing.JFrame {
                 }
 
             } else {
+                System.out.println("Add mode");
                 List<Word> ws = new ArrayList<>();
                 ws = WordController.words;
                 WordController.words = ws;
@@ -582,7 +562,7 @@ public class AddWUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_pickVoiceActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void playSoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playSoundActionPerformed
         // TODO add your handling code here:
         if ("File Name".equals(voiceFileURL.getText()) || "null".equals(voiceFileURL.getText())) {
             WordController.text2speech(wordField.getText());
@@ -590,7 +570,7 @@ public class AddWUI extends javax.swing.JFrame {
             System.out.println(voiceURL);
             WordController.playSound(voiceURL);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_playSoundActionPerformed
 
     private void phoneticFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneticFieldKeyReleased
         // TODO add your handling code here:
@@ -718,18 +698,6 @@ public class AddWUI extends javax.swing.JFrame {
             isAutoPhonetic = false;
     }//GEN-LAST:event_phoneticFieldFocusLost
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-       
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        // TODO add your handling code here:
-        if (evt.getButton() == 3) {
-            JOptionPane.showMessageDialog(rootPane, "right click");
-        }
-    }//GEN-LAST:event_jButton2MouseClicked
-
     /**
      * @param args the command line arguments
      */
@@ -775,8 +743,6 @@ public class AddWUI extends javax.swing.JFrame {
     private javax.swing.JLabel insertHintLbl;
     private javax.swing.JLabel insertMeanLbl;
     private javax.swing.JLabel insertWordLbl;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -790,6 +756,7 @@ public class AddWUI extends javax.swing.JFrame {
     private javax.swing.JTextField phoneticField;
     private javax.swing.JButton pickImg;
     private javax.swing.JButton pickVoice;
+    private javax.swing.JButton playSound;
     private javax.swing.JComboBox<String> typeCombo;
     private javax.swing.JLabel voiceFileURL;
     private javax.swing.JTextField wordField;
@@ -900,11 +867,11 @@ public class AddWUI extends javax.swing.JFrame {
     }
 
     public JButton getjButton1() {
-        return jButton1;
+        return playSound;
     }
 
     public void setjButton1(JButton jButton1) {
-        this.jButton1 = jButton1;
+        this.playSound = jButton1;
     }
 
     public JLabel getjLabel1() {
