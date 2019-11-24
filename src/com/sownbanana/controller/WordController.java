@@ -50,8 +50,8 @@ public class WordController {
         return path;
     }
 
-    public static String getConfigFolder() {
-        String path = System.getProperty("user.dir") + "\\data\\cfg\\";
+    public static String getDataFolder() {
+        String path = System.getProperty("user.dir") + "\\data\\";
         return path;
     }
 
@@ -82,22 +82,26 @@ public class WordController {
     public static void checkDataFolder() {
         checkFolder(getVoiceFolder());
         checkFolder(getImageFolder());
-        checkFolder(getConfigFolder());
     }
 
     public static boolean createConfigFile() {
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getConfigPath())));
-            String s = "gì đó";
+            String s = "hard-level %Mức 1\n"
+                     + "check-level %Mức 1\n"
+                     + "hastag fillter %disable%test1@test2\n"
+                     + "date fillter %disable%disable(today-added word)%11%2019\n";
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getConfigPath()), "UTF-8"));
             bufferedWriter.write(s);
+            bufferedWriter.close();
             return true;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
+        return false;
     }
 
     public static boolean checkConfigFolder() {
@@ -110,27 +114,8 @@ public class WordController {
             if (dataFolder.mkdirs()) {
                 System.out.println("Create " + dataFolder + " Success");
                 check = createConfigFile();
-                //<editor-fold defaultstate="collapsed">               
-//                File configFile = new File(getConfigPath());
-//                try {
-//                    configFile.createNewFile();
-//                    System.out.println("Tạo file config thành công");
-//                } catch (IOException ex) {
-//                    System.out.println("Tạo file config thất bại");
-//                    check = false;
-//                }
             }
         }
-//                String s = "level Easy\n" +"point 1";
-//                FileOutputStream config_text = new FileOutputStream(getConfigPath());
-//                config_text.write(s.getBytes());
-//            } catch (FileNotFoundException ex) {
-//                Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (IOException ex) {
-//                Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//</editor-fold>  
         return check;
     }
 
@@ -323,15 +308,16 @@ public class WordController {
                 }
                 return rs;
             }
-            case "month":{
-                 for (Word word : list) {
+            case "month": {
+                for (Word word : list) {
                     if (word.getDateModified().getMonthValue() == key) {
                         rs.add(word);
                     }
                 }
                 return rs;
             }
-            default: return null;
+            default:
+                return null;
         }
     }
 
@@ -373,7 +359,7 @@ public class WordController {
         editUI.getHintTextArea().setText(w.getHint().replaceAll("%newline%", "\n"));
         editUI.getHashtagField().setText(WordController.stringArray2String(w.getHashtag(), " "));
         editUI.getHashtagField().setForeground(Color.BLACK);
-        editUI.getVoiceFileURL().setText(w.getVoiceURL().equals("null")?"File Name":"Sound");
+        editUI.getVoiceFileURL().setText(w.getVoiceURL().equals("null") ? "File Name" : "Sound");
         editUI.setVoiceURL(w.getVoiceURL());
         editUI.getWordField().setEnabled(false);
         //image
