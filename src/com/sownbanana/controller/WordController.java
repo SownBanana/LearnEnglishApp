@@ -87,9 +87,9 @@ public class WordController {
     public static boolean createConfigFile() {
         try {
             String s = "hard-level %Mức 1\n"
-                     + "check-level %Mức 1\n"
-                     + "hastag fillter %disable%test1@test2\n"
-                     + "date fillter %disable%disable(today-added word)%11%2019\n";
+                    + "check-level %Mức 1\n"
+                    + "hastag fillter %disable%test1@test2\n"
+                    + "date fillter %disable%disable(today-added word)%11%2019\n";
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getConfigPath()), "UTF-8"));
             bufferedWriter.write(s);
             bufferedWriter.close();
@@ -382,14 +382,24 @@ public class WordController {
     public static void deleteWord(String word) {
         for (int i = 0; i < words.size(); i++) {
             if (words.get(i).getWord().equals(word)) {
+                Word w = words.get(i);
                 words.remove(i);
+                File voice = new File(w.getVoiceURL());
+                File image = new File(w.getImageURL());
+                voice.delete();
+                image.delete();
                 writeWord(getDataPath());
                 break;
             }
         }
     }
+
     public static void deleteWord(Word word) {
         words.remove(word);
+        File voice = new File(word.getVoiceURL());
+        File image = new File(word.getImageURL());
+        voice.delete();
+        image.delete();
         writeWord(getDataPath());
     }
 
