@@ -446,4 +446,11 @@ public class WordController {
         dataController.writeJpg(image, word);
     }
 
+    public static List<Word> copyWords() {
+        List<Word> list = new ArrayList<Word>();
+        for (Word word : words) {
+            list.add(word);
+        }
+        return list;
+    }
 }

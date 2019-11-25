@@ -5,7 +5,14 @@
  */
 package com.sownbanana.view;
 
-import java.awt.Color;
+import com.sownbanana.controller.WordController;
+import com.sownbanana.model.Word;
+import static com.sownbanana.view.ListWord.list;
+
+import java.util.List;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,14 +20,31 @@ import java.awt.Color;
  */
 public class ListWord extends javax.swing.JFrame {
 
+    public static List<Word> list;
+    DefaultTableModel model;
+    String choose;
+    Vector vctHeader = new Vector();
+    Vector vctData = new Vector();
+
     /**
      * Creates new form ListWord
      */
     public ListWord() {
         initComponents();
+        list = WordController.words;
+        System.out.println("list:");
+        System.out.println(list.toString());
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        searchField.setForeground(Color.GRAY);
+//        list=new ArrayList<>();
+//        model = (DefaultTableModel) jTable1.getModel();
+        vctHeader.add("word");
+        vctHeader.add("ipa");
+        vctHeader.add("mean");
+        vctHeader.add("type");
+        vctHeader.add("Hastag");
+        vctHeader.add("dateModified");
+        showresult();
     }
 
     /**
@@ -37,11 +61,16 @@ public class ListWord extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         cancelBtn = new javax.swing.JButton();
-        deleteBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
+        searchBtn = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox<>();
+        deleteBtn = new javax.swing.JButton();
+        editBtn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -52,30 +81,21 @@ public class ListWord extends javax.swing.JFrame {
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Từ/Cụm Từ", "Nghĩa", "Phiên Âm", "Từ Vựng", "Gợi ý", "Hashtag", "Hình Ảnh", "Âm Thanh", "Ngày chỉnh sửa", "Chỉnh sửa", "Chọn"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-        });
+        ));
         jTable1.setToolTipText("");
         jTable1.setColumnSelectionAllowed(true);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(10).setPreferredWidth(25);
-        }
 
         cancelBtn.setText("Cancel");
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -84,28 +104,57 @@ public class ListWord extends javax.swing.JFrame {
             }
         });
 
-        deleteBtn.setText("Xoá");
+        searchBtn.setText("Tìm");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
+
+        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField1MouseClicked(evt);
+            }
+        });
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Từ, Cụm từ, Câu", "Từ loại", "Hashtag", "Ngày chỉnh sửa" }));
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
+            }
+        });
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
+        deleteBtn.setText("Xóa");
         deleteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteBtnActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Tìm");
-
-        searchField.setText("Tìm kiếm từ hoặc cụm từ, câu");
-        searchField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                searchFieldFocusGained(evt);
-            }
-        });
-        searchField.addActionListener(new java.awt.event.ActionListener() {
+        editBtn.setText("Chỉnh sửa");
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
+                editBtnActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Từ, Cụm từ, Câu", "Từ loại", "Hashtag", "Ngày chỉnh sửa" }));
+        jLabel2.setText("Từ loại");
+
+        jTextField2.setText("jTextField2");
+
+        jLabel3.setText("Hashtag");
+
+        jTextField3.setText("jTextField3");
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -119,22 +168,38 @@ public class ListWord extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(280, 280, 280)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(147, 147, 147)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(editBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(deleteBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -142,18 +207,23 @@ public class ListWord extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(searchBtn)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
-                    .addComponent(deleteBtn))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(deleteBtn)
+                    .addComponent(editBtn)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38))
         );
 
         pack();
@@ -164,21 +234,166 @@ public class ListWord extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
-    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
+        jTextField1.setText("");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1MouseClicked
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        // TODO add your handling code here:
+        choose = jComboBox2.getSelectedItem().toString();
+        System.out.println(choose);
+        clearTable();
+        switch (choose) {
+            case "Tất cả": {
+//                jTextField1.enable(false);
+                list = WordController.words;
+                showresult();
+                break;
+            }
+            case "Từ, Cụm từ, Câu": {
+                List<Word> smallList = WordController.findLWord(list, jTextField1.getText());
+                showresult(smallList);
+                break;
+            }
+            case "Từ loại": {
+//                list = (List<Word>) WordController.findMean(jTextField1.getText());
+                list = WordController.words;
+                showresult();
+                break;
+            }
+            case "Hashtag": {
+                String[] output = jTextField1.getText().split(" ");
+                if(output.length == 0){}
+                else
+                    list = WordController.findHashtag(list, output);
+                showresult();
+                break;
+            }
+            case "Ngày chỉnh sửa": {
+                if(jTextField1.getText().trim().equals("") || jTextField1.getText().trim().toLowerCase().equals("today"))
+                    list = WordController.findWordAddToday();
+                else if (Integer.parseInt(jTextField1.getText().trim()) > 12)
+                    list = WordController.findWordByDate("year", Integer.parseInt(jTextField1.getText().trim()), list);
+                else 
+                    list = WordController.findWordByDate("month", Integer.parseInt(jTextField1.getText().trim()), list);
+                showresult();
+                break;
+            }
+        }
+    }//GEN-LAST:event_searchBtnActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
+        int select = jTable1.getSelectedRow();
+        Word w = list.get(select);
+        if (select == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Chọn một từ để chỉnh sửa!");
+        } else {
+            WordController.editWord(w.getWord());
+        }
+    }//GEN-LAST:event_editBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        int removeIndex = jTable1.getSelectedRow();
+        Word w = list.get(removeIndex);
+        if (removeIndex == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Chọn một từ để xóa!");
+        } else {
+            WordController.deleteWord(w.getId());
+        }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
-
-    private void searchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusGained
-        // TODO add your handling code here:
-        if (searchField.getForeground() == Color.GRAY) {
-            searchField.setText("");
-            searchField.setForeground(Color.BLACK);
+        choose = jComboBox2.getSelectedItem().toString();
+        switch (choose) {
+            case "Tất cả": {
+                jTextField1.enable(false);
+                break;
+            }
+            
+            case "Từ loại": {
+                jTextField1.enable(true);
+                break;
+            }
+            case "Hashtag": {
+                jTextField1.enable(true);
+                break;
+            }
+            case "Ngày chỉnh sửa": {
+                jTextField1.enable(true);
+                break;
+            }
         }
-    }//GEN-LAST:event_searchFieldFocusGained
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    public void showresult() {
+        for (int i = 0; i < list.size(); i++) {
+            Vector vctRow = new Vector();
+            Word w = list.get(i);
+            vctRow.add(w.getWord());
+            vctRow.add(w.getIpa());
+            vctRow.add(w.getMean());
+            vctRow.add(w.getType());
+//            vctRow.add(w.hastagFancy());
+            vctRow.add(w.getHashtag());
+            vctRow.add(w.getDateModified());
+            vctData.add(vctRow);
+
+//            System.out.println(w.toString());
+        }
+        model = new DefaultTableModel(vctData, vctHeader);
+        jTable1.setModel(model);
+    }
+
+    public void showresult(List<Word> eList) {
+        for (int i = 0; i < eList.size(); i++) {
+            Vector vctRow = new Vector();
+            Word w = eList.get(i);
+            vctRow.add(w.getWord());
+            vctRow.add(w.getIpa());
+            vctRow.add(w.getMean());
+            vctRow.add(w.getType());
+//            vctRow.add(w.hastagFancy());
+            vctRow.add(w.getHashtag());
+            vctRow.add(w.getDateModified());
+            vctData.add(vctRow);
+
+        }
+        model = new DefaultTableModel(vctData, vctHeader);
+        jTable1.setModel(model);
+    }
+
+    public void showresult(Word word) {
+        Vector vctRow = new Vector();
+        vctRow.add(word.getWord());
+        vctRow.add(word.getIpa());
+        vctRow.add(word.getMean());
+        vctRow.add(word.getType());
+//            vctRow.add(word.hastagFancy());
+        vctRow.add(word.getHashtag());
+        vctRow.add(word.getDateModified());
+        vctData.add(vctRow);
+        model = new DefaultTableModel(vctData, vctHeader);
+        jTable1.setModel(model);
+    }
+
+    public void clearTable() {
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+    }
 
     /**
      * @param args the command line arguments
@@ -220,14 +435,20 @@ public class ListWord extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton deleteBtn;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton editBtn;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField searchField;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton searchBtn;
     // End of variables declaration//GEN-END:variables
+
 }

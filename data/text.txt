@@ -1,4 +1,4 @@
-35
+36
 1#one#một#wʌn#Noun#P:\EnglishLearningWithUI\data\img\one.jpg#P:\EnglishLearningWithUI\data\voice\one.mp3#cái cơ bản vl#test@basic@number@#2019-11-24#1
 2#two#hai#tu#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#null#cái cơ bản#test2@basic@number@#2019-11-06#1
 3#three#ba#thờ ri#Noun#image url 3#null#cái cơ bản 3#test3@notbasic@number@#2019-10-21#1
@@ -30,3 +30,4 @@
 29#test one more time#ds#tɛst wʌn mɔː tʌɪm #Noun#P:\EnglishLearningWithUI\data\img\testonemoretime.jpg#P:\EnglishLearningWithUI\data\voice\testonemoretime.mp3#ds#dsd@#2019-11-16#1
 30#this is final test#đây là thwur nghiệm sinh pphieen âm#ðɪs ɪz ˈfʌɪn(ə)l tɛst#Noun#P:\EnglishLearningWithUI\data\img\thisisfinaltest.jpg#P:\EnglishLearningWithUI\data\voice\thisisfinaltest.mp3#đây là nghĩa#has@#2019-11-16#1
 34#new line#dòng mới%newline%thêm chức năng dòng#njuː lʌɪn#Noun#P:\EnglishLearningWithUI\data\img\newline.jpg#P:\EnglishLearningWithUI\data\voice\newline.mp3#+ví dụ:%newline%-thêm dòng 1%newline%-thêm dòng 2%newline%-thêm dòng 3#system@line@#2019-11-24#1
+35#today#Hôm nay#təˈdeɪ#Noun#P:\EnglishLearningWithUI\data\img\today.jpg#P:\EnglishLearningWithUI\data\voice\today.mp3#TTUDSS#day@list@#2019-11-25#1
