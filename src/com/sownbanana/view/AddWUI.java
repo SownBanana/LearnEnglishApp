@@ -12,12 +12,14 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -60,6 +62,9 @@ public class AddWUI extends javax.swing.JFrame {
         imgLable.setSize(210, 244);
         voiceFileURL.setPreferredSize(new Dimension(60, 32));
         pickImg.setEnabled(false);
+        meanTextArea.setFont(new Font("Dialog", Font.PLAIN, 12));
+        hintTextArea.setFont(new Font("Dialog", Font.PLAIN, 12));
+        rePhonetic.setVisible(false);
         clearField();
     }
 
@@ -97,7 +102,9 @@ public class AddWUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         wordField = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        meanField = new javax.swing.JTextArea();
+        meanTextArea = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
+        rePhonetic = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thêm Từ/Cụm Từ");
@@ -276,23 +283,41 @@ public class AddWUI extends javax.swing.JFrame {
             }
         });
 
-        meanField.setColumns(20);
-        meanField.setLineWrap(true);
-        meanField.setRows(5);
-        meanField.addFocusListener(new java.awt.event.FocusAdapter() {
+        meanTextArea.setColumns(20);
+        meanTextArea.setLineWrap(true);
+        meanTextArea.setRows(5);
+        meanTextArea.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                meanFieldFocusGained(evt);
+                meanTextAreaFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                meanFieldFocusLost(evt);
+                meanTextAreaFocusLost(evt);
             }
         });
-        meanField.addKeyListener(new java.awt.event.KeyAdapter() {
+        meanTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                meanFieldKeyPressed(evt);
+                meanTextAreaKeyPressed(evt);
             }
         });
-        jScrollPane2.setViewportView(meanField);
+        jScrollPane2.setViewportView(meanTextArea);
+
+        jLabel8.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel8.setText("x");
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
+
+        rePhonetic.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        rePhonetic.setForeground(new java.awt.Color(0, 153, 153));
+        rePhonetic.setText("<HTML><U>RePhonetic</U></HTML>");
+        rePhonetic.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        rePhonetic.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rePhoneticMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -311,17 +336,19 @@ public class AddWUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(wordField)
-                    .addComponent(phoneticField)
+                    .addComponent(phoneticField, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
                     .addComponent(hashtagField)
                     .addComponent(jScrollPane1)
                     .addComponent(typeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(voiceFileURL)
-                        .addGap(87, 87, 87)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
                         .addComponent(pickVoice)
-                        .addGap(18, 18, 18)
-                        .addComponent(playSound))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(playSound, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -329,7 +356,8 @@ public class AddWUI extends javax.swing.JFrame {
                             .addComponent(insertMeanLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(insertHintLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(insertWordLbl)
-                            .addComponent(insertHashtagLbl))
+                            .addComponent(insertHashtagLbl)
+                            .addComponent(rePhonetic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -355,16 +383,18 @@ public class AddWUI extends javax.swing.JFrame {
                             .addComponent(wordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(insertWordLbl))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(phoneticField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(phoneticField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(rePhonetic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(insertMeanLbl))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(typeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -385,13 +415,14 @@ public class AddWUI extends javax.swing.JFrame {
                         .addComponent(pickImg))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(pickVoice))
+                        .addComponent(pickVoice)
+                        .addComponent(jLabel8))
                     .addComponent(voiceFileURL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
                     .addComponent(cancelButton))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -438,7 +469,7 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String word = wordField.getText().trim().replaceAll("\\s+", " ").toLowerCase();
         String ipa = phoneticField.getText().trim().replaceAll("\\s+", " ");
-        String mean = meanField.getText().trim();
+        String mean = meanTextArea.getText().trim();
         mean = mean.replaceAll("(?!\\r)\\n", "%newline%");
         String type = (String) typeCombo.getSelectedItem();
         String hint = hintTextArea.getText().trim();
@@ -451,7 +482,15 @@ public class AddWUI extends javax.swing.JFrame {
             if (!checkExistWord) {
                 insertWordLbl.setVisible(false);
                 if (phoneticField.getForeground() == Color.GRAY || "".equals(ipa)) {
-                    phoneticField.setText(WordController.getPhonetic(word));
+                    try {
+                        phoneticField.setText(WordController.getPhonetic(word));
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                        rePhonetic.setVisible(true);
+                    } catch (IOException ex) {
+                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                        rePhonetic.setVisible(true);
+                    }
                     System.out.println("done phonetic");
                     phoneticField.setForeground(Color.BLACK);
                     ipa = phoneticField.getText();
@@ -498,7 +537,7 @@ public class AddWUI extends javax.swing.JFrame {
             System.out.println("done voice");
         }
         if (check && !checkExistWord) {
-            System.out.println(voiceURL);
+            //            System.out.println(voiceURL);
             if (isEdit) {
                 try {
                     System.out.println("Edit mode");
@@ -513,7 +552,9 @@ public class AddWUI extends javax.swing.JFrame {
                     w.setVoiceURL(voiceURL);
                     w.setDateModified(LocalDate.now());
                     WordController.words.set(index, w);
-                    WordController.writeWord(WordController.getDataPath());
+                    Thread thread = new Thread(() -> {
+                        WordController.writeWord(WordController.getDataPath());
+                    });
                     clearField();
                     this.dispose();
                 } catch (Exception e) {
@@ -530,10 +571,11 @@ public class AddWUI extends javax.swing.JFrame {
                 Word initword = new Word(word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified, 1);
                 ws.add(initword);
                 WordController.words = ws;
-                WordController.writeWord(WordController.getDataPath());
+                Thread thread = new Thread(() -> {
+                    WordController.writeWord(WordController.getDataPath());
+                });
                 clearField();
             }
-
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -574,7 +616,7 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void phoneticFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneticFieldKeyReleased
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_phoneticFieldKeyReleased
 
     private void wordFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wordFieldMouseClicked
@@ -628,14 +670,25 @@ public class AddWUI extends javax.swing.JFrame {
         } else {
             pickImg.setEnabled(true);
         }
-        if (isAutoPhonetic) {
+        if (isAutoPhonetic && !"".equals(wordField.getText().trim())) {
             Thread thread = new Thread(() -> {
                 System.out.println("Sinh");
-                phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                try {
+                    phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                    rePhonetic.setVisible(false);
+                } catch (FileNotFoundException ex) {
+                    System.out.println("File not found");
+                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                    rePhonetic.setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                    rePhonetic.setVisible(true);
+                }
                 phoneticField.setForeground(Color.BLACK);
             });
             thread.start();
         }
+        else if(!isAutoPhonetic) rePhonetic.setVisible(true);
     }//GEN-LAST:event_wordFieldFocusLost
 
     private void wordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wordFieldFocusGained
@@ -643,28 +696,39 @@ public class AddWUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_wordFieldFocusGained
 
-    private void meanFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_meanFieldFocusGained
+    private void meanTextAreaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_meanTextAreaFocusGained
         // TODO add your handling code here:    
         if (phoneticField.getForeground() == Color.GRAY) {
             isAutoPhonetic = true;
-            Thread thread = new Thread(() -> {
-                System.out.println("Sinh");
-                phoneticField.setText(WordController.getPhonetic(wordField.getText()));
-                phoneticField.setForeground(Color.BLACK);
-            });
-            thread.start();
+            if( !"".equals(wordField.getText().trim())){
+                Thread thread = new Thread(() -> {
+                    System.out.println("Sinh");
+                    try {
+                        phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                        rePhonetic.setVisible(false);
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                        rePhonetic.setVisible(true);
+                    } catch (IOException ex) {
+                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                        rePhonetic.setVisible(true);
+                    }
+                    phoneticField.setForeground(Color.BLACK);
+                });
+                thread.start();
+            }          
         }
-    }//GEN-LAST:event_meanFieldFocusGained
+    }//GEN-LAST:event_meanTextAreaFocusGained
 
     private void wordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_wordFieldKeyPressed
         // TODO add your handling code here:
         insertWordLbl.setVisible(false);
     }//GEN-LAST:event_wordFieldKeyPressed
 
-    private void meanFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_meanFieldKeyPressed
+    private void meanTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_meanTextAreaKeyPressed
         // TODO add your handling code here:
         insertMeanLbl.setVisible(false);
-    }//GEN-LAST:event_meanFieldKeyPressed
+    }//GEN-LAST:event_meanTextAreaKeyPressed
 
     private void hintTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hintTextAreaKeyPressed
         // TODO add your handling code here:
@@ -676,27 +740,63 @@ public class AddWUI extends javax.swing.JFrame {
         insertHashtagLbl.setVisible(false);
     }//GEN-LAST:event_hashtagFieldKeyPressed
 
-    private void meanFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_meanFieldFocusLost
+    private void meanTextAreaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_meanTextAreaFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_meanFieldFocusLost
+    }//GEN-LAST:event_meanTextAreaFocusLost
 
     private void phoneticFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneticFieldFocusLost
         // TODO add your handling code here:
         phoneticField.setText(phoneticField.getText().replaceAll("[{}~`@#$^_+|<>\\[\\]]", ""));
-        if ("".equals(phoneticField.getText().replaceAll("\\s+", ""))) {
+        if ("".equals(phoneticField.getText().trim()) && !"".equals(wordField.getText().trim())) {
             isAutoPhonetic = true;
 
             Thread thread = new Thread(() -> {
                 System.out.println("Sinh");
-                phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                try {
+                    phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                    rePhonetic.setVisible(false);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                    rePhonetic.setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                    rePhonetic.setVisible(true);
+                }
                 phoneticField.setForeground(Color.BLACK);
             });
             thread.start();
 
-        }
-        else
+        } else {
             isAutoPhonetic = false;
+        }
+        if(!isAutoPhonetic) rePhonetic.setVisible(true);
     }//GEN-LAST:event_phoneticFieldFocusLost
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        // TODO add your handling code here:
+        voiceFileURL.setText("File Name");
+        voiceURL = null;
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void rePhoneticMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rePhoneticMouseClicked
+        // TODO add your handling code here:
+        rePhonetic.setVisible(false);
+        Thread thread = new Thread(() -> {
+                System.out.println("Sinh");
+            try {
+                phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                isAutoPhonetic = true;
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                rePhonetic.setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                rePhonetic.setVisible(true);
+            }
+                phoneticField.setForeground(Color.BLACK);
+            });
+        thread.start();
+    }//GEN-LAST:event_rePhoneticMouseClicked
 
     /**
      * @param args the command line arguments
@@ -750,13 +850,15 @@ public class AddWUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea meanField;
+    private javax.swing.JTextArea meanTextArea;
     private javax.swing.JTextField phoneticField;
     private javax.swing.JButton pickImg;
     private javax.swing.JButton pickVoice;
     private javax.swing.JButton playSound;
+    private javax.swing.JLabel rePhonetic;
     private javax.swing.JComboBox<String> typeCombo;
     private javax.swing.JLabel voiceFileURL;
     private javax.swing.JTextField wordField;
@@ -947,11 +1049,11 @@ public class AddWUI extends javax.swing.JFrame {
     }
 
     public JTextArea getMeanField() {
-        return meanField;
+        return meanTextArea;
     }
 
     public void setMeanField(JTextArea meanField) {
-        this.meanField = meanField;
+        this.meanTextArea = meanField;
     }
 
     public JTextField getPhoneticField() {
@@ -1009,7 +1111,7 @@ public class AddWUI extends javax.swing.JFrame {
         //Ô hashtag
         this.hashtagField.setForeground(Color.GRAY);
         this.hashtagField.setText("Hashtag ngăn cách bởi dấu cách");
-        this.meanField.setText("");
+        this.meanTextArea.setText("");
         this.hintTextArea.setText("");
         this.insertWordLbl.setVisible(false);
         this.insertMeanLbl.setVisible(false);

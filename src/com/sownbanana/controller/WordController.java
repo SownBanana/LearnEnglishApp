@@ -379,13 +379,18 @@ public class WordController {
         editUI.setVisible(true);
     }
 
-    public static void deleteWord(int id) {
+    public static void deleteWord(String word) {
         for (int i = 0; i < words.size(); i++) {
-            if (words.get(i).getId() == id) {
+            if (words.get(i).getWord().equals(word)) {
                 words.remove(i);
+                writeWord(getDataPath());
                 break;
             }
         }
+    }
+    public static void deleteWord(Word word) {
+        words.remove(word);
+        writeWord(getDataPath());
     }
 
     public static String hashtag2String(String[] hashtag) {
@@ -436,7 +441,7 @@ public class WordController {
         dc.writeMp3(s.getVoiceInputStream(word), word);
     }
 
-    public static String getPhonetic(String word) {
+    public static String getPhonetic(String word) throws FileNotFoundException, IOException {
         Phonetic phonetic = new Phonetic();
         return phonetic.getPhonetic(word);
     }

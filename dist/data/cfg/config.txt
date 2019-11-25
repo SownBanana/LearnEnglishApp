@@ -1,4 +1,0 @@
-hard-level %Mức 1
-check-level %Mức 1
-hastag fillter %disable%test1@test2
-date fillter %disable%disable(today-add word)%11%2019
