@@ -487,9 +487,14 @@ public class WordController {
         }
         return rs;
     }
-//    public static List<Word> duplicateWordinList(List<Word> list){
-//        
-//    }
+    public static List<Word> duplicateWordinList(List<Word> list){
+        List<Word> rs = new ArrayList<Word>();
+        for (Word word : list) {
+            for(int i = 0; i < word.getFreq(); i++)
+                rs.add(word);
+        }
+        return rs;
+    }
     public static void main(String[] args) {
 //        List<Word> l = new ArrayList<>();
 //        l = findWordByDate("2019-11-16", words);
