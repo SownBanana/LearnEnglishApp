@@ -29,6 +29,7 @@ import javax.swing.JButton;
 //import javax.swing.JPanel;
 import javax.swing.JTextField;
 import com.sownbanana.view.HomeUI;
+import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -72,6 +73,13 @@ public class StartUI extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         gameLevelString = gameLevel.getSelectedItem().toString();
+//        
+        phoneticField.setEditable(false);
+        typeField.setEditable(false);
+        meaningField.setEditable(false);
+        hintField.setEditable(false);
+        hashtagField.setEditable(false);
+        
         list = WordController.copyWords();
 //        list.add(list.get(0));
         displayGame(gameLevelString);
@@ -348,6 +356,7 @@ public class StartUI extends javax.swing.JFrame {
             if ((!Character.toString(aString).equals(" "))) {
                 textFields[i] = new JTextField();
                 textFields[i].setBounds(30 * (hor + 1), 35 * ver, 30, 30);
+                textFields[i].setFont(new Font(".VNArialH", Font.PLAIN, 13));
                 textPanel.add(textFields[i]);
                 textFields[i].setVisible(true);
                 //Xử lý mỗi ô nhập một ký tự
@@ -506,7 +515,6 @@ public class StartUI extends javax.swing.JFrame {
 
         meaningField.setColumns(20);
         meaningField.setRows(5);
-        meaningField.setEnabled(false);
         jScrollPane1.setViewportView(meaningField);
 
         meaningLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -514,7 +522,6 @@ public class StartUI extends javax.swing.JFrame {
 
         phoneticField.setColumns(20);
         phoneticField.setRows(5);
-        phoneticField.setEnabled(false);
         jScrollPane2.setViewportView(phoneticField);
 
         pronounceButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -530,7 +537,6 @@ public class StartUI extends javax.swing.JFrame {
 
         hashtagField.setColumns(20);
         hashtagField.setRows(5);
-        hashtagField.setEnabled(false);
         jScrollPane3.setViewportView(hashtagField);
 
         hintLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -538,7 +544,6 @@ public class StartUI extends javax.swing.JFrame {
 
         hintField.setColumns(20);
         hintField.setRows(5);
-        hintField.setEnabled(false);
         jScrollPane4.setViewportView(hintField);
 
         javax.swing.GroupLayout textPanelLayout = new javax.swing.GroupLayout(textPanel);
@@ -566,8 +571,6 @@ public class StartUI extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setText("Từ loại");
-
-        typeField.setEnabled(false);
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
