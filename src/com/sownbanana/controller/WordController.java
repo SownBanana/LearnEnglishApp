@@ -286,10 +286,10 @@ public class WordController {
         return rs;
     }
 
-    public static List<Word> findWordAddToday() {    //key == day/month/year
+    public static List<Word> findWordAddToday(List<Word> list) {    //key == day/month/year
         LocalDate now = LocalDate.now();
         List<Word> rs = new ArrayList<>();
-        for (Word word : words) {
+        for (Word word : list) {
             if (word.getDateModified().equals(now)) {
                 rs.add(word);
             }
@@ -319,6 +319,18 @@ public class WordController {
             default:
                 return null;
         }
+    }
+
+    public static List<Word> findWordByDate(String dateString, List<Word> list) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate inputDate = LocalDate.parse(dateString, formatter);
+        List<Word> rs = new ArrayList<>();
+        for (Word word : list) {
+            if (word.getDateModified().equals(inputDate)) {
+                rs.add(word);
+            }
+        }
+        return rs;
     }
 
     public static void addWord(Word word) {
@@ -451,7 +463,7 @@ public class WordController {
         dc.writeMp3(s.getVoiceInputStream(word), word);
     }
 
-    public static String getPhonetic(String word) throws FileNotFoundException, IOException {
+    public static String getPhonetic(String word){
         Phonetic phonetic = new Phonetic();
         return phonetic.getPhonetic(word);
     }
@@ -467,5 +479,19 @@ public class WordController {
             list.add(word);
         }
         return list;
+    }
+    public static List<Word> copyWords(List<Word> list) {
+        List<Word> rs = new ArrayList<Word>();
+        for (Word word : list) {
+            rs.add(word);
+        }
+        return rs;
+    }
+//    public static List<Word> duplicateWordinList(List<Word> list){
+//        
+//    }
+    public static void main(String[] args) {
+//        List<Word> l = new ArrayList<>();
+//        l = findWordByDate("2019-11-16", words);
     }
 }

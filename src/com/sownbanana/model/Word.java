@@ -166,5 +166,12 @@ public class Word {
                 "#" + dateModified +
                 "#" + freq +"\n";
     }
+    public String hashtagFancy(){
+        String rs = "";
+        for (String string : hashtag) {
+            rs = rs + "#"+ string + " ";
+        }
+        return rs;
+    }
 
 }

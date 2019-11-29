@@ -157,6 +157,8 @@ public class HomeUI extends javax.swing.JFrame {
         System.out.println("Start");
         if (WordController.words == null) {
             new wordsEmptyDialog(this, rootPaneCheckingEnabled).setVisible(true);
+        }else{
+            new StartUI().setVisible(true);
         }
     }//GEN-LAST:event_startBtnActionPerformed
 

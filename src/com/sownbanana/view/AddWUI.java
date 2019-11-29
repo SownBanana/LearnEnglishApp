@@ -127,21 +127,6 @@ public class AddWUI extends javax.swing.JFrame {
                 phoneticFieldFocusLost(evt);
             }
         });
-        phoneticField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                phoneticFieldMouseClicked(evt);
-            }
-        });
-        phoneticField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phoneticFieldActionPerformed(evt);
-            }
-        });
-        phoneticField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                phoneticFieldKeyReleased(evt);
-            }
-        });
 
         hashtagField.setToolTipText("Thêm ít nhất một hashtag cho từ/cụm từ, các hashtag ngăn cách bới dấu cách \" \"");
         hashtagField.setDragEnabled(true);
@@ -428,15 +413,6 @@ public class AddWUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void phoneticFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_phoneticFieldMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_phoneticFieldMouseClicked
-
-    private void phoneticFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneticFieldActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_phoneticFieldActionPerformed
-
     private void pickImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickImgActionPerformed
         // TODO add your handling code here:
         int chose = -1;
@@ -482,15 +458,23 @@ public class AddWUI extends javax.swing.JFrame {
             if (!checkExistWord) {
                 insertWordLbl.setVisible(false);
                 if (phoneticField.getForeground() == Color.GRAY || "".equals(ipa)) {
-                    try {
-                        phoneticField.setText(WordController.getPhonetic(word));
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Thread tag = new Thread(() -> {
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         rePhonetic.setVisible(true);
-                    } catch (IOException ex) {
-                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                        rePhonetic.setVisible(true);
+                    });
+                    tag.start();
+                    String phonetic = WordController.getPhonetic(word);
+                    String[] input = word.split(" ");
+                    System.out.println(word);
+                    String[] output = phonetic.split(" ");
+                    if (input.length == output.length) {
+                        rePhonetic.setVisible(false);
                     }
+                    phoneticField.setText(phonetic);
                     System.out.println("done phonetic");
                     phoneticField.setForeground(Color.BLACK);
                     ipa = phoneticField.getText();
@@ -552,9 +536,9 @@ public class AddWUI extends javax.swing.JFrame {
                     w.setVoiceURL(voiceURL);
                     w.setDateModified(LocalDate.now());
                     WordController.words.set(index, w);
-                    Thread thread = new Thread(() -> {
-                        WordController.writeWord(WordController.getDataPath());
-                    });
+
+                    WordController.writeWord(WordController.getDataPath());
+
                     clearField();
                     this.dispose();
                 } catch (Exception e) {
@@ -571,9 +555,9 @@ public class AddWUI extends javax.swing.JFrame {
                 Word initword = new Word(word, mean, ipa, type, imageURL, voiceURL, hint, hashtag, dateModified, 1);
                 ws.add(initword);
                 WordController.words = ws;
-                Thread thread = new Thread(() -> {
-                    WordController.writeWord(WordController.getDataPath());
-                });
+
+                WordController.writeWord(WordController.getDataPath());
+
                 clearField();
             }
         }
@@ -613,11 +597,6 @@ public class AddWUI extends javax.swing.JFrame {
             WordController.playSound(voiceURL);
         }
     }//GEN-LAST:event_playSoundActionPerformed
-
-    private void phoneticFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneticFieldKeyReleased
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_phoneticFieldKeyReleased
 
     private void wordFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wordFieldMouseClicked
         // TODO add your handling code here:
@@ -673,22 +652,31 @@ public class AddWUI extends javax.swing.JFrame {
         if (isAutoPhonetic && !"".equals(wordField.getText().trim())) {
             Thread thread = new Thread(() -> {
                 System.out.println("Sinh");
-                try {
-                    phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                Thread tag = new Thread(() -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    rePhonetic.setVisible(true);
+                });
+                tag.start();
+
+                String phonetic = WordController.getPhonetic(wordField.getText());
+                String[] input = wordField.getText().split(" ");
+                System.out.println(wordField.getText());
+                String[] output = phonetic.split(" ");
+                if (input.length == output.length) {
                     rePhonetic.setVisible(false);
-                } catch (FileNotFoundException ex) {
-                    System.out.println("File not found");
-                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                    rePhonetic.setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                    rePhonetic.setVisible(true);
                 }
+                phoneticField.setText(phonetic);
+                System.out.println("done phonetic");
                 phoneticField.setForeground(Color.BLACK);
             });
             thread.start();
+        } else if (!isAutoPhonetic && !"".equals(wordField.getText().trim())) {
+            rePhonetic.setVisible(true);
         }
-        else if(!isAutoPhonetic) rePhonetic.setVisible(true);
     }//GEN-LAST:event_wordFieldFocusLost
 
     private void wordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wordFieldFocusGained
@@ -700,23 +688,31 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:    
         if (phoneticField.getForeground() == Color.GRAY) {
             isAutoPhonetic = true;
-            if( !"".equals(wordField.getText().trim())){
+            if (!"".equals(wordField.getText().trim())) {
                 Thread thread = new Thread(() -> {
                     System.out.println("Sinh");
-                    try {
-                        phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                    Thread tag = new Thread(() -> {
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        rePhonetic.setVisible(true);
+                    });
+                    tag.start();
+                    String phonetic = WordController.getPhonetic(wordField.getText());
+                    String[] input = wordField.getText().split(" ");
+                    System.out.println(wordField.getText());
+                    String[] output = phonetic.split(" ");
+                    if (input.length == output.length) {
                         rePhonetic.setVisible(false);
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                        rePhonetic.setVisible(true);
-                    } catch (IOException ex) {
-                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                        rePhonetic.setVisible(true);
                     }
+                    phoneticField.setText(phonetic);
+                    System.out.println("done phonetic");
                     phoneticField.setForeground(Color.BLACK);
                 });
                 thread.start();
-            }          
+            }
         }
     }//GEN-LAST:event_meanTextAreaFocusGained
 
@@ -752,16 +748,24 @@ public class AddWUI extends javax.swing.JFrame {
 
             Thread thread = new Thread(() -> {
                 System.out.println("Sinh");
-                try {
-                    phoneticField.setText(WordController.getPhonetic(wordField.getText()));
+                Thread tag = new Thread(() -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    rePhonetic.setVisible(true);
+                });
+                tag.start();
+                String phonetic = WordController.getPhonetic(wordField.getText());
+                String[] input = wordField.getText().split(" ");
+                System.out.println(wordField.getText());
+                String[] output = phonetic.split(" ");
+                if (input.length == output.length) {
                     rePhonetic.setVisible(false);
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                    rePhonetic.setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                    rePhonetic.setVisible(true);
                 }
+                phoneticField.setText(phonetic);
+                System.out.println("done phonetic");
                 phoneticField.setForeground(Color.BLACK);
             });
             thread.start();
@@ -769,7 +773,9 @@ public class AddWUI extends javax.swing.JFrame {
         } else {
             isAutoPhonetic = false;
         }
-        if(!isAutoPhonetic) rePhonetic.setVisible(true);
+        if (!isAutoPhonetic && !"".equals(wordField.getText().trim())) {
+            rePhonetic.setVisible(true);
+        }
     }//GEN-LAST:event_phoneticFieldFocusLost
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
@@ -782,19 +788,27 @@ public class AddWUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         rePhonetic.setVisible(false);
         Thread thread = new Thread(() -> {
-                System.out.println("Sinh");
-            try {
-                phoneticField.setText(WordController.getPhonetic(wordField.getText()));
-                isAutoPhonetic = true;
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Sinh");
+            Thread tag = new Thread(() -> {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 rePhonetic.setVisible(true);
-            } catch (IOException ex) {
-                Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                rePhonetic.setVisible(true);
-            }
-                phoneticField.setForeground(Color.BLACK);
             });
+            tag.start();
+            String phonetic = WordController.getPhonetic(wordField.getText());
+            String[] input = wordField.getText().split(" ");
+            System.out.println(wordField.getText());
+            String[] output = phonetic.split(" ");
+            if (input.length == output.length) {
+                rePhonetic.setVisible(false);
+            }
+            phoneticField.setText(phonetic);
+            System.out.println("done phonetic");
+            phoneticField.setForeground(Color.BLACK);
+        });
         thread.start();
     }//GEN-LAST:event_rePhoneticMouseClicked
 
