@@ -169,8 +169,9 @@ public class Word {
     public String hashtagFancy(){
         String rs = "";
         for (String string : hashtag) {
-            rs = rs + "#"+ string + ", ";
+            rs = rs + "#"+ string + " ";
         }
-        return rs.substring(0, rs.length() - 2);
+        return rs;
     }
+
 }

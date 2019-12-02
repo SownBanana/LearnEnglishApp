@@ -6,6 +6,12 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="buttonGroup2">
     </Component>
+    <Container class="javax.swing.JPopupMenu" name="jPopupMenu1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+    </Container>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenu1">
@@ -45,22 +51,37 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane1" alignment="0" pref="940" max="32767" attributes="0"/>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="searchField" min="-2" pref="232" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jComboBox2" min="-2" pref="129" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" pref="68" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      <Component id="hashtagLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="hashtagField" min="-2" pref="151" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="dateModifiedLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="dateField" min="-2" pref="175" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="fillterBtn" min="-2" pref="65" max="-2" attributes="0"/>
+                              <EmptySpace pref="118" max="32767" attributes="0"/>
+                              <Component id="searchField" min="-2" pref="214" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="searchBtn" min="-2" pref="68" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="allWordBtn" min="-2" pref="71" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="deleteBtn" min="-2" pref="91" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="editBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="deleteBtn" min="-2" pref="90" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="cancelBtn" min="-2" pref="91" max="-2" attributes="0"/>
                   </Group>
@@ -72,21 +93,28 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="searchBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="searchField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBox2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateModifiedLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="hashtagLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="hashtagField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="allWordBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fillterBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="497" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="530" max="-2" attributes="0"/>
+              <EmptySpace pref="38" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="deleteBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="editBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -99,85 +127,16 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="wordTable">
           <Properties>
             <Property name="autoCreateRowSorter" type="boolean" value="true"/>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="11" rowCount="4">
-                <Column editable="true" title="T&#x1eeb;/C&#x1ee5;m T&#x1eeb;" type="java.lang.String"/>
-                <Column editable="true" title="Ngh&#x129;a" type="java.lang.String"/>
-                <Column editable="true" title="Phi&#xea;n &#xc2;m" type="java.lang.String"/>
-                <Column editable="true" title="T&#x1eeb; V&#x1ef1;ng" type="java.lang.String"/>
-                <Column editable="true" title="G&#x1ee3;i &#xfd;" type="java.lang.String"/>
-                <Column editable="true" title="Hashtag" type="java.lang.String"/>
-                <Column editable="true" title="H&#xec;nh &#x1ea2;nh" type="java.lang.Object"/>
-                <Column editable="true" title="&#xc2;m Thanh" type="java.lang.Object"/>
-                <Column editable="true" title="Ng&#xe0;y ch&#x1ec9;nh s&#x1eed;a" type="java.lang.String"/>
-                <Column editable="true" title="Ch&#x1ec9;nh s&#x1eed;a" type="java.lang.Object"/>
-                <Column editable="true" title="Ch&#x1ecd;n" type="java.lang.Boolean"/>
-              </Table>
+              <Table columnCount="0" rowCount="0"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="3">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="25" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-              </TableColumnModel>
+              <TableColumnModel selectionModel="3"/>
             </Property>
-            <Property name="columnSelectionAllowed" type="boolean" value="true"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
@@ -193,44 +152,74 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelBtnActionPerformed"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+    </Component>
+    <Component class="javax.swing.JButton" name="searchBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="T&#xec;m"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="searchField">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="searchFieldMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchFieldActionPerformed"/>
+      </Events>
+    </Component>
     <Component class="javax.swing.JButton" name="deleteBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Xo&#xe1;"/>
+        <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="editBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="T&#xec;m"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="searchField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m t&#x1eeb; ho&#x1eb7;c c&#x1ee5;m t&#x1eeb;, c&#xe2;u"/>
+        <Property name="text" type="java.lang.String" value="Ch&#x1ec9;nh s&#x1eed;a"/>
       </Properties>
       <Events>
-        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="searchFieldFocusGained"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchFieldActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox2">
+    <Component class="javax.swing.JLabel" name="dateModifiedLabel">
       <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="T&#x1eeb;, C&#x1ee5;m t&#x1eeb;, C&#xe2;u"/>
-            <StringItem index="1" value="T&#x1eeb; lo&#x1ea1;i"/>
-            <StringItem index="2" value="Hashtag"/>
-            <StringItem index="3" value="Ng&#xe0;y ch&#x1ec9;nh s&#x1eed;a"/>
-          </StringArray>
-        </Property>
+        <Property name="text" type="java.lang.String" value="Ng&#xe0;y ch&#x1ec9;nh s&#x1eed;a:"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="dateField">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="Nh&#x1ead;p n&#x103;m, th&#xe1;ng (s&#x1ed1; nguy&#xea;n) ho&#x1eb7;c ng&#xe0;y th&#xe1;ng n&#x103;m (dd/mm/yyyy) ho&#x1eb7;c H&#xf4;m nay"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="dateFieldFocusGained"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dateFieldActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="hashtagLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Hashtag:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="hashtagField">
+    </Component>
+    <Component class="javax.swing.JButton" name="allWordBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="T&#x1ea5;t c&#x1ea3;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="allWordBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="fillterBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="L&#x1ecd;c"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fillterBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

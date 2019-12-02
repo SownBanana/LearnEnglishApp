@@ -5,7 +5,22 @@
  */
 package com.sownbanana.view;
 
+import com.sownbanana.controller.WordController;
+import com.sownbanana.model.Word;
+import static com.sownbanana.view.ListWord.list;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+import java.util.List;
+import java.util.Vector;
+import javafx.scene.input.MouseButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,14 +28,46 @@ import java.awt.Color;
  */
 public class ListWord extends javax.swing.JFrame {
 
+    public static List<Word> list;
+    DefaultTableModel model;
+    String choose;
+    Vector vctHeader = new Vector();
+    Vector vctData = new Vector();
+
     /**
      * Creates new form ListWord
      */
     public ListWord() {
         initComponents();
+        list = WordController.words;
+        System.out.println("list:");
+        System.out.println(list.toString());
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        searchField.setForeground(Color.GRAY);
+//        list=new ArrayList<>();
+//        model = (DefaultTableModel) jTable1.getModel();
+        dateField.setText("12 or 2019 or 10/12/2019");
+        dateField.setForeground(Color.GRAY);
+        wordTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+                JTable table = (JTable) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int row = table.rowAtPoint(point);
+                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    int select = wordTable.getSelectedRow();
+                    Word w = list.get(select);
+                    WordController.editWord(w.getWord());
+                }
+            }
+        });
+        vctHeader.add("word");
+        vctHeader.add("ipa");
+        vctHeader.add("mean");
+        vctHeader.add("type");
+        vctHeader.add("Hastag");
+        vctHeader.add("dateModified");
+        showresult();
     }
 
     /**
@@ -34,14 +81,21 @@ public class ListWord extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        wordTable = new javax.swing.JTable();
         cancelBtn = new javax.swing.JButton();
-        deleteBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        searchBtn = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        deleteBtn = new javax.swing.JButton();
+        editBtn = new javax.swing.JButton();
+        dateModifiedLabel = new javax.swing.JLabel();
+        dateField = new javax.swing.JTextField();
+        hashtagLabel = new javax.swing.JLabel();
+        hashtagField = new javax.swing.JTextField();
+        allWordBtn = new javax.swing.JButton();
+        fillterBtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -49,33 +103,18 @@ public class ListWord extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Danh sách Từ/Cụm Từ đã thêm");
 
-        jTable1.setAutoCreateRowSorter(true);
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        wordTable.setAutoCreateRowSorter(true);
+        wordTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Từ/Cụm Từ", "Nghĩa", "Phiên Âm", "Từ Vựng", "Gợi ý", "Hashtag", "Hình Ảnh", "Âm Thanh", "Ngày chỉnh sửa", "Chỉnh sửa", "Chọn"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-        });
-        jTable1.setToolTipText("");
-        jTable1.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(10).setPreferredWidth(25);
-        }
+        ));
+        wordTable.setToolTipText("");
+        jScrollPane1.setViewportView(wordTable);
+        wordTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         cancelBtn.setText("Cancel");
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -84,19 +123,16 @@ public class ListWord extends javax.swing.JFrame {
             }
         });
 
-        deleteBtn.setText("Xoá");
-        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+        searchBtn.setText("Tìm");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteBtnActionPerformed(evt);
+                searchBtnActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Tìm");
-
-        searchField.setText("Tìm kiếm từ hoặc cụm từ, câu");
-        searchField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                searchFieldFocusGained(evt);
+        searchField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchFieldMouseClicked(evt);
             }
         });
         searchField.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +141,49 @@ public class ListWord extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Từ, Cụm từ, Câu", "Từ loại", "Hashtag", "Ngày chỉnh sửa" }));
+        deleteBtn.setText("Xóa");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
+
+        editBtn.setText("Chỉnh sửa");
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBtnActionPerformed(evt);
+            }
+        });
+
+        dateModifiedLabel.setText("Ngày chỉnh sửa:");
+
+        dateField.setToolTipText("Nhập năm, tháng (số nguyên) hoặc ngày tháng năm (dd/mm/yyyy) hoặc Hôm nay");
+        dateField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                dateFieldFocusGained(evt);
+            }
+        });
+        dateField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateFieldActionPerformed(evt);
+            }
+        });
+
+        hashtagLabel.setText("Hashtag:");
+
+        allWordBtn.setText("Tất cả");
+        allWordBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                allWordBtnActionPerformed(evt);
+            }
+        });
+
+        fillterBtn.setText("Lọc");
+        fillterBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fillterBtnActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -119,20 +197,34 @@ public class ListWord extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(hashtagLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(hashtagField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(dateModifiedLabel)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(fillterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(allWordBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(editBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -142,17 +234,24 @@ public class ListWord extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(searchBtn)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dateModifiedLabel)
+                    .addComponent(hashtagLabel)
+                    .addComponent(hashtagField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(allWordBtn)
+                    .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fillterBtn))
+                .addGap(0, 0, 0)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
-                    .addComponent(deleteBtn))
-                .addGap(18, 18, 18))
+                    .addComponent(deleteBtn)
+                    .addComponent(editBtn))
+                .addGap(36, 36, 36))
         );
 
         pack();
@@ -163,21 +262,145 @@ public class ListWord extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
-    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteBtnActionPerformed
-
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchFieldActionPerformed
 
-    private void searchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusGained
+    private void searchFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchFieldMouseClicked
+        searchField.setText("");
         // TODO add your handling code here:
-        if (searchField.getForeground() == Color.GRAY) {
-            searchField.setText("");
-            searchField.setForeground(Color.BLACK);
+    }//GEN-LAST:event_searchFieldMouseClicked
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        // TODO add your handling code here:
+        clearTable();
+        list = WordController.findLWord(list, searchField.getText());
+        showresult();
+    }//GEN-LAST:event_searchBtnActionPerformed
+
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
+        int select = wordTable.getSelectedRow();
+        Word w = list.get(select);
+        if (select == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Chọn một từ để chỉnh sửa!");
+        } else {
+            WordController.editWord(w.getWord());
         }
-    }//GEN-LAST:event_searchFieldFocusGained
+    }//GEN-LAST:event_editBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        int removeIndex = wordTable.getSelectedRow();
+        if (removeIndex == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Chọn một từ để xóa!");
+        } else {
+            Word w = list.get(removeIndex);
+            list.remove(w);
+            WordController.deleteWord(w);
+            clearTable();
+            showresult(list);
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
+    private void dateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateFieldActionPerformed
+
+    private void allWordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allWordBtnActionPerformed
+        // TODO add your handling code here:
+        clearTable();
+        list = WordController.words;
+        showresult();
+    }//GEN-LAST:event_allWordBtnActionPerformed
+
+    private void fillterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillterBtnActionPerformed
+        // TODO add your handling code here:
+//        Lọc
+        clearTable();
+        List<Word> fillterList = new ArrayList<>();
+        String[] output = hashtagField.getText().trim().replaceAll("\\s+#", " ").split(" ");
+        if (hashtagField.getText().trim().equals("")) {
+            fillterList = WordController.copyWords(list);
+        } else {
+            fillterList = WordController.findHashtag(list, output);
+        }
+        if(dateField.getText().trim().equals("")){
+        }
+        else if (dateField.getText().trim().toLowerCase().contains("nay") || dateField.getText().trim().toLowerCase().contains("today") || dateField.getText().trim().toLowerCase().contains("recent")) {
+            fillterList = WordController.findWordAddToday(fillterList);
+        } else if (dateField.getText().trim().length() <= 2) {
+            fillterList = WordController.findWordByDate("month", Integer.parseInt(dateField.getText().trim()), fillterList);
+        } else if (dateField.getText().trim().length() <= 5){
+            fillterList = WordController.findWordByDate("year", Integer.parseInt(dateField.getText().trim()), fillterList);
+        }
+        else{
+            fillterList =WordController.findWordByDate(dateField.getText(), fillterList);
+        }
+        System.out.println(fillterList);
+        showresult(fillterList);
+
+    }//GEN-LAST:event_fillterBtnActionPerformed
+
+    private void dateFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dateFieldFocusGained
+        // TODO add your handling code here:
+        if (dateField.getForeground().equals(Color.GRAY)) {
+            dateField.setText("");
+            dateField.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_dateFieldFocusGained
+
+    public void showresult() {
+        for (int i = 0; i < list.size(); i++) {
+            Vector vctRow = new Vector();
+            Word w = list.get(i);
+            vctRow.add(w.getWord());
+            vctRow.add(w.getIpa());
+            vctRow.add(w.getMean());
+            vctRow.add(w.getType());
+            vctRow.add(w.hashtagFancy());
+            vctRow.add(w.getDateModified().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            vctData.add(vctRow);
+
+//            System.out.println(w.toString());
+        }
+        model = new DefaultTableModel(vctData, vctHeader);
+        wordTable.setModel(model);
+    }
+
+    public void showresult(List<Word> eList) {
+        for (int i = 0; i < eList.size(); i++) {
+            Vector vctRow = new Vector();
+            Word w = eList.get(i);
+            vctRow.add(w.getWord());
+            vctRow.add(w.getIpa());
+            vctRow.add(w.getMean());
+            vctRow.add(w.getType());
+            vctRow.add(w.hashtagFancy());
+            vctRow.add(w.getDateModified().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            vctData.add(vctRow);
+
+        }
+        model = new DefaultTableModel(vctData, vctHeader);
+        wordTable.setModel(model);
+    }
+
+    public void showresult(Word word) {
+        Vector vctRow = new Vector();
+        vctRow.add(word.getWord());
+        vctRow.add(word.getIpa());
+        vctRow.add(word.getMean());
+        vctRow.add(word.getType());
+        vctRow.add(word.hashtagFancy());
+        System.out.println(word.hashtagFancy());
+        vctRow.add(word.getDateModified().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        vctData.add(vctRow);
+        model = new DefaultTableModel(vctData, vctHeader);
+        wordTable.setModel(model);
+    }
+
+    public void clearTable() {
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+    }
 
     /**
      * @param args the command line arguments
@@ -193,16 +416,24 @@ public class ListWord extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListWord.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListWord.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListWord.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListWord.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -215,18 +446,26 @@ public class ListWord extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton allWordBtn;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JTextField dateField;
+    private javax.swing.JLabel dateModifiedLabel;
     private javax.swing.JButton deleteBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton editBtn;
+    private javax.swing.JButton fillterBtn;
+    private javax.swing.JTextField hashtagField;
+    private javax.swing.JLabel hashtagLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton searchBtn;
     private javax.swing.JTextField searchField;
+    private javax.swing.JTable wordTable;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,22 +49,22 @@ public class WordController {
         String path = System.getProperty("user.dir") + "\\data\\cfg\\config.txt";
         return path;
     }
-    
-    public static String getConfigFolder() {
-        String path = System.getProperty("user.dir") + "\\data\\cfg\\";
+
+    public static String getDataFolder() {
+        String path = System.getProperty("user.dir") + "\\data\\";
         return path;
     }
-    
+
     public static String getVoiceFolder() {
         String path = System.getProperty("user.dir") + "\\data\\voice\\";
         return path;
     }
-    
+
     public static String getImageFolder() {
         String path = System.getProperty("user.dir") + "\\data\\img\\";
         return path;
     }
-    
+
     public static boolean checkFolder(String path) {
         boolean check = false;
         File dataFolder = new File(path);
@@ -77,26 +78,30 @@ public class WordController {
         }
         return check;
     }
-    
+
     public static void checkDataFolder() {
         checkFolder(getVoiceFolder());
         checkFolder(getImageFolder());
-        checkFolder(getConfigFolder());
     }
-    
+
     public static boolean createConfigFile() {
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getConfigPath())));
-            String s = "gì đó";
+            String s = "hard-level %Mức 1\n"
+                    + "check-level %Mức 1\n"
+                    + "hastag fillter %disable%test1@test2\n"
+                    + "date fillter %disable%disable(today-added word)%11%2019\n";
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getConfigPath()), "UTF-8"));
             bufferedWriter.write(s);
+            bufferedWriter.close();
             return true;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
+        return false;
     }
 
     public static boolean checkConfigFolder() {
@@ -109,27 +114,8 @@ public class WordController {
             if (dataFolder.mkdirs()) {
                 System.out.println("Create " + dataFolder + " Success");
                 check = createConfigFile();
- //<editor-fold defaultstate="collapsed">               
-//                File configFile = new File(getConfigPath());
-//                try {
-//                    configFile.createNewFile();
-//                    System.out.println("Tạo file config thành công");
-//                } catch (IOException ex) {
-//                    System.out.println("Tạo file config thất bại");
-//                    check = false;
-//                }
             }
-        }        
-//                String s = "level Easy\n" +"point 1";
-//                FileOutputStream config_text = new FileOutputStream(getConfigPath());
-//                config_text.write(s.getBytes());
-//            } catch (FileNotFoundException ex) {
-//                Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (IOException ex) {
-//                Logger.getLogger(WordController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//</editor-fold>  
+        }
         return check;
     }
 
@@ -143,10 +129,6 @@ public class WordController {
             }
             System.out.println(s);
             try {
-//                Writer writer = new FileWriter(path);
-//                writer.write(s);
-//                writer.close();
-//                rs = 1;
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
                 writer.write(s);
                 writer.close();
@@ -208,6 +190,7 @@ public class WordController {
         return null;
     }
 
+    //Tìm từ
     public static Word findWord(String name) {
         for (Word w
                 : words) {
@@ -228,6 +211,18 @@ public class WordController {
         return null;
     }
 
+    //Hàm tìm các từ có "key"
+    public static List<Word> findLWord(List<Word> list, String key) {
+        List<Word> rs = new ArrayList<>();
+        for (Word w
+                : list) {
+            if (w.getWord().contains(key)) {
+                rs.add(w);
+            }
+        }
+        return rs;
+    }
+
     public static boolean isExistWord(String name) {
         for (Word w
                 : words) {
@@ -238,9 +233,9 @@ public class WordController {
         return false;
     }
 
-    public static Word findMean(String mean) {
+    public static Word findMean(List<Word> list, String mean) {
         for (Word w
-                : words) {
+                : list) {
             if (w.getWord().equals(mean)) {
                 return w;
             }
@@ -248,24 +243,26 @@ public class WordController {
         return null;
     }
 
-    public static Word findHashtag(String hashtag) {
-        for (Word w
-                : words) {
+    //Tìm list từ chứa hashtag
+    public static List<Word> findHashtag(List<Word> list, String hashtag) {
+        List<Word> rs = new ArrayList<>();
+        list.forEach((w) -> {
             String[] hl = w.getHashtag();
             for (String h
                     : hl) {
                 if (h.equals(hashtag)) {
-                    return w;
+                    rs.add(w);
                 }
             }
-        }
-        return null;
+        });
+        return rs;
     }
 
-    public static List<Word> findHashtag(String... hashtag) {
+    //Tìm list từ chứa 1 trong những hashtag
+    public static List<Word> findHashtag(List<Word> list, String... hashtag) {
         List<Word> rs = new ArrayList<>();
         for (Word w
-                : words) {
+                : list) {
             List<String> hl = Arrays.asList(w.getHashtag());
             for (String htg : hashtag) {
                 if (hl.contains(htg)) {
@@ -277,14 +274,62 @@ public class WordController {
         return rs;
     }
 
-    public static List<Word> findHashtagContainAll(String... hashtag) {
+    //Tìm list từ chứa thất cả hashtag
+    public static List<Word> findHashtagContainAll(List<Word> list, String... hashtag) {
         List<Word> rs = new ArrayList<>();
-        words.forEach((w) -> {
+        list.forEach((w) -> {
             List<String> hl = Arrays.asList(w.getHashtag());
             if (hl.containsAll(Arrays.asList(hashtag))) {
                 rs.add(w);
             }
         });
+        return rs;
+    }
+
+    public static List<Word> findWordAddToday(List<Word> list) {    //key == day/month/year
+        LocalDate now = LocalDate.now();
+        List<Word> rs = new ArrayList<>();
+        for (Word word : list) {
+            if (word.getDateModified().equals(now)) {
+                rs.add(word);
+            }
+        }
+        return rs;
+    }
+
+    public static List<Word> findWordByDate(String caseString, int key, List<Word> list) {
+        List<Word> rs = new ArrayList<>();
+        switch (caseString) {
+            case "year": {
+                for (Word word : list) {
+                    if (word.getDateModified().getYear() == key) {
+                        rs.add(word);
+                    }
+                }
+                return rs;
+            }
+            case "month": {
+                for (Word word : list) {
+                    if (word.getDateModified().getMonthValue() == key) {
+                        rs.add(word);
+                    }
+                }
+                return rs;
+            }
+            default:
+                return null;
+        }
+    }
+
+    public static List<Word> findWordByDate(String dateString, List<Word> list) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate inputDate = LocalDate.parse(dateString, formatter);
+        List<Word> rs = new ArrayList<>();
+        for (Word word : list) {
+            if (word.getDateModified().equals(inputDate)) {
+                rs.add(word);
+            }
+        }
         return rs;
     }
 
@@ -311,20 +356,22 @@ public class WordController {
 //        }
 //    }
 //</editor-fold>
+
     public static void editWord(String inputWord) {
         Word w = WordController.findWord(inputWord);
         System.out.println("w là: " + w);
         AddWUI editUI = new AddWUI();
         editUI.setIsEdit(true);
+        editUI.getPickImg().setEnabled(true);
         editUI.getWordField().setText(w.getWord());
         editUI.getPhoneticField().setText(w.getIpa());
         editUI.getPhoneticField().setForeground(Color.BLACK);
-        editUI.getMeanField().setText(w.getMean());
+        editUI.getMeanField().setText(w.getMean().replaceAll("%newline%", "\n"));
         editUI.getTypeCombo().setSelectedItem(w.getType());
-        editUI.getHintTextArea().setText(w.getHint());
+        editUI.getHintTextArea().setText(w.getHint().replaceAll("%newline%", "\n"));
         editUI.getHashtagField().setText(WordController.stringArray2String(w.getHashtag(), " "));
         editUI.getHashtagField().setForeground(Color.BLACK);
-        editUI.getVoiceFileURL().setText(w.getVoiceURL());
+        editUI.getVoiceFileURL().setText(w.getVoiceURL().equals("null") ? "File Name" : "Sound");
         editUI.setVoiceURL(w.getVoiceURL());
         editUI.getWordField().setEnabled(false);
         //image
@@ -344,13 +391,28 @@ public class WordController {
         editUI.setVisible(true);
     }
 
-    public static void deleteWord(int id) {
+    public static void deleteWord(String word) {
         for (int i = 0; i < words.size(); i++) {
-            if (words.get(i).getId() == id) {
+            if (words.get(i).getWord().equals(word)) {
+                Word w = words.get(i);
                 words.remove(i);
+                File voice = new File(w.getVoiceURL());
+                File image = new File(w.getImageURL());
+                voice.delete();
+                image.delete();
+                writeWord(getDataPath());
                 break;
             }
         }
+    }
+
+    public static void deleteWord(Word word) {
+        words.remove(word);
+        File voice = new File(word.getVoiceURL());
+        File image = new File(word.getImageURL());
+        voice.delete();
+        image.delete();
+        writeWord(getDataPath());
     }
 
     public static String hashtag2String(String[] hashtag) {
@@ -367,17 +429,17 @@ public class WordController {
         }
         return rs;
     }
-    
-    public static void playSound(Word word){
+
+    public static void playSound(Word word) {
         Synthesizer s = new Synthesizer();
-        if("".equals(word.getVoiceURL())){
+        if ("".equals(word.getVoiceURL())) {
             s.playSound(s.getVoiceInputStream(word.getWord()));
-        }
-        else{
+        } else {
             s.playSound(word.getVoiceURL());
         }
     }
-    public static void playSound(String url){
+
+    public static void playSound(String url) {
         Synthesizer s = new Synthesizer();
         s.playSound(url);
     }
@@ -392,27 +454,49 @@ public class WordController {
 //</editor-fold>
 
         Synthesizer s = new Synthesizer();
-        s.text2Speech(word);          
+        s.text2Speech(word);
     }
-    public static void saveVoice(String word){
+
+    public static void saveVoice(String word) {
         Synthesizer s = new Synthesizer();
         DataController dc = new DataController();
         dc.writeMp3(s.getVoiceInputStream(word), word);
     }
-    public static String getPhonetic(String word) {
+
+    public static String getPhonetic(String word){
         Phonetic phonetic = new Phonetic();
         return phonetic.getPhonetic(word);
     }
-    
-    public static void saveImage(File image, String word){
+
+    public static void saveImage(File image, String word) {
         DataController dataController = new DataController();
         dataController.writeJpg(image, word);
     }
-    public static List<Word> coppyWords() {
+
+    public static List<Word> copyWords() {
         List<Word> list = new ArrayList<Word>();
         for (Word word : words) {
             list.add(word);
         }
         return list;
+    }
+    public static List<Word> copyWords(List<Word> list) {
+        List<Word> rs = new ArrayList<Word>();
+        for (Word word : list) {
+            rs.add(word);
+        }
+        return rs;
+    }
+    public static List<Word> duplicateWordinList(List<Word> list){
+        List<Word> rs = new ArrayList<Word>();
+        for (Word word : list) {
+            for(int i = 0; i < word.getFreq(); i++)
+                rs.add(word);
+        }
+        return rs;
+    }
+    public static void main(String[] args) {
+//        List<Word> l = new ArrayList<>();
+//        l = findWordByDate("2019-11-16", words);
     }
 }
