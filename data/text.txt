@@ -1,27 +1,7 @@
-43
-2#two#hai#tuː#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#P:\EnglishLearningWithUI\data\voice\two.mp3#cái cơ bản#test2@basic@number@#2019-11-25#1
-3#three#ba#thờ ri#Noun#image url 3#null#cái cơ bản 3#test3@notbasic@number@#2019-10-21#1
-4#a word or a phrase in English#Nghĩa của từ hoặc cụm từ#null#null#img##dwadasdsd#Hashtag@#2019-10-23#1
-7#lock#Khoá#lɒk#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\45563347_2282023068474683_51833967430598656_n.jpg#P:\EnglishLearningWithUI\data\voice\lock.mp3#Ngăn trộm#house@#2019-11-29#1
-8#tee shirt#Áo phông#tiː ʃəːt#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39442045_1790957390953262_5368519458539175936_n.jpg#P:\EnglishLearningWithUI\data\voice\teeshirt.mp3#che cơ thể#cloth@#2019-11-29#1
-9#pussy#Mèo con#ˈpʊsi#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39007494_216859289172838_6503138544129671168_n.jpg#P:\EnglishLearningWithUI\data\voice\pussy.mp3#A cute one#Animal@cute@#2019-11-29#1
-10#go#đi#ɡəʊ#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\52598958_989548127916823_3794753530439401472_n.jpg#P:\EnglishLearningWithUI\data\voice\go.mp3#di chuyển#casual@#2019-11-24#1
-11#nyan#cat#ni an#Noun#C:\Users\SownBanana\Pictures\66292812_1130028467205538_9044717451928928256_n.jpg#null#cat#Hashtag@#2019-11-10#1
-13#test#Thử nghiệm#test#Noun#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#P:\EnglishLearningWithUI\data\voice\test.mp3#thì nghiệm#test@#2019-11-16#1
-14#space test#-thử -Thử cách#sờ pây tét#Verd#C:\Users\SownBanana\Documents\q.jpg#null#thưe#test@#2019-11-06#1
-16#eleven#mười một#i le vừn#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#null#lớn hơn mười#number@#2019-11-16#1
-17#sixteen#Mười sáu#sɪksˈtiːn#Noun#C:\Users\SownBanana\Documents\O1CN010Bk2xF2LtYAE4ZROO_!!2200555029750.jpg#P:\EnglishLearningWithUI\data\voice\sixteen.mp3#trăng tròn#age@#2019-11-25#1
-18#rest#còn lại#rét#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#P:\EnglishLearningWithUI\data\voice\rest.mp3#dsdsd#ds@#2019-11-16#1
-19#text#đoạn text#text#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#P:\EnglishLearningWithUI\data\voice\text.mp3#t#t@#2019-11-16#1
-20#text to speech#văn bản thành giọng nói#sa#Noun#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#null#t2s#t2s@#2019-11-16#1
-21#test phonetic#kiểm tra phiên âm#tɛst fəˈnɛtɪk#Verb Phrase#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#P:\EnglishLearningWithUI\data\voice\testphonetic.mp3#test pronunciation#test@#2019-11-16#1
-22#we are the champion#chúng ta là người chiến thắng#wiː ɑː ðə ˈtʃampɪən #Idioms#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#P:\EnglishLearningWithUI\data\voice\wearethechampion.mp3#song#song@vietnam@#2019-11-16#1
-23#write#ghi#rʌɪt #Verb#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#P:\EnglishLearningWithUI\data\voice\write.mp3#viết#do@#2019-11-16#1
-24#test image#thử#tɛst ˈɪmɪdʒ #Noun#P:\EnglishLearningWithUI\data\img\testimage.jpg#P:\EnglishLearningWithUI\data\voice\testimage.mp3#thử#test@#2019-11-16#1
-25#test again#lại#tɛst əˈɡɛn #Noun#P:\EnglishLearningWithUI\data\img\testagain.jpg#P:\EnglishLearningWithUI\data\voice\testagain.mp3#lại#test@#2019-11-16#1
-26#when we call#ds#wɛn wiː kɔːl #Noun#P:\EnglishLearningWithUI\data\img\whenwecall.jpg#P:\EnglishLearningWithUI\data\voice\whenwecall.mp3#ds#ds@#2019-11-16#1
-27#this is a test for get phonetic#ds#ðɪs ɪz ə tɛst fɔː ɡɛt fəˈnɛtɪk #Noun#P:\EnglishLearningWithUI\data\img\thisisatestforgetphonetic.jpg#P:\EnglishLearningWithUI\data\voice\thisisatestforgetphonetic.mp3#dsd#dsd@#2019-11-16#1
-28#another test speed of getting phonetic#ds#əˈnʌðə tɛst spiːd ɒv ɡɛt fəˈnɛtɪk #Noun#P:\EnglishLearningWithUI\data\img\anothertestspeedofgettingphonetic.jpg#P:\EnglishLearningWithUI\data\voice\anothertestspeedofgettingphonetic.mp3#ds#ds@#2019-11-16#1
-29#test one more time#ds#tɛst wʌn mɔː tʌɪm #Noun#P:\EnglishLearningWithUI\data\img\testonemoretime.jpg#P:\EnglishLearningWithUI\data\voice\testonemoretime.mp3#ds#dsd@#2019-11-16#1
-30#this is final test#đây là thwur nghiệm sinh pphieen âm#ðɪs ɪz ˈfʌɪn(ə)l tɛst#Noun#P:\EnglishLearningWithUI\data\img\thisisfinaltest.jpg#P:\EnglishLearningWithUI\data\voice\thisisfinaltest.mp3#đây là nghĩa#has@#2019-11-16#1
-34#new line#dòng mới%newline%thêm chức năng dòng#njuː lʌɪn#Noun#P:\EnglishLearningWithUI\data\img\newline.jpg#P:\EnglishLearningWithUI\data\voice\newline.mp3#+ví dụ:%newline%-thêm dòng 1%newline%-thêm dòng 2%newline%-thêm dòng 3#system@line@#2019-11-24#1
+6
+0#go#đi#ɡəʊ#Verb#D:\Project\LearnEnglishApp\data\img\go.jpg#D:\Project\LearnEnglishApp\data\voice\go.mp3#di chuyển bằng chân#verb@walk@#2019-11-19#1
+1#test#kiểm tra#tɛst#Noun#D:\Project\LearnEnglishApp\data\img\test.jpg#D:\Project\LearnEnglishApp\data\voice\test.mp3#Hình thức đánh giá một việc gì đó#exam@study@#2019-11-20#1
+2#men make houses, women make homes#Đàn ông xây nhà, đàn bà xây tổ ấm#mɛn meɪk haʊzɪzˈwɪmɪn meɪk həʊm#Idioms#D:\Project\LearnEnglishApp\data\img\Menmakehouses,womenmakehomes.jpg#D:\Project\LearnEnglishApp\data\voice\menmakehouses,womenmakehomes.mp3#Thành ngữ nói về vai trò của chồng và vợ trong một gia đình#family@men@women@#2019-11-20#1
+3#money makes the mare go#Có tiền mua tiên cũng được#ˈmʌni meɪk ðə mɛː ɡəʊ#Idioms#D:\Project\LearnEnglishApp\data\img\Moneymakesthemarego.jpg#D:\Project\LearnEnglishApp\data\voice\moneymakesthemarego.mp3#Sức mạnh của đồng tiền#money@rich@#2019-11-20#1
+4#one swallow doesn't make a summer#Một cánh én không thể làm nên mùa xuân#wʌn ˈswɒləʊ meɪk ə ˈsʌmə#Idioms#D:\Project\LearnEnglishApp\data\img\Oneswallowdoesn’tmakeasummer.jpg#D:\Project\LearnEnglishApp\data\voice\oneswallowdoesn’tmakeasummer.mp3#Tác hại của sự thiếu đoàn kết, cô đơn#power@alone@#2019-11-20#1
+5#safe and sound#an toàn##Idioms#D:\Project\LearnEnglishApp\data\img\safeandsound.jpg#D:\Project\LearnEnglishApp\data\voice\safeandsound.mp3#câu nói về sự an toàn#idioms@safe@#2019-11-21#1

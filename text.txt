@@ -1,0 +1,32 @@
+32
+1#one#một#oăn#Noun#image url 1#null#cái cơ bản vl#test@basic@number@#2019-10-21#1
+2#two#hai#tu#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#null#cái cơ bản#test2@basic@number@#2019-11-06#1
+3#three#ba#thờ ri#Noun#image url 3#null#cái cơ bản 3#test3@notbasic@number@#2019-10-21#1
+4#a word or a phrase in English#Nghĩa của từ hoặc cụm từ#null#null#img##dwadasdsd#Hashtag@#2019-10-23#1
+5#đâsd#ádasdasd###img#null#ádasd#adadasd@#2019-10-23#1
+6#ádasda#adadas###img#null#adad#ádadas@#2019-10-23#1
+7#lock#Khoá#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\45563347_2282023068474683_51833967430598656_n.jpg#null#Ngăn trộm#house@#2019-10-24#1
+8#tee Shirt#Áo phông#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39442045_1790957390953262_5368519458539175936_n.jpg#null#che cơ thể#cloth@#2019-10-24#1
+9#pussy#Mèo con#sth#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\39007494_216859289172838_6503138544129671168_n.jpg#null#A cute one#Animal@cute@#2019-10-29#1
+10#go#đi#gâu#Noun#C:\Users\SownBanana\Pictures\Saved Pictures\52598958_989548127916823_3794753530439401472_n.jpg#P:\EnglishLearningWithUI\data\voice\go.mp3#di chuyển#casual@#2019-11-16#1
+11#nyan#cat#ni an#Noun#C:\Users\SownBanana\Pictures\66292812_1130028467205538_9044717451928928256_n.jpg#null#cat#Hashtag@#2019-11-10#1
+12#go#ddi#gəʊ#Verd#C:\Users\SownBanana\Documents\q.jpg#null#di chuyển#regular@#2019-11-03#1
+13#test#Thử nghiệm#test#Noun#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#P:\EnglishLearningWithUI\data\voice\test.mp3#thì nghiệm#test@#2019-11-16#1
+14#space test#-thử -Thử cách#sờ pây tét#Verd#C:\Users\SownBanana\Documents\q.jpg#null#thưe#test@#2019-11-06#1
+15#đa#mười#nhiều#Noun#C:\Users\SownBanana\Documents\O1CN010Bk2xF2LtYAE4ZROO_!!2200555029750.jpg#null#dasdasd asdadsad asdadad#đâsdasd@#2019-11-06#1
+16#eleven#mười một#i le vừn#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#null#lớn hơn mười#number@#2019-11-16#1
+17#sixteen#Mười sáu#síc tin#Noun#C:\Users\SownBanana\Documents\O1CN010Bk2xF2LtYAE4ZROO_!!2200555029750.jpg#P:\EnglishLearningWithUI\data\voice\sixteen.mp3#trăng tròn#age@#2019-11-16#1
+18#rest#còn lại#rét#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#P:\EnglishLearningWithUI\data\voice\rest.mp3#dsdsd#ds@#2019-11-16#1
+19#text#đoạn text#text#Noun#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#P:\EnglishLearningWithUI\data\voice\text.mp3#t#t@#2019-11-16#1
+20#text to speech#văn bản thành giọng nói#sa#Noun#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#null#t2s#t2s@#2019-11-16#1
+21#test phonetic#kiểm tra phiên âm#tɛst fəˈnɛtɪk#Verb Phrase#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#P:\EnglishLearningWithUI\data\voice\testphonetic.mp3#test pronunciation#test@#2019-11-16#1
+22#we are the champion#chúng ta là người chiến thắng#wiː ɑː ðə ˈtʃampɪən #Idioms#C:\Users\SownBanana\Documents\TB2NSSUXQfb_uJkSnaVXXXFmVXa_!!2134939661.jpg#P:\EnglishLearningWithUI\data\voice\wearethechampion.mp3#song#song@vietnam@#2019-11-16#1
+23#write#ghi#rʌɪt #Verb#C:\Users\SownBanana\Documents\TB1iNw6d4SYBuNjSsphXXbGvVXa_!!0-item_pic.jpg#P:\EnglishLearningWithUI\data\voice\write.mp3#viết#do@#2019-11-16#1
+24#test image#thử#tɛst ˈɪmɪdʒ #Noun#P:\EnglishLearningWithUI\data\img\testimage.jpg#P:\EnglishLearningWithUI\data\voice\testimage.mp3#thử#test@#2019-11-16#1
+25#test again#lại#tɛst əˈɡɛn #Noun#P:\EnglishLearningWithUI\data\img\testagain.jpg#P:\EnglishLearningWithUI\data\voice\testagain.mp3#lại#test@#2019-11-16#1
+26#when we call#ds#wɛn wiː kɔːl #Noun#P:\EnglishLearningWithUI\data\img\whenwecall.jpg#P:\EnglishLearningWithUI\data\voice\whenwecall.mp3#ds#ds@#2019-11-16#1
+27#this is a test for get phonetic#ds#ðɪs ɪz ə tɛst fɔː ɡɛt fəˈnɛtɪk #Noun#P:\EnglishLearningWithUI\data\img\thisisatestforgetphonetic.jpg#P:\EnglishLearningWithUI\data\voice\thisisatestforgetphonetic.mp3#dsd#dsd@#2019-11-16#1
+28#another test speed of getting phonetic#ds#əˈnʌðə tɛst spiːd ɒv ɡɛt fəˈnɛtɪk #Noun#P:\EnglishLearningWithUI\data\img\anothertestspeedofgettingphonetic.jpg#P:\EnglishLearningWithUI\data\voice\anothertestspeedofgettingphonetic.mp3#ds#ds@#2019-11-16#1
+29#test one more time#ds#tɛst wʌn mɔː tʌɪm #Noun#P:\EnglishLearningWithUI\data\img\testonemoretime.jpg#P:\EnglishLearningWithUI\data\voice\testonemoretime.mp3#ds#dsd@#2019-11-16#1
+30#this is final test#đây là thwur nghiệm sinh pphieen âm#ðɪs ɪz ˈfʌɪn(ə)l tɛst#Noun#P:\EnglishLearningWithUI\data\img\thisisfinaltest.jpg#P:\EnglishLearningWithUI\data\voice\thisisfinaltest.mp3#đây là nghĩa#has@#2019-11-16#1
+31#mouse#chuột##Noun#D:\Project\LearnEnglishApp\data\img\mouse.jpg#D:\Project\LearnEnglishApp\data\voice\.mp3#jerry, mickey#animal@#2019-11-19#1

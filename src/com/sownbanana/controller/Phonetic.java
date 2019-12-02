@@ -6,7 +6,6 @@
 package com.sownbanana.controller;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,7 +34,7 @@ public class Phonetic {
          for (String w : eachWord) {
              try {
 //                 System.out.println(w);
-                 String getPhoneticURL = GOOGLE_WORD_DEF_URL + w;
+                 String getPhoneticURL = GOOGLE_WORD_DEF_URL + w.replaceAll("[{}~`@#$^_+|<>\\[\\];.:,]", "");
                  URL url = new URL(getPhoneticURL);
                  URLConnection uRLConnection = url.openConnection();
                  uRLConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0");
@@ -70,6 +69,7 @@ public class Phonetic {
      
      public static void main(String[] args) throws IOException {
         Phonetic p = new Phonetic();
-        p.getPhonetic("test this shit");
+        
+         System.out.println(p.getPhonetic("test this shit"));
     }
 }
