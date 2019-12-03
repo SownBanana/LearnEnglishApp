@@ -29,12 +29,18 @@ import javax.swing.JButton;
 //import javax.swing.JPanel;
 import javax.swing.JTextField;
 import com.sownbanana.view.HomeUI;
-import java.awt.Font;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -52,7 +58,8 @@ public class StartUI extends javax.swing.JFrame {
     List<Word> list;
     String gameLevel1;
     JTextField wordTextField = new JTextField();
-    
+    JTextField wordTextFieldHint = new JTextField();
+
     private int indexEndNextWord(String wordString) {
         int i = 0;
         for (int j = 0; j < wordString.length(); j++) {
@@ -72,17 +79,32 @@ public class StartUI extends javax.swing.JFrame {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        InputMap im = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getRootPane().getActionMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "exit");
+        am.put("exit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (JOptionPane.showConfirmDialog(rootPane, "Bạn thực sự muốn thoát?", "Chơi", JOptionPane.YES_NO_OPTION) == 0) dispose();
+            }
+        });
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");
+        am.put("submit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (JOptionPane.showConfirmDialog(rootPane, "submit", "Chơi", JOptionPane.YES_NO_OPTION) == 0) /*submit func*/;
+            }
+        });
         gameLevelString = gameLevel.getSelectedItem().toString();
-//        
         phoneticField.setEditable(false);
-        typeField.setEditable(false);
         meaningField.setEditable(false);
-        hintField.setEditable(false);
+        typeField.setEditable(false);
         hashtagField.setEditable(false);
-        
+        hintField.setEditable(false);
         list = WordController.copyWords();
-//        list.add(list.get(0));
+        list.add(list.get(0));
         displayGame(gameLevelString);
+
     }
 
     //<editor-fold defaultstate="collapsed" desc=" getter and setter">
@@ -334,8 +356,8 @@ public class StartUI extends javax.swing.JFrame {
         this.typeField = typeField;
     }
     //</editor-fold>
-    
-        private void displayGame(String gameLevelString) {
+
+    private void displayGame(String gameLevelString) {
         textFields = null;
         Collections.shuffle(list);
         System.out.println(list);
@@ -348,33 +370,99 @@ public class StartUI extends javax.swing.JFrame {
         int lengthWord = wordString.length();
         System.out.println(lengthWord);
         textFields = new JTextField[lengthWord];
-        if(gameLevelString != "Legendary"){
-        int ver = 0, hor = -1; //biến ver phục vụ cho việc xuống dòng
-        for (int i = 0; i < lengthWord; i++) {
-            hor++;
-            char aString = wordString.charAt(i);
-            if ((!Character.toString(aString).equals(" "))) {
-                textFields[i] = new JTextField();
-                textFields[i].setBounds(30 * (hor + 1), 35 * ver, 30, 30);
-                textFields[i].setFont(new Font(".VNArialH", Font.PLAIN, 13));
-                textPanel.add(textFields[i]);
-                textFields[i].setVisible(true);
-                //Xử lý mỗi ô nhập một ký tự
-                textFields[i].addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        JTextField jTextField = (JTextField) e.getSource();
-                        char key = e.getKeyChar();
-                        if (key == ' ') {
+        if (gameLevelString != "Legendary") {
+            int ver = 0, hor = -1; //biến ver phục vụ cho việc xuống dòng
+            for (int i = 0; i < lengthWord; i++) {
+                hor++;
+                char aString = wordString.charAt(i);
+                if ((!Character.toString(aString).equals(" "))) {
+                    textFields[i] = new JTextField();
+                    textFields[i].setBounds(30 * (hor + 1), 35 * ver, 30, 30);
+                    textPanel.add(textFields[i]);
+                    textFields[i].setVisible(true);
+                    //Xử lý mỗi ô nhập một ký tự
+                    if ((isLevelEasyToHard(gameLevelString) && i == 1) || (!isLevelEasyToHard(gameLevelString) && i == 0 )) {
+                        textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
+                                        
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+                                 
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+                                    jTextField.transferFocus();
+                                } else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
 
-                        } else {
+                                    } else {
 //                            jTextField.setFont("");
-                            jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
-                            jTextField.setBackground(Color.WHITE);
-                            jTextField.transferFocus();
-                        }
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                        jTextField.transferFocus();
+                                    }
+                                }
+
+                            }
+                        });
+                    } 
+                    else if((isLevelEasyToHard(gameLevelString) && i == lengthWord - 2) || (!isLevelEasyToHard(gameLevelString) && i == lengthWord - 1 )){
+                           textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
+                                        jTextField.transferFocusBackward();
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+                                    jTextField.transferFocusBackward();
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+                                    
+                                } else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
+
+                                    } else {
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                        jTextField.transferFocus();
+                                    }
+                                }
+
+                            }
+                          });
                     }
-                    //<editor-fold defaultstate="collapsed" desc=" another version">
+                    else {
+                        textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
+                                        jTextField.transferFocusBackward();
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+                                    jTextField.transferFocusBackward();
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+                                    jTextField.transferFocus();
+                                } else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
+
+                                    } else {
+//                            jTextField.setFont("");
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                        jTextField.transferFocus();
+                                    }
+                                }
+
+                            }
+                            //<editor-fold defaultstate="collapsed" desc=" another version">
 //                    @Override
 //                    public void keyPressed(KeyEvent e) {
 //                        JTextField jTextField = (JTextField) e.getSource();
@@ -385,41 +473,43 @@ public class StartUI extends javax.swing.JFrame {
 //                        }
 //                        jTextField.transferFocus();
 //                    }
-                    //</editor-fold>
-                });
-            } else {
-                int j = indexEndNextWord(wordString.substring(i + 1)) + 1;
-                if (j > 15 - hor) { //1 dòng chỉ được tối đa 14 ký tự
-                    ver++;
-                    hor = -1;
+                            //</editor-fold>
+                        });
+                        
+                    }
+
+                } else {
+                    int j = indexEndNextWord(wordString.substring(i + 1)) + 1;
+                    if (j > 15 - hor) { //1 dòng chỉ được tối đa 14 ký tự
+                        ver++;
+                        hor = -1;
+                    }
                 }
             }
-        }
-        textPanel.revalidate();
-        textPanel.repaint();
-        System.out.println("ver = " + ver);
-        switch(gameLevelString){
-            case "Very Easy": 
-            case "Easy":
-            case "Medium":
-            case "Hard":
-                textFields[0].setText(Character.toString(wordString.charAt(0)));
-                textFields[lengthWord-1].setText(Character.toString(wordString.charAt(lengthWord-1)));
-                textFields[0].enable(false);
-                textFields[lengthWord-1].enable(false);
-                textFields[0].setBackground(Color.green);
-                textFields[lengthWord-1].setBackground(Color.green);
-                break;
-        }
-        }
-        else{
+            textPanel.revalidate();
+            textPanel.repaint();
+            System.out.println("ver = " + ver);
+            switch (gameLevelString) {
+                case "Very Easy":
+                case "Easy":
+                case "Medium":
+                case "Hard":
+                    textFields[0].setText(Character.toString(wordString.charAt(0)));
+                    textFields[lengthWord - 1].setText(Character.toString(wordString.charAt(lengthWord - 1)));
+                    textFields[0].enable(false);
+                    textFields[lengthWord - 1].enable(false);
+                    textFields[0].setBackground(Color.green);
+                    textFields[lengthWord - 1].setBackground(Color.green);
+                    break;
+            }
+        } else {
             wordTextField.setBounds(30, 0, 100, 30);
             textPanel.add(wordTextField);
         }
         phoneticField.setText(word.getIpa());
-        meaningField.setText(word.getMean());
+        meaningField.setText(word.getMean().replaceAll("(?!\\r)\\n", "%newline%"));
         hashtagField.setText(word.hashtagFancy());
-        hintField.setText(word.getHint());
+        hintField.setText(word.getHint().replaceAll("(?!\\r)\\n", "%newline%"));
         typeField.setText(word.getType());
 
         File picture = new File(word.getImageURL());
@@ -435,6 +525,18 @@ public class StartUI extends javax.swing.JFrame {
             Logger.getLogger(StartUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    boolean isLevelEasyToHard(String gameLevel){
+        switch (gameLevelString) {
+                case "Very Easy":
+                case "Easy":
+                case "Medium":
+                case "Hard":
+                    return true;
+                default: return false;
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -501,6 +603,11 @@ public class StartUI extends javax.swing.JFrame {
 
         checkLevel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         checkLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mức 1", "Mức 2", "Mức 3", "Mức 4" }));
+        checkLevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkLevelActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Độ khó Game");
 
@@ -515,6 +622,7 @@ public class StartUI extends javax.swing.JFrame {
 
         meaningField.setColumns(20);
         meaningField.setRows(5);
+        meaningField.setFocusable(false);
         jScrollPane1.setViewportView(meaningField);
 
         meaningLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -522,6 +630,7 @@ public class StartUI extends javax.swing.JFrame {
 
         phoneticField.setColumns(20);
         phoneticField.setRows(5);
+        phoneticField.setFocusable(false);
         jScrollPane2.setViewportView(phoneticField);
 
         pronounceButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -571,6 +680,12 @@ public class StartUI extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setText("Từ loại");
+
+        typeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeFieldActionPerformed(evt);
+            }
+        });
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -693,27 +808,17 @@ public class StartUI extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         checkLevelString = checkLevel.getSelectedItem().toString();
         String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
-        String wordString2 = word.getWord(); 
-        if(gameLevelString == "Legendary"){
-            if(wordString2.equals(wordTextField.getText().trim().toLowerCase()) || wordString.equals(wordTextField.getText().trim().toLowerCase())){
-                wordTextField.setBackground(Color.GREEN);
-            }
-            else{
-                wordTextField.setBackground(Color.RED);
-            }
-        }else{
-            checkTrueFalse(wordString);
-        }
+        checkTrueFalse(wordString, checkLevelString);
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void gameLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLevelActionPerformed
         gameLevelString = gameLevel.getSelectedItem().toString();
-        switch(gameLevelString){
-            case "Easy":   
+        switch (gameLevelString) {
+            case "Easy":
                 phoneticLabel.setVisible(false);
                 phoneticField.setVisible(false);
                 break;
-            case "Medium": 
+            case "Medium":
                 phoneticLabel.setVisible(false);
                 phoneticField.setVisible(false);
                 hintField.setVisible(false);
@@ -754,16 +859,16 @@ public class StartUI extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         clearTextFields();
-        if(gameLevelString == "Legendary"){
+//        remove(wordTextFieldHint);
+        if (gameLevelString == "Legendary") {
 //            remove(wordTextField);
 //            textPanel.revalidate();
 //            textPanel.repaint();
             wordTextField.setText("");
             wordTextField.setBackground(Color.WHITE);
             displayGame(gameLevelString);
-        }
-        else{
-//            clearTextFields();
+        } else {
+            clearTextFields();
             displayGame(gameLevelString);
         }
     }//GEN-LAST:event_nextButtonActionPerformed
@@ -771,45 +876,155 @@ public class StartUI extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-    
-    private void clearTextFields(){
+
+    private void checkLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLevelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkLevelActionPerformed
+
+    private void typeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeFieldActionPerformed
+
+    private void clearTextFields() {
         for (int i = 0; i < word.getWord().replaceAll("[,.:;?!&’'\"]", "").length(); i++) {
-    //            System.out.println(textFields[i].toString());
-                if (textFields[i] != null) {
-                    textPanel.remove(textFields[i]);
-                }
+            //            System.out.println(textFields[i].toString());
+            if (textFields[i] != null) {
+                textPanel.remove(textFields[i]);
             }
-            List<Word> rm = new ArrayList<Word>();
-            for (int i = 0; i < word.getFreq(); i++) {
-                rm.add(word);
-            }
-            list.removeAll(rm);
-            System.out.println(list);
-            System.out.println(WordController.words);
-            System.out.println("Size = " + list.size());
-            if(list.size() == 0){
-                list = WordController.copyWords();
-            }
-            textPanel.revalidate();
-            textPanel.repaint();
+        }
+        List<Word> rm = new ArrayList<Word>();
+        for (int i = 0; i < word.getFreq(); i++) {
+            rm.add(word);
+        }
+        list.removeAll(rm);
+        System.out.println(list);
+        System.out.println(WordController.words);
+        System.out.println("Size = " + list.size());
+        if (list.size() == 0) {
+            list = WordController.copyWords();
+        }
+        textPanel.revalidate();
+        textPanel.repaint();
     }
+
     /**
      * @param args the command line arguments
      */
 //    public void clearTextField(int index) {
 //        textFields[index].setText("");
 //    }
-    private void checkTrueFalse(String wordString) {
-        for (int i = 0; i < wordString.length(); i++) {
-            char aString = wordString.charAt(i);
-            if (" ".equals(Character.toString(aString))) {
-                continue;
-            } else if (textFields[i].getText().equals(Character.toString(aString))) {
-                textFields[i].setBackground(Color.GREEN);
-            } else {
-                textFields[i].setBackground(Color.RED);
+    private void checkTrueFalse(String wordString, String checkLevelString) {
+        switch (checkLevelString) {
+            case "Mức 1":
+                if (gameLevelString == "Legendary") {
+                    if (word.getWord().equals(wordTextField.getText().trim().toLowerCase()) || wordString.equals(wordTextField.getText().trim().toLowerCase())) {
+                        wordTextField.setBackground(Color.GREEN);
+                    } else {
+                        wordTextField.setBackground(Color.RED);
+                        wordTextFieldHint.setBounds(30, 35, 150, 30);
+                        String wordTemp = word.getWord().trim();
+                        System.out.println(wordTemp);
+                        wordTextFieldHint.setText("Có " + (wordTemp.replaceAll("[ ,.:;?!&’'\"]", "").length()) + " chữ cái cần điền");
+                        wordTextFieldHint.enable(false);
+                        textPanel.add(wordTextFieldHint);
+                    }
+                } else {
+                    for (int i = 0; i < wordString.length(); i++) {
+                        char aString = wordString.charAt(i);
+                        if (" ".equals(Character.toString(aString))) {
+                            continue;
+                        } else if (textFields[i].getText().equals(Character.toString(aString))) {
+                            textFields[i].setBackground(Color.GREEN);
+                        } else {
+                            textFields[i].setBackground(Color.RED);
+                        }
+                    }
+                }
+                break;
+            case "Mức 2":
+                if (gameLevelString == "Legendary") {
+                    if (word.getWord().equals(wordTextField.getText().trim().toLowerCase()) || wordString.equals(wordTextField.getText().trim().toLowerCase())) {
+                        wordTextField.setBackground(Color.GREEN);
+                    } else {
+                        wordTextField.setBackground(Color.RED);
+                        wordTextFieldHint.setBounds(30, 35, 150, 30);
+                        String wordTemp = word.getWord().trim();
+                        System.out.println(wordTemp);
+                        wordTextFieldHint.setText(LCS(word.getWord().replaceAll("[ ,.:;?!&’'\"]", "").toLowerCase(), wordTextField.getText().trim().toLowerCase()));
+                        wordTextFieldHint.enable(false);
+                        textPanel.add(wordTextFieldHint);
+                        System.out.println("LCS = " + LCS(word.getWord().replaceAll("[ ,.:;?!&’'\"]", "").toLowerCase(), wordTextField.getText().trim().toLowerCase()));
+                    }
+                } else {
+                    for (int i = 0; i < wordString.length(); i++) {
+                        char aString = wordString.charAt(i);
+                        if (" ".equals(Character.toString(aString))) {
+                            continue;
+                        } else if (textFields[i].getText().equals(Character.toString(aString))) {
+                            textFields[i].setBackground(Color.GREEN);
+                        } else {
+                            textFields[i].setBackground(Color.RED);
+                        }
+                    }
+                }
+            case "Mức 3":
+
+            case "Mức 4":
+        }
+
+    }
+
+    // Đưa ra dãy con dài nhất, dùng Longest common subsequence
+    private String LCS(String wordExactly, String wordAnswer) {
+        String rs = "";
+        int m = Math.max(wordAnswer.length(), wordExactly.length());
+//        ArrayList<ArrayList<ArrayList<Character>>> S = new ArrayList<ArrayList<ArrayList<Character>>>(word.getWord().length());
+//        for (int i = 0; i < wordExactly.length(); i++) {
+//            S.set(0).set(i).set(0) = '0';
+//        }
+//        for (int i = 1; i <= wordExactly.length(); i++) {
+//            for (int j = 1; j <= wordAnswer.length(); j++) {
+//                
+//            }
+//        }
+
+//        List<char>[][] S = new List[11][11];;
+//        Arrays.setAll(S,  ArrayList :: new);
+        String[][] S = new String[100][100];
+        String[] R = new String[m];
+        for (int i = 0; i < wordExactly.length(); i++) {
+            S[0][i] = "0";
+        }
+        for (int i = 0; i < wordExactly.length(); i++) {
+            S[i][0] = "0";
+        }
+        for (int i = 0; i < m; i++) {
+            R[i] = "%";
+        }
+        for (int i = 1; i <= wordExactly.length(); i++) {
+            for (int j = 1; j <= wordAnswer.length(); j++) {
+//                textFields[0].setText(Character.toString(wordString.charAt(0)));
+                if (Character.toString(wordExactly.charAt(i)).equals(Character.toString(wordAnswer.charAt(i)))) {
+//                    wordExactly.charAt(i). == wordAnswer.charAt(i)
+                    int temp = Integer.parseInt(S[i - 1][j - 1]);
+                    temp++;
+                    S[i][j] = Integer.toString(temp);
+                    R[i] = Character.toString(wordExactly.charAt(i));
+                } else {
+                    int temp1 = Integer.parseInt(S[i][j - 1]);
+                    int temp2 = Integer.parseInt(S[i - 1][j]);
+                    temp1 = Math.max(temp1, temp2);
+                    S[i][j] = Integer.toString(temp1);
+                }
             }
         }
+        for (int i = 0; i < m; i++) {
+            if (R[i] != "%") {
+                rs = rs.concat(R[i]);
+            }
+        }
+        System.out.println("rss = " + rs);
+        return rs;
     }
 
     public static void main(String args[]) {

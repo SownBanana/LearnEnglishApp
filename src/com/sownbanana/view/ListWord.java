@@ -10,16 +10,24 @@ import com.sownbanana.model.Word;
 import static com.sownbanana.view.ListWord.list;
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Vector;
 import javafx.scene.input.MouseButton;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,9 +52,21 @@ public class ListWord extends javax.swing.JFrame {
         System.out.println(list.toString());
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        InputMap im = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getRootPane().getActionMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "exit");
+        am.put("exit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
 //        list=new ArrayList<>();
 //        model = (DefaultTableModel) jTable1.getModel();
-        dateField.setText("12 or 2019 or 10/12/2019");
+
+        searchField.requestFocus();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dateField.setText(LocalDate.now().format(formatter));
         dateField.setForeground(Color.GRAY);
         wordTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -61,12 +81,12 @@ public class ListWord extends javax.swing.JFrame {
                 }
             }
         });
-        vctHeader.add("word");
-        vctHeader.add("ipa");
-        vctHeader.add("mean");
-        vctHeader.add("type");
-        vctHeader.add("Hastag");
-        vctHeader.add("dateModified");
+        vctHeader.add("Word");
+        vctHeader.add("Phonetic");
+        vctHeader.add("Mean");
+        vctHeader.add("Type");
+        vctHeader.add("Hashtag");
+        vctHeader.add("Date Modified");
         showresult();
     }
 
@@ -86,7 +106,6 @@ public class ListWord extends javax.swing.JFrame {
         wordTable = new javax.swing.JTable();
         cancelBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        searchBtn = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         deleteBtn = new javax.swing.JButton();
         editBtn = new javax.swing.JButton();
@@ -96,6 +115,7 @@ public class ListWord extends javax.swing.JFrame {
         hashtagField = new javax.swing.JTextField();
         allWordBtn = new javax.swing.JButton();
         fillterBtn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -123,21 +143,9 @@ public class ListWord extends javax.swing.JFrame {
             }
         });
 
-        searchBtn.setText("Tìm");
-        searchBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchBtnActionPerformed(evt);
-            }
-        });
-
-        searchField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                searchFieldMouseClicked(evt);
-            }
-        });
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
+        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchFieldKeyReleased(evt);
             }
         });
 
@@ -157,7 +165,7 @@ public class ListWord extends javax.swing.JFrame {
 
         dateModifiedLabel.setText("Ngày chỉnh sửa:");
 
-        dateField.setToolTipText("Nhập năm, tháng (số nguyên) hoặc ngày tháng năm (dd/mm/yyyy) hoặc Hôm nay");
+        dateField.setToolTipText("Nhập năm, tháng (số nguyên) hoặc tháng năm (MM/yyyy) hoặc ngày tháng năm (dd/MM/yyyy) hoặc Hôm nay");
         dateField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 dateFieldFocusGained(evt);
@@ -170,6 +178,12 @@ public class ListWord extends javax.swing.JFrame {
         });
 
         hashtagLabel.setText("Hashtag:");
+
+        hashtagField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                hashtagFieldKeyReleased(evt);
+            }
+        });
 
         allWordBtn.setText("Tất cả");
         allWordBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -184,6 +198,8 @@ public class ListWord extends javax.swing.JFrame {
                 fillterBtnActionPerformed(evt);
             }
         });
+
+        jLabel2.setText("Tìm kiếm:");
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -214,10 +230,10 @@ public class ListWord extends javax.swing.JFrame {
                                 .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(fillterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
-                                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(allWordBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -234,14 +250,14 @@ public class ListWord extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchBtn)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dateModifiedLabel)
                     .addComponent(hashtagLabel)
                     .addComponent(hashtagField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(allWordBtn)
                     .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fillterBtn))
+                    .addComponent(fillterBtn)
+                    .addComponent(jLabel2))
                 .addGap(0, 0, 0)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -261,22 +277,6 @@ public class ListWord extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_cancelBtnActionPerformed
-
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
-
-    private void searchFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchFieldMouseClicked
-        searchField.setText("");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldMouseClicked
-
-    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        // TODO add your handling code here:
-        clearTable();
-        list = WordController.findLWord(list, searchField.getText());
-        showresult();
-    }//GEN-LAST:event_searchBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         int select = wordTable.getSelectedRow();
@@ -307,6 +307,9 @@ public class ListWord extends javax.swing.JFrame {
 
     private void allWordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allWordBtnActionPerformed
         // TODO add your handling code here:
+        hashtagField.setText("");
+        dateField.setText("");
+        searchField.setText("");
         clearTable();
         list = WordController.words;
         showresult();
@@ -319,24 +322,23 @@ public class ListWord extends javax.swing.JFrame {
         List<Word> fillterList = new ArrayList<>();
         String[] output = hashtagField.getText().trim().replaceAll("\\s+#", " ").split(" ");
         if (hashtagField.getText().trim().equals("")) {
-            fillterList = WordController.copyWords(list);
+            fillterList = WordController.copyWords(WordController.words);
         } else {
-            fillterList = WordController.findHashtag(list, output);
+            fillterList = WordController.findHashtag(WordController.words, output);
         }
-        if(dateField.getText().trim().equals("")){
-        }
-        else if (dateField.getText().trim().toLowerCase().contains("nay") || dateField.getText().trim().toLowerCase().contains("today") || dateField.getText().trim().toLowerCase().contains("recent")) {
+        if (dateField.getText().trim().equals("") || dateField.getForeground().equals(Color.GRAY)) {
+        } else if (dateField.getText().trim().toLowerCase().contains("nay") || dateField.getText().trim().toLowerCase().contains("today") || dateField.getText().trim().toLowerCase().contains("recent")) {
             fillterList = WordController.findWordAddToday(fillterList);
         } else if (dateField.getText().trim().length() <= 2) {
             fillterList = WordController.findWordByDate("month", Integer.parseInt(dateField.getText().trim()), fillterList);
-        } else if (dateField.getText().trim().length() <= 5){
+        } else if (dateField.getText().trim().length() <= 5) {
             fillterList = WordController.findWordByDate("year", Integer.parseInt(dateField.getText().trim()), fillterList);
+        } else {
+            fillterList = WordController.findWordByDate(dateField.getText(), fillterList);
         }
-        else{
-            fillterList =WordController.findWordByDate(dateField.getText(), fillterList);
-        }
-        System.out.println(fillterList);
-        showresult(fillterList);
+        list = fillterList;
+//        System.out.println(fillterList);
+        showresult(list);
 
     }//GEN-LAST:event_fillterBtnActionPerformed
 
@@ -347,6 +349,19 @@ public class ListWord extends javax.swing.JFrame {
             dateField.setForeground(Color.BLACK);
         }
     }//GEN-LAST:event_dateFieldFocusGained
+
+    private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
+        // TODO add your handling code here:
+        clearTable();
+        List<Word> searchList = new ArrayList<>();
+        searchList = WordController.findLWord(list, searchField.getText());
+        showresult(searchList);
+    }//GEN-LAST:event_searchFieldKeyReleased
+
+    private void hashtagFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hashtagFieldKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_hashtagFieldKeyReleased
 
     public void showresult() {
         for (int i = 0; i < list.size(); i++) {
@@ -458,12 +473,12 @@ public class ListWord extends javax.swing.JFrame {
     private javax.swing.JTextField hashtagField;
     private javax.swing.JLabel hashtagLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton searchBtn;
     private javax.swing.JTextField searchField;
     private javax.swing.JTable wordTable;
     // End of variables declaration//GEN-END:variables
