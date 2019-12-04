@@ -5,6 +5,7 @@
  */
 package com.sownbanana.view;
 
+import com.sownbanana.controller.Config;
 import com.sownbanana.controller.WordController;
 import static com.sownbanana.controller.WordController.getVoiceFolder;
 import com.sownbanana.model.Word;
@@ -14,6 +15,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -28,15 +31,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -51,20 +59,32 @@ public class AddWUI extends javax.swing.JFrame {
     boolean isEdit = false;
     MouseListener clkEdit;
     boolean isAutoPhonetic = false;
+    
 
     /**
      * Creates new form AddWUI
      */
     public AddWUI() {
         initComponents();
+        
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
+        InputMap im = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getRootPane().getActionMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "exit");
+        am.put("exit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(JOptionPane.showConfirmDialog(rootPane, "Bạn thực sự muốn thoát?","Thêm từ", JOptionPane.YES_NO_OPTION) == 0) dispose();
+            }
+        });
         imgLable.setSize(210, 244);
         voiceFileURL.setPreferredSize(new Dimension(60, 32));
         pickImg.setEnabled(false);
         meanTextArea.setFont(new Font("Dialog", Font.PLAIN, 12));
         hintTextArea.setFont(new Font("Dialog", Font.PLAIN, 12));
         rePhonetic.setVisible(false);
+        cancelButton.setMnemonic(KeyEvent.VK_ESCAPE);
         clearField();
     }
 
@@ -457,28 +477,28 @@ public class AddWUI extends javax.swing.JFrame {
         if (!"".equals(word)) {
             if (!checkExistWord) {
                 insertWordLbl.setVisible(false);
-                if (phoneticField.getForeground() == Color.GRAY || "".equals(ipa)) {
-                    Thread tag = new Thread(() -> {
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        rePhonetic.setVisible(true);
-                    });
-                    tag.start();
-                    String phonetic = WordController.getPhonetic(word);
-                    String[] input = word.split(" ");
-                    System.out.println(word);
-                    String[] output = phonetic.split(" ");
-                    if (input.length == output.length) {
-                        rePhonetic.setVisible(false);
-                    }
-                    phoneticField.setText(phonetic);
-                    System.out.println("done phonetic");
-                    phoneticField.setForeground(Color.BLACK);
-                    ipa = phoneticField.getText();
-                }
+//                if (phoneticField.getForeground() == Color.GRAY || "".equals(ipa)) {
+//                    Thread tag = new Thread(() -> {
+//                        try {
+//                            Thread.sleep(5000);
+//                        } catch (InterruptedException ex) {
+//                            Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                        rePhonetic.setVisible(true);
+//                    });
+//                    tag.start();
+//                    String phonetic = WordController.getPhonetic(word);
+//                    String[] input = word.split(" ");
+//                    System.out.println(word);
+//                    String[] output = phonetic.split(" ");
+//                    if (input.length == output.length) {
+//                        rePhonetic.setVisible(false);
+//                    }
+//                    phoneticField.setText(phonetic);
+//                    System.out.println("done phonetic");
+//                    phoneticField.setForeground(Color.BLACK);
+//                    ipa = phoneticField.getText();
+//                }
             }
 
         } else {
@@ -565,7 +585,7 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        if(JOptionPane.showConfirmDialog(rootPane, "Bạn thực sự muốn thoát?","Thêm từ", JOptionPane.YES_NO_OPTION) == 0) this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void typeComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typeComboItemStateChanged

@@ -5,10 +5,10 @@
  */
 package com.sownbanana.view;
 
+import com.sownbanana.controller.Config;
 import com.sownbanana.controller.WordController;
 import com.sownbanana.model.Word;
 import java.awt.Color;
-//import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -29,11 +29,21 @@ import javax.swing.JButton;
 //import javax.swing.JPanel;
 import javax.swing.JTextField;
 import com.sownbanana.view.HomeUI;
+import static com.sownbanana.view.ListWord.list;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.util.Arrays;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -48,10 +58,13 @@ public class StartUI extends javax.swing.JFrame {
     Word word;
     String gameLevelString;
     String checkLevelString;
+    String modeString;
     List<Word> list;
     String gameLevel1;
     JTextField wordTextField = new JTextField();
     JTextField wordTextFieldHint = new JTextField();
+    Config config = new Config();
+    int freqCount;
 
     private int indexEndNextWord(String wordString) {
         int i = 0;
@@ -72,6 +85,28 @@ public class StartUI extends javax.swing.JFrame {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        InputMap im = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getRootPane().getActionMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "exit");
+        am.put("exit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (JOptionPane.showConfirmDialog(rootPane, "Bạn thực sự muốn thoát?", "Chơi", JOptionPane.YES_NO_OPTION) == 0) {
+                    dispose();
+                }
+            }
+        });
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");
+        am.put("submit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkLevelString = checkLevel.getSelectedItem().toString();
+                String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
+                checkTrueFalse(wordString, checkLevelString);
+            }
+        });
+
         gameLevelString = gameLevel.getSelectedItem().toString();
         phoneticField.setEditable(false);
         meaningField.setEditable(false);
@@ -79,7 +114,32 @@ public class StartUI extends javax.swing.JFrame {
         hashtagField.setEditable(false);
         hintField.setEditable(false);
         list = WordController.copyWords();
-        list.add(list.get(0));
+        modeString = mode.getSelectedItem().toString();
+        switch (modeString) {
+            case "Hashtag":
+                String[] output = modeTextFields.getText().trim().replaceAll("\\s+#", " ").split(" ");
+                if (modeTextFields.getText().trim().equals("")) {
+                    list = WordController.words;
+                } else {
+                    list = WordController.findHashtag(list, output);
+                    System.out.println("AAAAAAAAAAAAAAA" + list);
+                }
+                break;
+            case "Date":
+                if (modeTextFields.getText().trim().equals("")) {
+                    list = WordController.words;
+                } else if (modeTextFields.getText().trim().toLowerCase().contains("nay") || modeTextFields.getText().trim().toLowerCase().contains("today") || modeTextFields.getText().trim().toLowerCase().contains("recent")) {
+                    list = WordController.findWordAddToday(list);
+                } else if (modeTextFields.getText().trim().length() <= 2) {
+                    list = WordController.findWordByDate("month", Integer.parseInt(modeTextFields.getText().trim()), list);
+                } else if (modeTextFields.getText().trim().length() <= 5) {
+                    list = WordController.findWordByDate("year", Integer.parseInt(modeTextFields.getText().trim()), list);
+                } else {
+                    list = WordController.findWordByDate(modeTextFields.getText(), list);
+                }
+                break;
+        }
+        list = WordController.duplicateWordinList(list);
         displayGame(gameLevelString);
 
     }
@@ -198,11 +258,11 @@ public class StartUI extends javax.swing.JFrame {
     }
 
     public JComboBox<String> getjComboBox2() {
-        return jComboBox2;
+        return mode;
     }
 
     public void setjComboBox2(JComboBox<String> jComboBox2) {
-        this.jComboBox2 = jComboBox2;
+        this.mode = jComboBox2;
     }
 
     public JLabel getjLabel1() {
@@ -339,6 +399,7 @@ public class StartUI extends javax.swing.JFrame {
         Collections.shuffle(list);
         System.out.println(list);
         word = list.get(0);
+        freqCount = word.getFreq();
         System.out.println(word.getWord());
         String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
         System.out.println(wordString);
@@ -355,24 +416,89 @@ public class StartUI extends javax.swing.JFrame {
                 if ((!Character.toString(aString).equals(" "))) {
                     textFields[i] = new JTextField();
                     textFields[i].setBounds(30 * (hor + 1), 35 * ver, 30, 30);
+                    textFields[i].setFont(new Font("VL Hagin Caps Medium", Font.PLAIN, 13));
                     textPanel.add(textFields[i]);
                     textFields[i].setVisible(true);
                     //Xử lý mỗi ô nhập một ký tự
-                    textFields[i].addKeyListener(new KeyAdapter() {
-                        @Override
-                        public void keyTyped(KeyEvent e) {
-                            JTextField jTextField = (JTextField) e.getSource();
-                            char key = e.getKeyChar();
-                            if (key == ' ') {
+                    if ((isLevelEasyToHard(gameLevelString) && i == 1) || (!isLevelEasyToHard(gameLevelString) && i == 0)) {
+                        textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
 
-                            } else {
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+                                    jTextField.transferFocus();
+                                } else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
+
+                                    } else {
 //                            jTextField.setFont("");
-                                jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
-                                jTextField.setBackground(Color.WHITE);
-                                jTextField.transferFocus();
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                        jTextField.transferFocus();
+                                    }
+                                }
+
                             }
-                        }
-                        //<editor-fold defaultstate="collapsed" desc=" another version">
+                        });
+                    } else if ((isLevelEasyToHard(gameLevelString) && i == lengthWord - 2) || (!isLevelEasyToHard(gameLevelString) && i == lengthWord - 1)) {
+                        textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
+                                        jTextField.transferFocusBackward();
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+                                    jTextField.transferFocusBackward();
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+
+                                } else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
+
+                                    } else {
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                    }
+                                }
+
+                            }
+                        });
+                    } else {
+                        textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
+                                        jTextField.transferFocusBackward();
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+                                    jTextField.transferFocusBackward();
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+                                    jTextField.transferFocus();
+                                } else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
+
+                                    } else {
+//                            jTextField.setFont("");
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                        jTextField.transferFocus();
+                                    }
+                                }
+
+                            }
+                            //<editor-fold defaultstate="collapsed" desc=" another version">
 //                    @Override
 //                    public void keyPressed(KeyEvent e) {
 //                        JTextField jTextField = (JTextField) e.getSource();
@@ -383,8 +509,10 @@ public class StartUI extends javax.swing.JFrame {
 //                        }
 //                        jTextField.transferFocus();
 //                    }
-                        //</editor-fold>
-                    });
+                            //</editor-fold>
+                        });
+
+                    }
                 } else {
                     int j = indexEndNextWord(wordString.substring(i + 1)) + 1;
                     if (j > 15 - hor) { //1 dòng chỉ được tối đa 14 ký tự
@@ -411,12 +539,13 @@ public class StartUI extends javax.swing.JFrame {
             }
         } else {
             wordTextField.setBounds(30, 0, 100, 30);
+            wordTextField.setFont(new Font("VL Hagin Caps Medium", Font.BOLD, 13));
             textPanel.add(wordTextField);
         }
         phoneticField.setText(word.getIpa());
-        meaningField.setText(word.getMean().replaceAll("(?!\\r)\\n", "%newline%"));
+        meaningField.setText(word.getMean().replaceAll("%newline%", "\n"));
         hashtagField.setText(word.hashtagFancy());
-        hintField.setText(word.getHint().replaceAll("(?!\\r)\\n", "%newline%"));
+        hintField.setText(word.getHint().replaceAll("%newline%", "\n"));
         typeField.setText(word.getType());
 
         File picture = new File(word.getImageURL());
@@ -444,7 +573,7 @@ public class StartUI extends javax.swing.JFrame {
 
         submitButton = new javax.swing.JButton();
         gameLevel = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        mode = new javax.swing.JComboBox<>();
         checkLevel = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -467,7 +596,8 @@ public class StartUI extends javax.swing.JFrame {
         nextButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         typeField = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        modeTextFields = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -493,9 +623,14 @@ public class StartUI extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox2.setForeground(new java.awt.Color(0, 153, 255));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Hashtag", "Date" }));
+        mode.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        mode.setForeground(new java.awt.Color(0, 153, 255));
+        mode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hashtag", "Date" }));
+        mode.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                modeFocusLost(evt);
+            }
+        });
 
         checkLevel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         checkLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mức 1", "Mức 2", "Mức 3", "Mức 4" }));
@@ -573,17 +708,27 @@ public class StartUI extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel4.setText("Từ loại");
+        jLabel4.setText("Từ loại:");
 
+        typeField.setBackground(new java.awt.Color(240, 240, 240));
+        typeField.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        typeField.setBorder(null);
         typeField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typeFieldActionPerformed(evt);
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        modeTextFields.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                modeTextFieldsActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Lọc");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -602,28 +747,31 @@ public class StartUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(103, 103, 103)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, 99, Short.MAX_VALUE))
+                            .addComponent(mode, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(modeTextFields, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(meaningLabel)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(phoneticLabel)
                                 .addGap(18, 18, 18)
                                 .addComponent(pronounceButton)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel7)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(hintLabel)
@@ -654,17 +802,13 @@ public class StartUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(submitButton, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                             .addComponent(nextButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(phoneticLabel)
-                            .addComponent(pronounceButton)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(phoneticLabel)
+                    .addComponent(pronounceButton)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -691,8 +835,9 @@ public class StartUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(gameLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(checkLevel)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(modeTextFields, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -745,6 +890,7 @@ public class StartUI extends javax.swing.JFrame {
 
     private void gameLevelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gameLevelFocusLost
 
+        config.checkLevel = gameLevel.getSelectedItem().toString();
     }//GEN-LAST:event_gameLevelFocusLost
 
     private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
@@ -753,11 +899,7 @@ public class StartUI extends javax.swing.JFrame {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         clearTextFields();
-//        remove(wordTextFieldHint);
         if (gameLevelString == "Legendary") {
-//            remove(wordTextField);
-//            textPanel.revalidate();
-//            textPanel.repaint();
             wordTextField.setText("");
             wordTextField.setBackground(Color.WHITE);
             displayGame(gameLevelString);
@@ -767,9 +909,9 @@ public class StartUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void modeTextFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modeTextFieldsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_modeTextFieldsActionPerformed
 
     private void checkLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLevelActionPerformed
         // TODO add your handling code here:
@@ -779,23 +921,45 @@ public class StartUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_typeFieldActionPerformed
 
+    private void modeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_modeFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_modeFocusLost
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     // TODO add your handling code here:
+     modeString = mode.getSelectedItem().toString();
+        switch (modeString) {
+            case "Hashtag":
+                String[] output = modeTextFields.getText().trim().replaceAll("\\s+#", " ").split(" ");
+                if (modeTextFields.getText().trim().equals("")) {
+                    list = WordController.words;
+                } else {
+                    list = WordController.findHashtag(WordController.words, output);
+                }
+                break;
+            case "Date":
+                if (modeTextFields.getText().trim().equals("")) {
+                    list = WordController.words;
+                } else if (modeTextFields.getText().trim().toLowerCase().contains("nay") || modeTextFields.getText().trim().toLowerCase().contains("today") || modeTextFields.getText().trim().toLowerCase().contains("recent")) {
+                    list = WordController.findWordAddToday(WordController.words);
+                } else if (modeTextFields.getText().trim().length() <= 2) {
+                    list = WordController.findWordByDate("month", Integer.parseInt(modeTextFields.getText().trim()), WordController.words);
+                } else if (modeTextFields.getText().trim().length() <= 5) {
+                    list = WordController.findWordByDate("year", Integer.parseInt(modeTextFields.getText().trim()), WordController.words);
+                } else {
+                    list = WordController.findWordByDate(modeTextFields.getText(), WordController.words);
+                }
+                break;
+        }
+        list = WordController.duplicateWordinList(list);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void clearTextFields() {
         for (int i = 0; i < word.getWord().replaceAll("[,.:;?!&’'\"]", "").length(); i++) {
             //            System.out.println(textFields[i].toString());
             if (textFields[i] != null) {
                 textPanel.remove(textFields[i]);
             }
-        }
-        List<Word> rm = new ArrayList<Word>();
-        for (int i = 0; i < word.getFreq(); i++) {
-            rm.add(word);
-        }
-        list.removeAll(rm);
-        System.out.println(list);
-        System.out.println(WordController.words);
-        System.out.println("Size = " + list.size());
-        if (list.size() == 0) {
-            list = WordController.copyWords();
         }
         textPanel.revalidate();
         textPanel.repaint();
@@ -808,19 +972,28 @@ public class StartUI extends javax.swing.JFrame {
 //        textFields[index].setText("");
 //    }
     private void checkTrueFalse(String wordString, String checkLevelString) {
+        int check = 0;
         switch (checkLevelString) {
             case "Mức 1":
                 if (gameLevelString == "Legendary") {
                     if (word.getWord().equals(wordTextField.getText().trim().toLowerCase()) || wordString.equals(wordTextField.getText().trim().toLowerCase())) {
                         wordTextField.setBackground(Color.GREEN);
+//                        Word w = WordController.findWord(word.getWord());
+//                        int index = WordController.words.indexOf(w);
+//                        if (freqCount > 1) {
+//                            freqCount -= 1;
+//                            w.setFreq(freqCount);
+//                        }
+//                        WordController.words.set(index, w);
                     } else {
                         wordTextField.setBackground(Color.RED);
                         wordTextFieldHint.setBounds(30, 35, 150, 30);
                         String wordTemp = word.getWord().trim();
-                        System.out.println(wordTemp);
-                        wordTextFieldHint.setText("Có " + (wordTemp.replaceAll("[ ,.:;?!&’'\"]", "").length()) +  " chữ cái cần điền");
+//                        System.out.println(wordTemp);
+                        wordTextFieldHint.setText("Có " + (wordTemp.replaceAll("[ ,.:;?!&’'\"]", "").length()) + " chữ cái cần điền");
                         wordTextFieldHint.enable(false);
                         textPanel.add(wordTextFieldHint);
+                        check = 1;
                     }
                 } else {
                     for (int i = 0; i < wordString.length(); i++) {
@@ -831,6 +1004,7 @@ public class StartUI extends javax.swing.JFrame {
                             textFields[i].setBackground(Color.GREEN);
                         } else {
                             textFields[i].setBackground(Color.RED);
+                            check = 1;
                         }
                     }
                 }
@@ -839,15 +1013,23 @@ public class StartUI extends javax.swing.JFrame {
                 if (gameLevelString == "Legendary") {
                     if (word.getWord().equals(wordTextField.getText().trim().toLowerCase()) || wordString.equals(wordTextField.getText().trim().toLowerCase())) {
                         wordTextField.setBackground(Color.GREEN);
+//                        Word w = WordController.findWord(word.getWord());
+//                        int index = WordController.words.indexOf(w);
+//                        if (freqCount > 1) {
+//                            freqCount -= 1;
+//                            w.setFreq(freqCount);
+//                        }
+//                        WordController.words.set(index, w);
                     } else {
                         wordTextField.setBackground(Color.RED);
                         wordTextFieldHint.setBounds(30, 35, 150, 30);
                         String wordTemp = word.getWord().trim();
-                        System.out.println(wordTemp);
+//                        System.out.println(wordTemp);
                         wordTextFieldHint.setText(LCS(word.getWord().replaceAll("[ ,.:;?!&’'\"]", "").toLowerCase(), wordTextField.getText().trim().toLowerCase()));
                         wordTextFieldHint.enable(false);
                         textPanel.add(wordTextFieldHint);
-                        System.out.println("LCS = " + LCS(word.getWord().replaceAll("[ ,.:;?!&’'\"]", "").toLowerCase(), wordTextField.getText().trim().toLowerCase()));
+//                        System.out.println("LCS = " + LCS(word.getWord().replaceAll("[ ,.:;?!&’'\"]", "").toLowerCase(), wordTextField.getText().trim().toLowerCase()));
+                        check = 1;
                     }
                 } else {
                     for (int i = 0; i < wordString.length(); i++) {
@@ -856,69 +1038,121 @@ public class StartUI extends javax.swing.JFrame {
                             continue;
                         } else if (textFields[i].getText().equals(Character.toString(aString))) {
                             textFields[i].setBackground(Color.GREEN);
+//                        Word w = WordController.findWord(word.getWord());
+//                        int index = WordController.words.indexOf(w);
+//                        if (freqCount > 1) {
+//                            freqCount -= 1;
+//                            w.setFreq(freqCount);
+//                        }
+//                        WordController.words.set(index, w);
                         } else {
                             textFields[i].setBackground(Color.RED);
+                            check = 1;
                         }
                     }
                 }
             case "Mức 3":
-                
+
             case "Mức 4":
         }
-
+        Word w = WordController.findWord(word.getWord());
+        int index = WordController.words.indexOf(w);
+        if (check == 1) {
+            freqCount += 1;
+//            System.out.println("=====================");
+//            Word wl = WordController.findWord(list, word.getWord());
+//            System.out.println("============================"+wl.toString());
+//            int indexl = list.indexOf(wl);
+//            wl.setFreq(wl.getFreq() + 1);
+//            System.out.println("============================"+wl.toString());
+//            list.set(indexl, wl);
+        } else {
+            if (freqCount > 1) {
+                freqCount -= 1;
+            }
+            deleteWordWhenTrue();
+        }
+        w.setFreq(freqCount);
+        WordController.words.set(index, w);
+        WordController.writeWord(WordController.getDataPath());
     }
-    
+
+    private void deleteWordWhenTrue() {
+        List<Word> rm = new ArrayList<Word>();
+        for (int i = 0; i < word.getFreq(); i++) {
+            rm.add(word);
+        }
+        list.removeAll(rm);
+        if (list.size() == 0) {
+            list = WordController.copyWords();
+        }
+    }
+
     // Đưa ra dãy con dài nhất, dùng Longest common subsequence
-    private String LCS(String wordExactly, String wordAnswer){
-        String rs = "";
-        int m = Math.max(wordAnswer.length(), wordExactly.length());
-//        ArrayList<ArrayList<ArrayList<Character>>> S = new ArrayList<ArrayList<ArrayList<Character>>>(word.getWord().length());
+    private String LCS(String wordExactly, String wordAnswer) {
+//        List<Character>[][] S = new List[10][10];;
+//        Arrays.setAll(S,  ArrayList :: new);
+//        
+
+//        String rs = "";
+//        wordExactly = "E"+wordExactly;
+//        wordAnswer = "A"+wordAnswer;
+//        int[][] S = new int[wordExactly.length()][wordAnswer.length()];
+//        char[] x = wordExactly.toCharArray();
+//        char[] y = wordExactly.toCharArray();
+//	for(int i = 1; i <= wordExactly.length(); i++){
+//		for(int j = 1; j <= wordAnswer.length(); j++){
+//			if(x[i] == y[j]){
+//				S[i][j] = S[i-1][j-1] + 1;
+//                                rs = rs + x[i];
+//                                System.out.println("RR "+rs);
+//                                System.out.println("x" + x[i]);
+//			}
+//			else{
+//				S[i][j] = Math.max(S[i][j-1],S[i-1][j]);
+//			}
+//		}
+//	}
+//        System.out.println("rss = " + rs);
+//	return rs;
+//        int[][] S = new int[100][100];
 //        for (int i = 0; i < wordExactly.length(); i++) {
-//            S.set(0).set(i).set(0) = '0';
+//            S[0][i] = 0;
+//        }
+//        for (int i = 0; i < wordExactly.length(); i++) {
+//            S[i][0] = 0;
 //        }
 //        for (int i = 1; i <= wordExactly.length(); i++) {
 //            for (int j = 1; j <= wordAnswer.length(); j++) {
-//                
+//                if(Character.toString(wordExactly.charAt(i)).equals(Character.toString(wordAnswer.charAt(i)))){
+//                    int temp = S[i-1][j-1];
+//                    temp++;
+//                    S[i][j] = temp;
+//                    rs = rs + Character.toString(wordExactly.charAt(i));
+//                }
+//                else{
+//                    int temp1 = S[i][j-1];
+//                    int temp2 = S[i-1][j];
+//                    temp1 = Math.max(temp1, temp2);
+//                    S[i][j] = temp1;
+//                }
 //            }
 //        }
-        
-//        List<char>[][] S = new List[11][11];;
-//        Arrays.setAll(S,  ArrayList :: new);
-        String[][] S = new String[100][100];
-        String[] R = new String[m];
-        for (int i = 0; i < wordExactly.length(); i++) {
-            S[0][i] = "0";
+//        System.out.println("rss = " + rs);
+//        return rs;
+        return null;
+    }
+
+    boolean isLevelEasyToHard(String gameLevel) {
+        switch (gameLevelString) {
+            case "Very Easy":
+            case "Easy":
+            case "Medium":
+            case "Hard":
+                return true;
+            default:
+                return false;
         }
-        for (int i = 0; i < wordExactly.length(); i++) {
-            S[i][0] = "0";
-        }
-        for (int i = 0; i < m; i++) {
-            R[i] = "%";
-        }
-        for (int i = 1; i <= wordExactly.length(); i++) {
-            for (int j = 1; j <= wordAnswer.length(); j++) {
-//                textFields[0].setText(Character.toString(wordString.charAt(0)));
-                if(Character.toString(wordExactly.charAt(i)).equals(Character.toString(wordAnswer.charAt(i)))){
-//                    wordExactly.charAt(i). == wordAnswer.charAt(i)
-                    int temp = Integer.parseInt(S[i-1][j-1]);
-                    temp++;
-                    S[i][j] = Integer.toString(temp);
-                    R[i] = Character.toString(wordExactly.charAt(i));
-                }
-                else{
-                    int temp1 = Integer.parseInt(S[i][j-1]);
-                    int temp2 = Integer.parseInt(S[i-1][j]);
-                    temp1 = Math.max(temp1, temp2);
-                    S[i][j] = Integer.toString(temp1);
-                }
-            }
-        }
-        for (int i = 0; i < m; i++) {
-            if(R[i] != "%")
-                rs = rs.concat(R[i]);
-        }
-        System.out.println("rss = " + rs);
-        return rs;
     }
 
     public static void main(String args[]) {
@@ -968,7 +1202,7 @@ public class StartUI extends javax.swing.JFrame {
     private javax.swing.JTextArea hintField;
     private javax.swing.JLabel hintLabel;
     private javax.swing.JLabel imgLable;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -978,9 +1212,10 @@ public class StartUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextArea meaningField;
     private javax.swing.JLabel meaningLabel;
+    private javax.swing.JComboBox<String> mode;
+    private javax.swing.JTextField modeTextFields;
     private javax.swing.JButton nextButton;
     private javax.swing.JTextArea phoneticField;
     private javax.swing.JLabel phoneticLabel;

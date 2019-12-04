@@ -1,7 +1,7 @@
 6
 0#go#đi#ɡəʊ#Verb#D:\Project\LearnEnglishApp\data\img\go.jpg#D:\Project\LearnEnglishApp\data\voice\go.mp3#di chuyển bằng chân#verb@walk@#2019-11-19#1
-1#test#kiểm tra#tɛst#Noun#D:\Project\LearnEnglishApp\data\img\test.jpg#D:\Project\LearnEnglishApp\data\voice\test.mp3#Hình thức đánh giá một việc gì đó#exam@study@#2019-11-20#1
+1#test#kiểm tra#tɛst#Noun#D:\Project\LearnEnglishApp\data\img\test.jpg#D:\Project\LearnEnglishApp\data\voice\test.mp3#Hình thức đánh giá một việc gì đó#exam@study@#2019-11-20#2
 2#men make houses, women make homes#Đàn ông xây nhà, đàn bà xây tổ ấm#mɛn meɪk haʊzɪzˈwɪmɪn meɪk həʊm#Idioms#D:\Project\LearnEnglishApp\data\img\Menmakehouses,womenmakehomes.jpg#D:\Project\LearnEnglishApp\data\voice\menmakehouses,womenmakehomes.mp3#Thành ngữ nói về vai trò của chồng và vợ trong một gia đình#family@men@women@#2019-11-20#1
-3#money makes the mare go#Có tiền mua tiên cũng được#ˈmʌni meɪk ðə mɛː ɡəʊ#Idioms#D:\Project\LearnEnglishApp\data\img\Moneymakesthemarego.jpg#D:\Project\LearnEnglishApp\data\voice\moneymakesthemarego.mp3#Sức mạnh của đồng tiền#money@rich@#2019-11-20#1
+3#money makes the mare go#Có tiền mua tiên cũng được#ˈmʌni meɪk ðə mɛː ɡəʊ#Idioms#D:\Project\LearnEnglishApp\data\img\Moneymakesthemarego.jpg#D:\Project\LearnEnglishApp\data\voice\moneymakesthemarego.mp3#Sức mạnh của đồng tiền#money@rich@#2019-11-20#2
 4#one swallow doesn't make a summer#Một cánh én không thể làm nên mùa xuân#wʌn ˈswɒləʊ meɪk ə ˈsʌmə#Idioms#D:\Project\LearnEnglishApp\data\img\Oneswallowdoesn’tmakeasummer.jpg#D:\Project\LearnEnglishApp\data\voice\oneswallowdoesn’tmakeasummer.mp3#Tác hại của sự thiếu đoàn kết, cô đơn#power@alone@#2019-11-20#1
-5#safe and sound#an toàn##Idioms#D:\Project\LearnEnglishApp\data\img\safeandsound.jpg#D:\Project\LearnEnglishApp\data\voice\safeandsound.mp3#câu nói về sự an toàn#idioms@safe@#2019-11-21#1
+5#safe and sound#an toàn#seɪf ənd saʊnd#Idioms#D:\Project\LearnEnglishApp\data\img\safeandsound.jpg#D:\Project\LearnEnglishApp\data\voice\safeandsound.mp3#câu nói về sự an toàn#idioms@safe@#2019-12-04#5

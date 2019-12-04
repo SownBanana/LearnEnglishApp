@@ -86,10 +86,10 @@ public class WordController {
 
     public static boolean createConfigFile() {
         try {
-            String s = "hard-level %Mức 1\n"
-                    + "check-level %Mức 1\n"
-                    + "hastag fillter %disable%test1@test2\n"
-                    + "date fillter %disable%disable(today-added word)%11%2019\n";
+            String s = "Very Easy#"           //Độ khó
+                    + "Mức 1#"                //Chấm
+                    + "test1@test2#"  //Hashtag Fillter
+                    + "disable%11/2019";     //Date Fillter
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getConfigPath()), "UTF-8"));
             bufferedWriter.write(s);
             bufferedWriter.close();
@@ -310,7 +310,7 @@ public class WordController {
             }
             case "month": {
                 for (Word word : list) {
-                    if (word.getDateModified().getMonthValue() == key) {
+                    if (word.getDateModified().getMonthValue() == key && word.getDateModified().getYear() == LocalDate.now().getYear()) {
                         rs.add(word);
                     }
                 }
@@ -322,11 +322,17 @@ public class WordController {
     }
 
     public static List<Word> findWordByDate(String dateString, List<Word> list) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate inputDate = LocalDate.parse(dateString, formatter);
+        DateTimeFormatter formatter;
+        if(dateString.length() == 7){
+            formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+        }
+        else{
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");        
+        }
+//        LocalDate inputDate = LocalDate.parse(dateString, formatter);
         List<Word> rs = new ArrayList<>();
         for (Word word : list) {
-            if (word.getDateModified().equals(inputDate)) {
+            if (word.getDateModified().format(formatter).equals(dateString)) {
                 rs.add(word);
             }
         }
@@ -494,9 +500,5 @@ public class WordController {
                 rs.add(word);
         }
         return rs;
-    }
-    public static void main(String[] args) {
-//        List<Word> l = new ArrayList<>();
-//        l = findWordByDate("2019-11-16", words);
     }
 }

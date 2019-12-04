@@ -6,12 +6,18 @@
 package com.sownbanana.view;
 
 import com.sownbanana.controller.WordController;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -27,9 +33,17 @@ public class HomeUI extends javax.swing.JFrame {
     public HomeUI() {
         initComponents();
         this.setLocationRelativeTo(null);
-        startBtn.setMnemonic(KeyEvent.VK_S);
-//        ImageIcon icon = new ImageIcon("C:\\Users\\SownBanana\\Pictures\\Annotation 2019-09-15 192611.png");
-//        testLable.setIcon(icon);
+        
+        InputMap im = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getRootPane().getActionMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "exit");
+        am.put("exit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(JOptionPane.showConfirmDialog(rootPane, "Đóng chương trình?","Màn hình chính", JOptionPane.YES_NO_OPTION) == 0) System.exit(0);
+            }
+        });
+
     }
 
     /**
@@ -43,7 +57,6 @@ public class HomeUI extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         startBtn = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
         addBtn = new javax.swing.JButton();
         showListWordBtn = new javax.swing.JButton();
         quitBtn = new javax.swing.JButton();
@@ -69,8 +82,6 @@ public class HomeUI extends javax.swing.JFrame {
                 startBtnKeyPressed(evt);
             }
         });
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Very Easy", "Easy", "Medium", "Hard", "Very Hard", "NightMare", "Madness" }));
 
         addBtn.setText("Add Word");
         addBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -116,14 +127,12 @@ public class HomeUI extends javax.swing.JFrame {
                             .addComponent(quitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(showListWordBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(108, 108, 108))
+                        .addGap(351, 351, 351))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(startBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBox1))))
-                .addGap(243, 243, 243))
+                        .addComponent(jCheckBox1)
+                        .addGap(248, 248, 248))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,13 +140,10 @@ public class HomeUI extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(startBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox1)))
-                .addGap(18, 18, 18)
+                    .addComponent(jCheckBox1))
+                .addGap(22, 22, 22)
                 .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(showListWordBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,7 +163,7 @@ public class HomeUI extends javax.swing.JFrame {
         System.out.println("Start");
         if (WordController.words == null) {
             new wordsEmptyDialog(this, rootPaneCheckingEnabled).setVisible(true);
-        }else{
+        } else {
             new StartUI().setVisible(true);
         }
     }//GEN-LAST:event_startBtnActionPerformed
@@ -178,7 +184,7 @@ public class HomeUI extends javax.swing.JFrame {
 
     private void quitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitBtnActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
+        if(JOptionPane.showConfirmDialog(rootPane, "Đóng chương trình?","Màn hình chính", JOptionPane.YES_NO_OPTION) == 0) System.exit(0);
     }//GEN-LAST:event_quitBtnActionPerformed
 
     private void startBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_startBtnKeyPressed
@@ -226,7 +232,6 @@ public class HomeUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton quitBtn;
     private javax.swing.JButton showListWordBtn;
