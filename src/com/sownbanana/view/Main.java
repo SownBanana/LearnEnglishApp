@@ -5,6 +5,7 @@
  */
 package com.sownbanana.view;
 
+import com.sownbanana.controller.Config;
 import com.sownbanana.controller.WordController;
 import javax.swing.JFrame;
 
@@ -13,13 +14,14 @@ import javax.swing.JFrame;
  * @author SownBanana
  */
 public class Main {
+
     public static void main(String[] args) {
         String path = WordController.getDataPath();
         WordController.checkDataFolder();
         System.out.println(WordController.checkConfigFolder());
         System.out.println(WordController.readFile(path));
         System.out.println(WordController.words);
-        
+        Config.readConfigFile();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         try {
@@ -30,20 +32,21 @@ public class Main {
                 }
             }
         } catch (ClassNotFoundException ex) {
-           
+
         } catch (InstantiationException ex) {
-           
+
         } catch (IllegalAccessException ex) {
-            
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            
+
         }
         //</editor-fold>
         /* Create and display the form */
-        
+
         HomeUI ui = new HomeUI();
         ui.show();
         ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ui.setLocationRelativeTo(null);
+
     }
 }

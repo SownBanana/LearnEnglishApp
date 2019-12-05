@@ -72,7 +72,19 @@ public class AddWUI extends javax.swing.JFrame {
         am.put("exit", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(JOptionPane.showConfirmDialog(rootPane, "Bạn thực sự muốn thoát?","Thêm từ", JOptionPane.YES_NO_OPTION) == 0) dispose();
+                if (wordField.getText().trim().equals("")
+                        && (phoneticField.getText().trim().equals("") || phoneticField.getForeground().equals(Color.GRAY))
+                        && meanTextArea.getText().trim().equals("")
+                        && hintTextArea.getText().trim().equals("")
+                        && (hashtagField.getText().trim().equals("") || hashtagField.getForeground().equals(Color.GRAY))
+                        && voiceFileURL.getText().equals("File Name")) {
+                    dispose();
+                } else {
+                    if (JOptionPane.showConfirmDialog(rootPane, "Bạn thực sự muốn thoát?", "Bạn chưa lưu từ của mình", JOptionPane.YES_NO_OPTION) == 0) {
+                        dispose();
+                    }
+                }
+
             }
         });
         imgLable.setSize(210, 244);
@@ -467,35 +479,14 @@ public class AddWUI extends javax.swing.JFrame {
         String type = (String) typeCombo.getSelectedItem();
         String hint = hintTextArea.getText().trim();
         hint = hint.replaceAll("(?!\\r)\\n", "%newline%");
-        String[] hashtag = hashtagField.getText().trim().split("\\s+");
+//        String[] hashtag = hashtagField.getText().trim().split("\\s+");
+        String[] hashtag = hashtagField.getText().replaceAll("#", " ").replaceAll("\\s+", " ").trim().split(" ");
         LocalDate dateModified;
         boolean check = true;
         //Thiếu từ
         if (!"".equals(word)) {
             if (!checkExistWord) {
                 insertWordLbl.setVisible(false);
-//                if (phoneticField.getForeground() == Color.GRAY || "".equals(ipa)) {
-//                    Thread tag = new Thread(() -> {
-//                        try {
-//                            Thread.sleep(5000);
-//                        } catch (InterruptedException ex) {
-//                            Logger.getLogger(AddWUI.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                        rePhonetic.setVisible(true);
-//                    });
-//                    tag.start();
-//                    String phonetic = WordController.getPhonetic(word);
-//                    String[] input = word.split(" ");
-//                    System.out.println(word);
-//                    String[] output = phonetic.split(" ");
-//                    if (input.length == output.length) {
-//                        rePhonetic.setVisible(false);
-//                    }
-//                    phoneticField.setText(phonetic);
-//                    System.out.println("done phonetic");
-//                    phoneticField.setForeground(Color.BLACK);
-//                    ipa = phoneticField.getText();
-//                }
             }
 
         } else {
@@ -582,7 +573,18 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
-        if(JOptionPane.showConfirmDialog(rootPane, "Bạn thực sự muốn thoát?","Thêm từ", JOptionPane.YES_NO_OPTION) == 0) this.dispose();
+        if (wordField.getText().trim().equals("")
+                && (phoneticField.getText().trim().equals("") || phoneticField.getForeground().equals(Color.GRAY))
+                && meanTextArea.getText().trim().equals("")
+                && hintTextArea.getText().trim().equals("")
+                && (hashtagField.getText().trim().equals("") || hashtagField.getForeground().equals(Color.GRAY))
+                && voiceFileURL.getText().equals("File Name")) {
+            dispose();
+        } else {
+            if (JOptionPane.showConfirmDialog(rootPane, "Bạn thực sự muốn thoát?", "Bạn chưa lưu từ của mình", JOptionPane.YES_NO_OPTION) == 0) {
+                dispose();
+            }
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void typeComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typeComboItemStateChanged
@@ -661,11 +663,6 @@ public class AddWUI extends javax.swing.JFrame {
                 insertWordLbl.addMouseListener(clkEdit);
             }
         }
-        if ("".equals(wordField.getText().trim())) {
-            pickImg.setEnabled(false);
-        } else {
-            pickImg.setEnabled(true);
-        }
         if (isAutoPhonetic && !"".equals(wordField.getText().trim())) {
             Thread thread = new Thread(() -> {
                 System.out.println("Sinh");
@@ -736,6 +733,11 @@ public class AddWUI extends javax.swing.JFrame {
     private void wordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_wordFieldKeyPressed
         // TODO add your handling code here:
         insertWordLbl.setVisible(false);
+        if ("".equals(wordField.getText().trim())) {
+            pickImg.setEnabled(false);
+        } else {
+            pickImg.setEnabled(true);
+        }
     }//GEN-LAST:event_wordFieldKeyPressed
 
     private void meanTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_meanTextAreaKeyPressed

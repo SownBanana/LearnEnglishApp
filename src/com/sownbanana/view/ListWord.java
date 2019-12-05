@@ -15,7 +15,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -319,26 +321,43 @@ public class ListWord extends javax.swing.JFrame {
         // TODO add your handling code here:
 //        Lọc
         clearTable();
-        List<Word> fillterList = new ArrayList<>();
+//        boolean checkDateFormmat;
+//        List<Word> fillterList = new ArrayList<>();
         String[] output = hashtagField.getText().trim().replaceAll("\\s+#", " ").split(" ");
         if (hashtagField.getText().trim().equals("")) {
-            fillterList = WordController.copyWords(WordController.words);
+            list = WordController.copyWords(WordController.words);
         } else {
-            fillterList = WordController.findHashtag(WordController.words, output);
+            list = WordController.findHashtag(WordController.words, output);
         }
         if (dateField.getText().trim().equals("") || dateField.getForeground().equals(Color.GRAY)) {
         } else if (dateField.getText().trim().toLowerCase().contains("nay") || dateField.getText().trim().toLowerCase().contains("today") || dateField.getText().trim().toLowerCase().contains("recent")) {
-            fillterList = WordController.findWordAddToday(fillterList);
+            list = WordController.findWordAddToday(list);
         } else if (dateField.getText().trim().length() <= 2) {
-            fillterList = WordController.findWordByDate("month", Integer.parseInt(dateField.getText().trim()), fillterList);
+            try {
+                list = WordController.findWordByDate("month", Integer.parseInt(dateField.getText().trim()), list);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (MM số nguyên)");
+//                checkDateFormmat = false;
+            }
+//            fillterList = WordController.findWordByDate("month", Integer.parseInt(dateField.getText().trim()), fillterList);
         } else if (dateField.getText().trim().length() <= 5) {
-            fillterList = WordController.findWordByDate("year", Integer.parseInt(dateField.getText().trim()), fillterList);
+            try {
+                list = WordController.findWordByDate("year", Integer.parseInt(dateField.getText().trim()), list);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (MM/yyyy)");
+            }
+//            list = WordController.findWordByDate("year", Integer.parseInt(dateField.getText().trim()), list);
         } else {
-            fillterList = WordController.findWordByDate(dateField.getText(), fillterList);
+            if (isValidFormat(dateField.getText().trim())) {
+                list = WordController.findWordByDate(dateField.getText(), WordController.words);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (dd/MM/yyyy)");
+            }
+//            list = WordController.findWordByDate(dateField.getText(), list);
         }
-        list = fillterList;
+//        list = fillterList;
 //        System.out.println(fillterList);
-        showresult(list);
+        showresult();
 
     }//GEN-LAST:event_fillterBtnActionPerformed
 
@@ -415,6 +434,31 @@ public class ListWord extends javax.swing.JFrame {
     public void clearTable() {
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
+    }
+
+    public boolean isValidFormat(String value) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate ldt = null;
+        try {
+            ldt = LocalDate.parse(value, formatter);
+            String result = ldt.format(formatter);
+            return result.equals(value);
+        } catch (DateTimeParseException e) {
+            try {
+                LocalDate ld = LocalDate.parse(value, formatter);
+                String result = ld.format(formatter);
+                return result.equals(value);
+            } catch (DateTimeParseException exp) {
+                try {
+                    LocalTime lt = LocalTime.parse(value, formatter);
+                    String result = lt.format(formatter);
+                    return result.equals(value);
+                } catch (DateTimeParseException e2) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
     }
 
     /**

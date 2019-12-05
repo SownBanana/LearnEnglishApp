@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -86,10 +87,11 @@ public class WordController {
 
     public static boolean createConfigFile() {
         try {
-            String s = "Very Easy\n"           //Độ khó
-                    + "Mức 1\n"                //Chấm
-                    + "disable%test1@test2\n"  //Hashtag Fillter
-                    + "disable%11/2019\n";     //Date Fillter
+            String s = "Very Easy#" //Độ khó
+                    + "Mức 1#" //Chấm
+                    + "test1@test2#" //Hashtag Fillter
+                    + "disable%11/2019#" //Date Fillter
+                    + "disable";      //AI used
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getConfigPath()), "UTF-8"));
             bufferedWriter.write(s);
             bufferedWriter.close();
@@ -122,6 +124,7 @@ public class WordController {
     public static int writeWord(String path) {
         int rs = -1;
         if (words != null) {
+            words.sort(null);
             String s = String.valueOf(total) + "\n";
             for (Word w
                     : words) {
@@ -192,6 +195,20 @@ public class WordController {
 
     //Tìm từ
     public static Word findWord(String name) {
+//        int start = 0;
+//        int end = words.size() - 1;
+//        int middle;
+//        while (start <= end) {
+//            middle = (start + end) / 2;
+//            Word midWord = words.get(middle);
+//            if (midWord.getWord().equals(name)) {
+//                return midWord;
+//            } else if (midWord.getWord().compareTo(name) < 0) {
+//                start = middle + 1;
+//            } else {
+//                end = middle - 1;
+//            }
+//        }
         for (Word w
                 : words) {
             if (w.getWord().equals(name)) {
@@ -202,6 +219,21 @@ public class WordController {
     }
 
     public static Word findWord(List<Word> ws, String name) {
+//        ws.sort(null);
+//        int start = 0;
+//        int end = ws.size() - 1;
+//        int middle;
+//        while (start <= end) {
+//            middle = (start + end) / 2;
+//            Word midWord = ws.get(middle);
+//            if (midWord.getWord().equals(name)) {
+//                return midWord;
+//            } else if (midWord.getWord().compareTo(name) < 0) {
+//                start = middle + 1;
+//            } else {
+//                end = middle - 1;
+//            }
+//        }
         for (Word w
                 : ws) {
             if (w.getWord().equals(name)) {
@@ -274,7 +306,7 @@ public class WordController {
         return rs;
     }
 
-    //Tìm list từ chứa thất cả hashtag
+    //Tìm list từ chứa tất cả hashtag
     public static List<Word> findHashtagContainAll(List<Word> list, String... hashtag) {
         List<Word> rs = new ArrayList<>();
         list.forEach((w) -> {
@@ -323,11 +355,10 @@ public class WordController {
 
     public static List<Word> findWordByDate(String dateString, List<Word> list) {
         DateTimeFormatter formatter;
-        if(dateString.length() == 7){
+        if (dateString.length() == 7) {
             formatter = DateTimeFormatter.ofPattern("MM/yyyy");
-        }
-        else{
-            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");        
+        } else {
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         }
 //        LocalDate inputDate = LocalDate.parse(dateString, formatter);
         List<Word> rs = new ArrayList<>();
@@ -422,6 +453,9 @@ public class WordController {
     }
 
     public static String hashtag2String(String[] hashtag) {
+        if (hashtag == null) {
+            return "";
+        }
         return stringArray2String(hashtag, "@");
     }
 
@@ -469,7 +503,7 @@ public class WordController {
         dc.writeMp3(s.getVoiceInputStream(word), word);
     }
 
-    public static String getPhonetic(String word){
+    public static String getPhonetic(String word) {
         Phonetic phonetic = new Phonetic();
         return phonetic.getPhonetic(word);
     }
@@ -486,6 +520,7 @@ public class WordController {
         }
         return list;
     }
+
     public static List<Word> copyWords(List<Word> list) {
         List<Word> rs = new ArrayList<Word>();
         for (Word word : list) {
@@ -493,12 +528,22 @@ public class WordController {
         }
         return rs;
     }
-    public static List<Word> duplicateWordinList(List<Word> list){
+
+    public static List<Word> duplicateWordinList(List<Word> list) {
         List<Word> rs = new ArrayList<Word>();
         for (Word word : list) {
-            for(int i = 0; i < word.getFreq(); i++)
+            for (int i = 0; i < word.getFreq(); i++) {
                 rs.add(word);
+            }
         }
+        return rs;
+    }
+    public static String hashtagFancy(String[] hashtag){
+        String rs = "";
+        for (String string : hashtag) {
+            rs = rs + "#"+ string + " ";
+        }
+        if(rs.trim().equals("#")) return " ";
         return rs;
     }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDate;
  *
  * @author SownBanana
  */
-public class Word {
+public class Word implements Comparable<Word>{
     private int id;
     private String word;
     private String mean;
@@ -173,5 +173,13 @@ public class Word {
         }
         return rs;
     }
+
+    @Override
+    public int compareTo(Word anotherWord) {
+        if (word.equals(anotherWord.word)) return 0;
+        else if(word.compareTo(anotherWord.word) > 0) return 1;
+        else return -1;
+    }
+    
 
 }
