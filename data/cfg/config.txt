@@ -1,1 +1,1 @@
-Legendary#Mức 3##disable% #disable
+Medium#Mức 4#test@basic@#disable% #disable

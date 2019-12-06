@@ -453,11 +453,10 @@ public class StartUI extends javax.swing.JFrame {
 
                                 } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
                                     jTextField.transferFocus();
-                                } 
-//                                else if (e.getKeyCode() == 10){
-//                                    System.out.println("Before Text = " + jTextField.getText().trim());
-//                                    jTextField.setText(jTextField.getText().trim());
-//                                } 
+                                } //                                else if (e.getKeyCode() == 10){
+                                //                                    System.out.println("Before Text = " + jTextField.getText().trim());
+                                //                                    jTextField.setText(jTextField.getText().trim());
+                                //                                } 
                                 else {
                                     char key = e.getKeyChar();
                                     if (key == ' ') {
@@ -553,8 +552,9 @@ public class StartUI extends javax.swing.JFrame {
                 case "Hard":
                     textFields[0].setText(Character.toString(wordString.charAt(0)));
                     textFields[lengthWord - 1].setText(Character.toString(wordString.charAt(lengthWord - 1)));
-                    textFields[0].enable(false);
-                    textFields[lengthWord - 1].enable(false);
+                    textFields[0].setEditable(false);
+                    textFields[0].setFocusable(false); 
+                    textFields[lengthWord - 1].setEditable(false);                   
                     textFields[0].setBackground(Color.green);
                     textFields[lengthWord - 1].setBackground(Color.green);
                     break;
@@ -583,6 +583,151 @@ public class StartUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(StartUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        transferFocus();
+    }
+    private void redisplayGame(Word w) {
+        String wordString = w.getWord().replaceAll("[,.:;?!&’'\"]", "");
+        System.out.println(w);
+        int lengthWord = wordString.length();
+        System.out.println(lengthWord);
+        textFields = new JTextField[lengthWord];
+        if (gameLevelString != "Legendary") {
+            int ver = 0, hor = -1; //biến ver phục vụ cho việc xuống dòng
+            for (int i = 0; i < lengthWord; i++) {
+                hor++;
+                char aString = wordString.charAt(i);
+                if ((!Character.toString(aString).equals(" "))) {
+                    textFields[i] = new JTextField();
+                    textFields[i].setBounds(30 * (hor + 1), 35 * ver, 30, 30);
+                    textFields[i].setFont(new Font(".VNArialH", Font.PLAIN, 13));
+                    textPanel.add(textFields[i]);
+                    textFields[i].setVisible(true);
+                    //Xử lý mỗi ô nhập một ký tự
+                    if ((isLevelEasyToHard(gameLevelString) && i == 1) || (!isLevelEasyToHard(gameLevelString) && i == 0)) {
+                        textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
+
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+                                    jTextField.transferFocus();
+                                } //                                else if (e.getKeyCode() == 10){
+                                //                                    System.out.println("Before Text = " + jTextField.getText().trim());
+                                //                                    jTextField.setText(jTextField.getText().trim());
+                                //                                } 
+                                else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
+
+                                    } else {
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                        jTextField.transferFocus();
+                                    }
+                                }
+
+                            }
+                        });
+                    } else if ((isLevelEasyToHard(gameLevelString) && i == lengthWord - 2) || (!isLevelEasyToHard(gameLevelString) && i == lengthWord - 1)) {
+                        textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
+                                        jTextField.transferFocusBackward();
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+                                    jTextField.transferFocusBackward();
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+
+                                } else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
+
+                                    } else {
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                    }
+                                }
+
+                            }
+                        });
+                    } else {
+                        textFields[i].addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                JTextField jTextField = (JTextField) e.getSource();
+                                if (e.getKeyCode() == 8) {
+                                    if ("".equals(jTextField.getText())) {
+                                        jTextField.transferFocusBackward();
+                                    }
+                                } else if (e.getKeyCode() == 37 || e.getKeyCode() == 38) {
+                                    jTextField.transferFocusBackward();
+                                } else if (e.getKeyCode() == 39 || e.getKeyCode() == 40) {
+                                    jTextField.transferFocus();
+                                } else {
+                                    char key = e.getKeyChar();
+                                    if (key == ' ') {
+
+                                    } else {
+                                        jTextField.setText(String.valueOf(key).substring(0, 0).toUpperCase());
+                                        jTextField.setBackground(Color.WHITE);
+                                        jTextField.transferFocus();
+                                    }
+                                }
+
+                            }
+                            //<editor-fold defaultstate="collapsed" desc=" another version">
+//                    @Override
+//                    public void keyPressed(KeyEvent e) {
+//                        JTextField jTextField = (JTextField) e.getSource();
+//                        if (!(jTextField.getText().length() == 1) && !(jTextField.getText().equals(""))) {
+//                            String rs = jTextField.getText().substring(1, 2);
+//                            jTextField.setText(rs);
+//
+//                        }
+//                        jTextField.transferFocus();
+//                    }
+                            //</editor-fold>
+                        });
+
+                    }
+                } else {
+                    int j = indexEndNextWord(wordString.substring(i + 1)) + 1;
+                    if (j > 15 - hor) { //1 dòng chỉ được tối đa 15 ký tự
+                        ver++;
+                        hor = -1;
+                    }
+                }
+            }
+            textPanel.revalidate();
+            textPanel.repaint();
+            switch (gameLevelString) {
+                case "Very Easy":
+                case "Easy":
+                case "Medium":
+                case "Hard":
+                    textFields[0].setText(Character.toString(wordString.charAt(0)));
+                    textFields[lengthWord - 1].setText(Character.toString(wordString.charAt(lengthWord - 1)));
+                    textFields[0].setEditable(false);
+                    textFields[0].setFocusable(false); 
+                    textFields[lengthWord - 1].setEditable(false);                   
+                    textFields[0].setBackground(Color.green);
+                    textFields[lengthWord - 1].setBackground(Color.green);
+                    break;
+            }
+        } else {
+            wordTextField.setBounds(30, 0, 300, 30);
+            wordTextField.setFont(new Font(".VNArialH", Font.PLAIN, 13));
+            textPanel.add(wordTextField);
+        }
+
         transferFocus();
     }
 
@@ -638,11 +783,6 @@ public class StartUI extends javax.swing.JFrame {
         gameLevel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         gameLevel.setForeground(new java.awt.Color(255, 0, 0));
         gameLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Very Easy", "Easy", "Medium", "Hard", "Very Hard", "Nightmare", "Legendary" }));
-        gameLevel.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                gameLevelFocusLost(evt);
-            }
-        });
         gameLevel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gameLevelActionPerformed(evt);
@@ -891,24 +1031,21 @@ public class StartUI extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
 //        checkLevelString = checkLevel.getSelectedItem().toString();
         String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
-        checkTrueFalse(wordString, checkLevelString);
+        clearTextFieldHint();
+        checkTrueFalse(wordString);
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void gameLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLevelActionPerformed
+//        System.out.println(word.toString());
         gameLevelString = gameLevel.getSelectedItem().toString();
         refresh();
         Config.gameLevel = gameLevelString;
-        Config.writeConfigFile();
+        Config.writeConfigFile();     
     }//GEN-LAST:event_gameLevelActionPerformed
 
     private void pronounceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pronounceButtonActionPerformed
         WordController.playSound(word);
     }//GEN-LAST:event_pronounceButtonActionPerformed
-
-    private void gameLevelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gameLevelFocusLost
-
-        config.checkLevel = gameLevel.getSelectedItem().toString();
-    }//GEN-LAST:event_gameLevelFocusLost
 
     private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
         // TODO add your handling code here:
@@ -917,19 +1054,7 @@ public class StartUI extends javax.swing.JFrame {
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         clearTextFields();
         refresh();
-        if (gameLevelString == "Legendary") {
-            wordTextField.setText("");
-            wordTextField.setBackground(Color.WHITE);
-            textPanel.remove(wordTextFieldHint);
-//            textPanel.remove(phoneticButton);
-//            textPanel.remove(pronounceJButton);
-            textPanel.revalidate();
-            textPanel.repaint();
-            displayGame();
-        } else {
-            clearTextFields();
-            displayGame();
-        }
+        displayGame();
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void modeTextFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modeTextFieldsActionPerformed
@@ -1023,11 +1148,23 @@ public class StartUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void clearTextFields() {
+        //1-6
         for (int i = 0; i < word.getWord().replaceAll("[,.:;?!&’'\"]", "").length(); i++) {
             if (textFields[i] != null) {
                 textPanel.remove(textFields[i]);
             }
         }
+        //7
+        wordTextField.setText("");
+        wordTextField.setBackground(Color.WHITE);
+        textPanel.remove(wordTextField);
+        textPanel.remove(wordTextFieldHint);
+        
+        textPanel.revalidate();
+        textPanel.repaint();
+    }
+    public void clearTextFieldHint(){
+        textPanel.remove(wordTextFieldHint);
         textPanel.revalidate();
         textPanel.repaint();
     }
@@ -1035,8 +1172,10 @@ public class StartUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    private void checkTrueFalse(String wordString, String checkLevelString) {
-        int check = 0;
+    private void checkTrueFalse(String wordString) {
+        gameLevelString = gameLevel.getSelectedItem().toString();
+        checkLevelString = checkLevel.getSelectedItem().toString();
+        boolean check = true;
         switch (checkLevelString) {
             case "Mức 1":
                 if (gameLevelString == "Legendary") {
@@ -1044,27 +1183,20 @@ public class StartUI extends javax.swing.JFrame {
                         wordTextField.setBackground(Color.GREEN);
                     } else {
                         wordTextField.setBackground(Color.RED);
-                        wordTextFieldHint.setBounds(30, 35, 250, 30);
+                        wordTextFieldHint.setBounds(30, 35, 300, 30);
                         String wordTemp = word.getWord().trim();
                         wordTextFieldHint.setText("Có " + (wordTemp.replaceAll("[ ,.:;?!&’'\"]", "").length()) + " chữ cái cần điền");
                         wordTextFieldHint.enable(false);
-//                        phoneticButton.setBounds(30, 70, 100, 30);
-//                        phoneticButton.setText("Xem phiên âm");
-//                        pronounceJButton.setBounds(200, 70, 100, 30);
-//                        pronounceJButton.setText("Nghe phát âm");
                         textPanel.add(wordTextFieldHint);
                         phoneticLabel.setVisible(true);
                         phoneticField.setVisible(true);
                         pronounceButton.setVisible(true);
-//                        textPanel.add(phoneticButton);
-//                        textPanel.add(pronounceJButton);
-                        check = 1;
+                        check = false;
                     }
                 } else {
                     for (int i = 0; i < wordString.length(); i++) {
                         char aString = wordString.charAt(i);
                         if (" ".equals(Character.toString(aString))) {
-                            continue;
                         } else if (textFields[i].getText().equals(Character.toString(aString))) {
                             textFields[i].setBackground(Color.GREEN);
                         } else {
@@ -1072,7 +1204,7 @@ public class StartUI extends javax.swing.JFrame {
                             phoneticLabel.setVisible(true);
                             phoneticField.setVisible(true);
                             pronounceButton.setVisible(true);
-                            check = 1;
+                            check = false;
                         }
                     }
                 }
@@ -1087,24 +1219,17 @@ public class StartUI extends javax.swing.JFrame {
                         String wordTemp = word.getWord().trim();
                         wordTextFieldHint.setText("Các chữ cái đã điền đúng:  " + LCS(word.getWord().replaceAll("[,.:;?!&’'\"]", "").toLowerCase(), wordTextField.getText().trim().toLowerCase()));
                         wordTextFieldHint.enable(false);
-//                        phoneticButton.setBounds(400, 10, 100, 30);
-//                        phoneticButton.setText("Xem phiên âm");
-//                        pronounceJButton.setBounds(400, 35, 100, 30);
-//                        pronounceJButton.setText("Nghe phát âm");
                         textPanel.add(wordTextFieldHint);
-//                        textPanel.add(phoneticButton);
-//                        textPanel.add(pronounceJButton);
                         phoneticLabel.setVisible(true);
                         phoneticField.setVisible(true);
                         pronounceButton.setVisible(true);
-                        check = 1;
+                        check = false;
 
                     }
                 } else {
                     for (int i = 0; i < wordString.length(); i++) {
                         char aString = wordString.charAt(i);
                         if (" ".equals(Character.toString(aString))) {
-                            continue;
                         } else if (textFields[i].getText().equals(Character.toString(aString))) {
                             textFields[i].setBackground(Color.GREEN);
                         } else {
@@ -1112,7 +1237,7 @@ public class StartUI extends javax.swing.JFrame {
                             phoneticLabel.setVisible(true);
                             phoneticField.setVisible(true);
                             pronounceButton.setVisible(true);
-                            check = 1;
+                            check = false;
                         }
                     }
                 }
@@ -1136,21 +1261,20 @@ public class StartUI extends javax.swing.JFrame {
 //                        textPanel.add(pronounceJButton);
                         phoneticLabel.setVisible(true);
                         pronounceButton.setVisible(true);
-                        check = 1;
+                        check = false;
 
                     }
                 } else {
                     for (int i = 0; i < wordString.length(); i++) {
                         char aString = wordString.charAt(i);
                         if (" ".equals(Character.toString(aString))) {
-                            continue;
                         } else if (textFields[i].getText().equals(Character.toString(aString))) {
                             textFields[i].setBackground(Color.GREEN);
                         } else {
                             textFields[i].setBackground(Color.RED);
                             phoneticLabel.setVisible(true);
                             pronounceButton.setVisible(true);
-                            check = 1;
+                            check = false;
                         }
                     }
                 }
@@ -1164,14 +1288,13 @@ public class StartUI extends javax.swing.JFrame {
                         pronounceButton.setVisible(true);
                     } else {
                         wordTextField.setBackground(Color.RED);
-                        check = 1;
+                        check = false;
 
                     }
                 } else {
                     for (int i = 0; i < wordString.length(); i++) {
                         char aString = wordString.charAt(i);
                         if (" ".equals(Character.toString(aString))) {
-                            continue;
                         } else if (textFields[i].getText().equals(Character.toString(aString))) {
                             textFields[i].setBackground(Color.GREEN);
                             phoneticLabel.setVisible(true);
@@ -1179,7 +1302,7 @@ public class StartUI extends javax.swing.JFrame {
                             pronounceButton.setVisible(true);
                         } else {
                             textFields[i].setBackground(Color.RED);
-                            check = 1;
+                            check = false;
                         }
                     }
                 }
@@ -1187,8 +1310,7 @@ public class StartUI extends javax.swing.JFrame {
         }
         Word w = WordController.findWord(word.getWord());
         int index = WordController.words.indexOf(w);
-        System.out.println("index = " + index);
-        if (check == 1) {
+        if (!check) {
             freqCount += 1;
             list.add(w);
         } else {
@@ -1203,7 +1325,6 @@ public class StartUI extends javax.swing.JFrame {
     }
 
     private void deleteWordWhenTrue() {
-        System.out.println("list = words: "+(list == WordController.words));
         if (checkUseAI) {
             List<Word> rm = new ArrayList<Word>();
             for (int i = 0; i < word.getFreq(); i++) {
@@ -1328,14 +1449,14 @@ public class StartUI extends javax.swing.JFrame {
                 pronounceButton.setVisible(true);
                 meaningField.setVisible(true);
                 meaningLabel.setVisible(true);
-                phoneticLabel.setVisible(false);
+                phoneticLabel.setVisible(true);
                 phoneticField.setVisible(false);
                 break;
             case "Medium":
                 pronounceButton.setVisible(true);
                 meaningField.setVisible(true);
                 meaningLabel.setVisible(true);
-                phoneticLabel.setVisible(false);
+                phoneticLabel.setVisible(true);
                 phoneticField.setVisible(false);
                 hintField.setVisible(false);
                 hintLabel.setVisible(false);
