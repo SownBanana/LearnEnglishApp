@@ -93,6 +93,7 @@ public class StartUI extends javax.swing.JFrame {
 //        });
 
         //From config
+        word = null;
         gameLevelString = Config.gameLevel;
         checkLevelString = Config.checkLevel;
         gameLevel.setSelectedItem(gameLevelString);
@@ -553,8 +554,8 @@ public class StartUI extends javax.swing.JFrame {
                     textFields[0].setText(Character.toString(wordString.charAt(0)));
                     textFields[lengthWord - 1].setText(Character.toString(wordString.charAt(lengthWord - 1)));
                     textFields[0].setEditable(false);
-                    textFields[0].setFocusable(false); 
-                    textFields[lengthWord - 1].setEditable(false);                   
+                    textFields[0].setFocusable(false);
+                    textFields[lengthWord - 1].setEditable(false);
                     textFields[0].setBackground(Color.green);
                     textFields[lengthWord - 1].setBackground(Color.green);
                     break;
@@ -585,13 +586,18 @@ public class StartUI extends javax.swing.JFrame {
         }
         transferFocus();
     }
-    private void redisplayGame(Word w) {
-        String wordString = w.getWord().replaceAll("[,.:;?!&’'\"]", "");
-        System.out.println(w);
-        int lengthWord = wordString.length();
-        System.out.println(lengthWord);
-        textFields = new JTextField[lengthWord];
-        if (gameLevelString != "Legendary") {
+
+    private void redisplayGame(String beforeLevel) {
+        if (gameLevelString.equals("Legendary") && !beforeLevel.equals("Legendary")) {
+            clearTextFields();
+            wordTextField.setBounds(30, 0, 300, 30);
+            wordTextField.setFont(new Font(".VNArialH", Font.PLAIN, 13));
+            textPanel.add(wordTextField);
+        } else if (!gameLevelString.equals("Legendary") && beforeLevel.equals("Legendary")) {
+            clearTextFields();
+            String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
+            int lengthWord = wordString.length();
+            textFields = new JTextField[lengthWord];
             int ver = 0, hor = -1; //biến ver phục vụ cho việc xuống dòng
             for (int i = 0; i < lengthWord; i++) {
                 hor++;
@@ -716,18 +722,47 @@ public class StartUI extends javax.swing.JFrame {
                     textFields[0].setText(Character.toString(wordString.charAt(0)));
                     textFields[lengthWord - 1].setText(Character.toString(wordString.charAt(lengthWord - 1)));
                     textFields[0].setEditable(false);
-                    textFields[0].setFocusable(false); 
-                    textFields[lengthWord - 1].setEditable(false);                   
+                    textFields[0].setFocusable(false);
+                    textFields[lengthWord - 1].setEditable(false);
                     textFields[0].setBackground(Color.green);
                     textFields[lengthWord - 1].setBackground(Color.green);
                     break;
             }
-        } else {
-            wordTextField.setBounds(30, 0, 300, 30);
-            wordTextField.setFont(new Font(".VNArialH", Font.PLAIN, 13));
-            textPanel.add(wordTextField);
+        } else if ((gameLevelString.equals("Very Hard") || gameLevelString.equals("Nightmare"))
+                && (!beforeLevel.equals("Very Hard") && !beforeLevel.equals("Nightmare"))) {
+            
+            String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
+            int lengthWord = wordString.length();
+            textFields[0].setText("");
+            textFields[lengthWord - 1].setText("");
+            textFields[0].setEditable(true);
+            textFields[0].setFocusable(true);
+            textFields[lengthWord - 1].setEditable(true);
+            textFields[0].setBackground(Color.WHITE);
+            textFields[lengthWord - 1].setBackground(Color.WHITE);
+        } 
+        else if ((gameLevelString.equals("Very Hard") || gameLevelString.equals("Nightmare"))
+                && (beforeLevel.equals("Very Hard") || beforeLevel.equals("Nightmare"))) {
+            //do nothing
         }
-
+        else if((gameLevelString.equals("Very Easy") || gameLevelString.equals("Easy")
+                || gameLevelString.equals("Hard") || gameLevelString.equals("Medium"))
+                && (beforeLevel.equals("Very Easy") || beforeLevel.equals("Easy")
+                || beforeLevel.equals("Hard") || beforeLevel.equals("Medium"))){
+            //do nothing
+        }
+        else {
+            System.out.println("Tô xanh");
+            String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
+            int lengthWord = wordString.length();
+            textFields[0].setText(Character.toString(wordString.charAt(0)));
+            textFields[lengthWord - 1].setText(Character.toString(wordString.charAt(lengthWord - 1)));
+            textFields[0].setEditable(false);
+            textFields[0].setFocusable(false);
+            textFields[lengthWord - 1].setEditable(false);
+            textFields[0].setBackground(Color.green);
+            textFields[lengthWord - 1].setBackground(Color.green);
+        }
         transferFocus();
     }
 
@@ -1036,11 +1071,14 @@ public class StartUI extends javax.swing.JFrame {
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void gameLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLevelActionPerformed
-//        System.out.println(word.toString());
+        String beforeLv = gameLevelString;
         gameLevelString = gameLevel.getSelectedItem().toString();
         refresh();
         Config.gameLevel = gameLevelString;
-        Config.writeConfigFile();     
+        Config.writeConfigFile();
+        if (word != null) {
+            redisplayGame(beforeLv);
+        }
     }//GEN-LAST:event_gameLevelActionPerformed
 
     private void pronounceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pronounceButtonActionPerformed
@@ -1159,11 +1197,12 @@ public class StartUI extends javax.swing.JFrame {
         wordTextField.setBackground(Color.WHITE);
         textPanel.remove(wordTextField);
         textPanel.remove(wordTextFieldHint);
-        
+
         textPanel.revalidate();
         textPanel.repaint();
     }
-    public void clearTextFieldHint(){
+
+    public void clearTextFieldHint() {
         textPanel.remove(wordTextFieldHint);
         textPanel.revalidate();
         textPanel.repaint();
