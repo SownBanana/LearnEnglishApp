@@ -281,11 +281,6 @@ public class AddWUI extends javax.swing.JFrame {
                 wordFieldFocusLost(evt);
             }
         });
-        wordField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                wordFieldMouseClicked(evt);
-            }
-        });
         wordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 wordFieldActionPerformed(evt);
@@ -594,6 +589,7 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void pickVoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickVoiceActionPerformed
         // TODO add your handling code here:
+        setAlwaysOnTop(false);
         int chose = -1;
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("Support .mp3", "mp3");
@@ -609,6 +605,7 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void playSoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playSoundActionPerformed
         // TODO add your handling code here:
+        
         if ("File Name".equals(voiceFileURL.getText()) || "null".equals(voiceFileURL.getText())) {
             WordController.text2speech(wordField.getText());
         } else {
@@ -616,14 +613,6 @@ public class AddWUI extends javax.swing.JFrame {
             WordController.playSound(voiceURL);
         }
     }//GEN-LAST:event_playSoundActionPerformed
-
-    private void wordFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wordFieldMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_wordFieldMouseClicked
-
-    private void wordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_wordFieldActionPerformed
 
     private void phoneticFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneticFieldFocusGained
         // TODO add your handling code here:
@@ -695,7 +684,7 @@ public class AddWUI extends javax.swing.JFrame {
 
     private void wordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wordFieldFocusGained
         // TODO add your handling code here:
-
+        setAlwaysOnTop(false);
     }//GEN-LAST:event_wordFieldFocusGained
 
     private void meanTextAreaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_meanTextAreaFocusGained
@@ -830,6 +819,10 @@ public class AddWUI extends javax.swing.JFrame {
         });
         thread.start();
     }//GEN-LAST:event_rePhoneticMouseClicked
+
+    private void wordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_wordFieldActionPerformed
 
     /**
      * @param args the command line arguments

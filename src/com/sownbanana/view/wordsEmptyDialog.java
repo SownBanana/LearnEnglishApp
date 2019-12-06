@@ -89,6 +89,7 @@ public class wordsEmptyDialog extends javax.swing.JDialog {
         AddWUI addWUI = new AddWUI();
         addWUI.setVisible(true);
         addWUI.setAlwaysOnTop(true);
+//        addWUI.setAlwaysOnTop(false);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

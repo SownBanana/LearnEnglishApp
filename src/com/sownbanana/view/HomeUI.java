@@ -164,7 +164,7 @@ public class HomeUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         Config.readConfigFile();
         System.out.println("Start");
-        if (WordController.words == null) {
+        if (WordController.words.isEmpty()) {
             new wordsEmptyDialog(this, rootPaneCheckingEnabled).setVisible(true);
         } else {
             System.out.println("check AI home: " + checkUseAI);
