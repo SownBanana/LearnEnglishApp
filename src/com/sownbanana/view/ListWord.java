@@ -416,7 +416,8 @@ public class ListWord extends javax.swing.JFrame {
         // TODO add your handling code here:
         clearTable();
 //        searchList = new ArrayList<>();
-        searchList = WordController.findLWord(list, searchField.getText());
+        searchList = WordController.searchWords(list, searchField.getText());
+        
         showresult(searchList);
     }//GEN-LAST:event_searchFieldKeyReleased
 

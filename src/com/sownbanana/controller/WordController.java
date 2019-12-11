@@ -7,6 +7,7 @@ package com.sownbanana.controller;
 
 import com.sownbanana.model.Word;
 import com.sownbanana.view.AddWUI;
+import com.sun.xml.internal.ws.util.StringUtils;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -16,7 +17,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -265,14 +268,21 @@ public class WordController {
         return false;
     }
 
-    public static Word findMean(List<Word> list, String mean) {
+    public static List<Word> searchWords(List<Word> list, String key) {
+        List<Word> tempList = new ArrayList<>();
+        String[] keyISO = key.toLowerCase().trim().split(" ");
         for (Word w
                 : list) {
-            if (w.getWord().equals(mean)) {
-                return w;
+            for (String text : keyISO) {
+                if (w.getMean().toLowerCase().replaceAll(".,", "").contains(text) || w.getWord().contains(text)) {
+                    tempList.add(w);
+                }
             }
+
         }
-        return null;
+        Set<Word> set = new LinkedHashSet<>(tempList);
+        List<Word> rs = new ArrayList<>(set);
+        return rs;
     }
 
     //Tìm list từ chứa hashtag
@@ -506,12 +516,12 @@ public class WordController {
     public static String getPhonetic(String word) {
         return getPhoneticLexico(word);
     }
-    
+
     public static String getPhoneticGoogle(String word) {
         Phonetic phonetic = new Phonetic();
         return phonetic.getPhonetic(word);
     }
-    
+
     public static String getPhoneticLexico(String word) {
         Phonetic phonetic = new Phonetic();
         return phonetic.getPhoneticLexico(word);
@@ -547,12 +557,15 @@ public class WordController {
         }
         return rs;
     }
-    public static String hashtagFancy(String[] hashtag){
+
+    public static String hashtagFancy(String[] hashtag) {
         String rs = "";
         for (String string : hashtag) {
-            rs = rs + "#"+ string + " ";
+            rs = rs + "#" + string + " ";
         }
-        if(rs.trim().equals("#")) return " ";
+        if (rs.trim().equals("#")) {
+            return " ";
+        }
         return rs;
     }
 }
