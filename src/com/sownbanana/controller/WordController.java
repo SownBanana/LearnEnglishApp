@@ -7,7 +7,6 @@ package com.sownbanana.controller;
 
 import com.sownbanana.model.Word;
 import com.sownbanana.view.AddWUI;
-import com.sun.xml.internal.ws.util.StringUtils;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
