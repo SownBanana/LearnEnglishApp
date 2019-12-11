@@ -147,7 +147,7 @@ public class WordController {
         boolean check = true;
         List<Word> wordArrayList = new ArrayList<>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(path));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
             String line = reader.readLine();
             total = Integer.parseInt(line);
             line = reader.readLine();
@@ -504,8 +504,17 @@ public class WordController {
     }
 
     public static String getPhonetic(String word) {
+        return getPhoneticLexico(word);
+    }
+    
+    public static String getPhoneticGoogle(String word) {
         Phonetic phonetic = new Phonetic();
         return phonetic.getPhonetic(word);
+    }
+    
+    public static String getPhoneticLexico(String word) {
+        Phonetic phonetic = new Phonetic();
+        return phonetic.getPhoneticLexico(word);
     }
 
     public static void saveImage(File image, String word) {

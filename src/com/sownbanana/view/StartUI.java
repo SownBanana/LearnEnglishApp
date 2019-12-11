@@ -730,7 +730,7 @@ public class StartUI extends javax.swing.JFrame {
             }
         } else if ((gameLevelString.equals("Very Hard") || gameLevelString.equals("Nightmare"))
                 && (!beforeLevel.equals("Very Hard") && !beforeLevel.equals("Nightmare"))) {
-            
+
             String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
             int lengthWord = wordString.length();
             textFields[0].setText("");
@@ -740,18 +740,15 @@ public class StartUI extends javax.swing.JFrame {
             textFields[lengthWord - 1].setEditable(true);
             textFields[0].setBackground(Color.WHITE);
             textFields[lengthWord - 1].setBackground(Color.WHITE);
-        } 
-        else if ((gameLevelString.equals("Very Hard") || gameLevelString.equals("Nightmare"))
+        } else if ((gameLevelString.equals("Very Hard") || gameLevelString.equals("Nightmare"))
                 && (beforeLevel.equals("Very Hard") || beforeLevel.equals("Nightmare"))) {
             //do nothing
-        }
-        else if((gameLevelString.equals("Very Easy") || gameLevelString.equals("Easy")
+        } else if ((gameLevelString.equals("Very Easy") || gameLevelString.equals("Easy")
                 || gameLevelString.equals("Hard") || gameLevelString.equals("Medium"))
                 && (beforeLevel.equals("Very Easy") || beforeLevel.equals("Easy")
-                || beforeLevel.equals("Hard") || beforeLevel.equals("Medium"))){
+                || beforeLevel.equals("Hard") || beforeLevel.equals("Medium"))) {
             //do nothing
-        }
-        else {
+        } else {
             System.out.println("Tô xanh");
             String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
             int lengthWord = wordString.length();
@@ -804,6 +801,7 @@ public class StartUI extends javax.swing.JFrame {
         typeField = new javax.swing.JTextField();
         dateModifiedLabel = new javax.swing.JLabel();
         dateModified = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -843,7 +841,7 @@ public class StartUI extends javax.swing.JFrame {
 
         jLabel1.setText("Độ khó Game");
 
-        jLabel2.setText("Độ khó Chấm điểm");
+        jLabel2.setText("Hỗ trợ Chấm điểm");
 
         jLabel3.setText("Chế độ");
 
@@ -853,14 +851,18 @@ public class StartUI extends javax.swing.JFrame {
         phoneticLabel.setText("Phiên âm");
 
         meaningField.setColumns(20);
+        meaningField.setLineWrap(true);
         meaningField.setRows(5);
+        meaningField.setWrapStyleWord(true);
         jScrollPane1.setViewportView(meaningField);
 
         meaningLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         meaningLabel.setText("Nghĩa");
 
         phoneticField.setColumns(20);
+        phoneticField.setLineWrap(true);
         phoneticField.setRows(5);
+        phoneticField.setWrapStyleWord(true);
         jScrollPane2.setViewportView(phoneticField);
 
         pronounceButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -875,14 +877,18 @@ public class StartUI extends javax.swing.JFrame {
         jLabel7.setText("Hashtag");
 
         hashtagField.setColumns(20);
+        hashtagField.setLineWrap(true);
         hashtagField.setRows(5);
+        hashtagField.setWrapStyleWord(true);
         jScrollPane3.setViewportView(hashtagField);
 
         hintLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         hintLabel.setText("Gợi ý");
 
         hintField.setColumns(20);
+        hintField.setLineWrap(true);
         hintField.setRows(5);
+        hintField.setWrapStyleWord(true);
         jScrollPane4.setViewportView(hintField);
 
         javax.swing.GroupLayout textPanelLayout = new javax.swing.GroupLayout(textPanel);
@@ -893,7 +899,7 @@ public class StartUI extends javax.swing.JFrame {
         );
         textPanelLayout.setVerticalGroup(
             textPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 211, Short.MAX_VALUE)
+            .addGap(0, 200, Short.MAX_VALUE)
         );
 
         nextButton.setText("Next");
@@ -942,80 +948,83 @@ public class StartUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(gameLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(190, 190, 190)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(checkLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(86, 86, 86)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(modeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(modeTextFields, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(textPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
-                        .addComponent(imgLable, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(meaningLabel)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(phoneticLabel)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(pronounceButton))
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(134, 134, 134)
                                 .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(59, 59, 59)
-                                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(30, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(phoneticLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(pronounceButton))
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(hintLabel)
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(checkLevel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(120, 120, 120)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(dateModifiedLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(dateModified, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel7)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(hintLabel)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(34, 34, 34))
+                            .addComponent(meaningLabel)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(dateModifiedLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(dateModified, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(textPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, Short.MAX_VALUE)
+                                .addComponent(imgLable, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(gameLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(404, 404, 404)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(modeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(modeTextFields, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(jButton1)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(imgLable, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(textPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(submitButton, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                            .addComponent(nextButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(textPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(202, 202, 202)
+                                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(phoneticLabel)
@@ -1023,28 +1032,25 @@ public class StartUI extends javax.swing.JFrame {
                         .addGap(19, 19, 19)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(meaningLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(dateModifiedLabel)
-                                .addComponent(dateModified, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(hintLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(imgLable, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dateModifiedLabel)
+                            .addComponent(dateModified, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(meaningLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1057,18 +1063,15 @@ public class StartUI extends javax.swing.JFrame {
                     .addComponent(modeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(modeTextFields, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addContainerGap())
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-//        checkLevelString = checkLevel.getSelectedItem().toString();
-        String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
-        clearTextFieldHint();
-        checkTrueFalse(wordString);
-    }//GEN-LAST:event_submitButtonActionPerformed
+    private void typeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeFieldActionPerformed
 
     private void gameLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLevelActionPerformed
         String beforeLv = gameLevelString;
@@ -1081,38 +1084,30 @@ public class StartUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_gameLevelActionPerformed
 
-    private void pronounceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pronounceButtonActionPerformed
-        WordController.playSound(word);
-    }//GEN-LAST:event_pronounceButtonActionPerformed
-
-    private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nextButtonMouseClicked
-
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         clearTextFields();
         refresh();
         displayGame();
     }//GEN-LAST:event_nextButtonActionPerformed
 
+    private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nextButtonMouseClicked
+
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
+        //        checkLevelString = checkLevel.getSelectedItem().toString();
+        String wordString = word.getWord().replaceAll("[,.:;?!&’'\"]", "");
+        clearTextFieldHint();
+        checkTrueFalse(wordString);
+    }//GEN-LAST:event_submitButtonActionPerformed
+
     private void modeTextFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modeTextFieldsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_modeTextFieldsActionPerformed
 
-    private void checkLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLevelActionPerformed
-        // TODO add your handling code here:
-        checkLevelString = checkLevel.getSelectedItem().toString();
-        Config.checkLevel = checkLevelString;
-        Config.writeConfigFile();
-    }//GEN-LAST:event_checkLevelActionPerformed
-
-    private void typeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_typeFieldActionPerformed
-
-    private void modeComboBoxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_modeComboBoxFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_modeComboBoxFocusLost
+    private void pronounceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pronounceButtonActionPerformed
+        WordController.playSound(word);
+    }//GEN-LAST:event_pronounceButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -1120,56 +1115,56 @@ public class StartUI extends javax.swing.JFrame {
         boolean checkDateFormmat = true;
         switch (modeString) {
             case "Hashtag":
-                String[] output = modeTextFields.getText().replaceAll("#", " ").replaceAll("\\s+", " ").trim().split(" ");
-                if (modeTextFields.getText().trim().equals("")) {
-                    list = WordController.copyWords();
-                    Config.hashtag = null;
-                } else {
-                    list = WordController.findHashtag(WordController.words, output);
-                    Config.hashtag = output;
-                }
-                Config.isDateFillter = false;
-                Config.date = " ";
-                break;
-            case "Date Modified":
-                if (modeTextFields.getText().trim().equals("")) {
-                    list = WordController.copyWords();
-                    Config.date = " ";
-                } else if (modeTextFields.getText().trim().toLowerCase().contains("nay") || modeTextFields.getText().trim().toLowerCase().contains("today") || modeTextFields.getText().trim().toLowerCase().contains("recent")) {
-                    list = WordController.findWordAddToday(WordController.words);
-                    Config.date = modeTextFields.getText().trim();
-                } else if (modeTextFields.getText().trim().length() <= 2) {
-                    try {
-                        list = WordController.findWordByDate("month", Integer.parseInt(modeTextFields.getText().trim()), list);
-                        Config.date = modeTextFields.getText().trim();
-                    } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (MM)");
-                        checkDateFormmat = false;
-                        Config.date = " ";
-                    }
-                } else if (modeTextFields.getText().trim().length() <= 5) {
-                    try {
-                        list = WordController.findWordByDate("year", Integer.parseInt(modeTextFields.getText().trim()), list);
-                        Config.date = modeTextFields.getText().trim();
-                    } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (MM/yyyy)");
-                        checkDateFormmat = false;
-                        Config.date = " ";
-                    }
-                } else {
-                    if (isValidFormat(modeTextFields.getText().trim())) {
-                        list = WordController.findWordByDate(modeTextFields.getText(), WordController.words);
-                    } else {
-                        JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (dd/MM/yyyy)");
-                        checkDateFormmat = false;
-                    }
-                    if (!list.isEmpty()) {
-                        Config.date = modeTextFields.getText().trim();
-                    }
-                }
-                Config.isDateFillter = true;
+            String[] output = modeTextFields.getText().replaceAll("#", " ").replaceAll("\\s+", " ").trim().split(" ");
+            if (modeTextFields.getText().trim().equals("")) {
+                list = WordController.copyWords();
                 Config.hashtag = null;
-                break;
+            } else {
+                list = WordController.findHashtag(WordController.words, output);
+                Config.hashtag = output;
+            }
+            Config.isDateFillter = false;
+            Config.date = " ";
+            break;
+            case "Date Modified":
+            if (modeTextFields.getText().trim().equals("")) {
+                list = WordController.copyWords();
+                Config.date = " ";
+            } else if (modeTextFields.getText().trim().toLowerCase().contains("nay") || modeTextFields.getText().trim().toLowerCase().contains("today") || modeTextFields.getText().trim().toLowerCase().contains("recent")) {
+                list = WordController.findWordAddToday(WordController.words);
+                Config.date = modeTextFields.getText().trim();
+            } else if (modeTextFields.getText().trim().length() <= 2) {
+                try {
+                    list = WordController.findWordByDate("month", Integer.parseInt(modeTextFields.getText().trim()), list);
+                    Config.date = modeTextFields.getText().trim();
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (MM)");
+                    checkDateFormmat = false;
+                    Config.date = " ";
+                }
+            } else if (modeTextFields.getText().trim().length() <= 5) {
+                try {
+                    list = WordController.findWordByDate("year", Integer.parseInt(modeTextFields.getText().trim()), list);
+                    Config.date = modeTextFields.getText().trim();
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (MM/yyyy)");
+                    checkDateFormmat = false;
+                    Config.date = " ";
+                }
+            } else {
+                if (isValidFormat(modeTextFields.getText().trim())) {
+                    list = WordController.findWordByDate(modeTextFields.getText(), WordController.words);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Nhập sai định dạng thời gian (dd/MM/yyyy)");
+                    checkDateFormmat = false;
+                }
+                if (!list.isEmpty()) {
+                    Config.date = modeTextFields.getText().trim();
+                }
+            }
+            Config.isDateFillter = true;
+            Config.hashtag = null;
+            break;
         }
         if (list.isEmpty()) {
             if (checkDateFormmat) {
@@ -1184,6 +1179,17 @@ public class StartUI extends javax.swing.JFrame {
         displayGame();
         Config.writeConfigFile();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void modeComboBoxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_modeComboBoxFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_modeComboBoxFocusLost
+
+    private void checkLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLevelActionPerformed
+        // TODO add your handling code here:
+        checkLevelString = checkLevel.getSelectedItem().toString();
+        Config.checkLevel = checkLevelString;
+        Config.writeConfigFile();
+    }//GEN-LAST:event_checkLevelActionPerformed
 
     private void clearTextFields() {
         //1-6
@@ -1220,6 +1226,8 @@ public class StartUI extends javax.swing.JFrame {
                 if (gameLevelString == "Legendary") {
                     if (word.getWord().equals(wordTextField.getText().trim().toLowerCase()) || wordString.equals(wordTextField.getText().trim().toLowerCase())) {
                         wordTextField.setBackground(Color.GREEN);
+//                        JOptionPane.showMessageDialog(rootPane, "Chính xác!");
+//                        System.out.println("\\a");
                     } else {
                         wordTextField.setBackground(Color.RED);
                         wordTextFieldHint.setBounds(30, 35, 300, 30);
@@ -1285,6 +1293,9 @@ public class StartUI extends javax.swing.JFrame {
                 if (gameLevelString == "Legendary") {
                     if (word.getWord().equals(wordTextField.getText().trim().toLowerCase()) || wordString.equals(wordTextField.getText().trim().toLowerCase())) {
                         wordTextField.setBackground(Color.GREEN);
+                        phoneticLabel.setVisible(true);
+                        phoneticField.setVisible(true);
+                        pronounceButton.setVisible(true);
                     } else {
                         wordTextField.setBackground(Color.RED);
                         wordTextFieldHint.setBounds(30, 35, 300, 30);
@@ -1299,6 +1310,7 @@ public class StartUI extends javax.swing.JFrame {
 //                        textPanel.add(phoneticButton);
 //                        textPanel.add(pronounceJButton);
                         phoneticLabel.setVisible(true);
+                        phoneticField.setVisible(false);
                         pronounceButton.setVisible(true);
                         check = false;
 
@@ -1327,6 +1339,9 @@ public class StartUI extends javax.swing.JFrame {
                         pronounceButton.setVisible(true);
                     } else {
                         wordTextField.setBackground(Color.RED);
+                        phoneticLabel.setVisible(false);
+                        phoneticField.setVisible(false);
+                        pronounceButton.setVisible(false);
                         check = false;
 
                     }
@@ -1404,34 +1419,6 @@ public class StartUI extends javax.swing.JFrame {
                 }
             }
         }
-
-//        String rs = "";
-//        wordExactly = "E"+wordExactly;
-//        wordAnswer = "A"+wordAnswer;
-//        int[][] S = new int[wordExactly.length()][wordAnswer.length()];
-//        int[][] S = new int[100][100];
-//        char[] x = wordExactly.toCharArray();
-//        char[] y = wordExactly.toCharArray();
-//        for(int i = 1; i < wordExactly.length(); i++){
-//            for(int j = 1; j < wordAnswer.length(); j++){
-//                S[i][j] = 0;
-//            }
-//	}
-//	for(int i = 1; i <= wordExactly.length(); i++){
-//		for(int j = 1; j <= wordAnswer.length(); j++){
-//			if(Character.toString(x[i]).equals(Character.toString(y[j]))){
-//				S[i][j] = S[i-1][j-1] + 1;
-//                                rs = rs + x[i];
-//                                System.out.println("RR "+rs);
-//                                System.out.println("x" + x[i]);
-//                                break;
-//			}
-//			else{
-//				S[i][j] = Math.max(S[i][j-1],S[i-1][j]);
-//			}
-//		}
-//	}
-//        System.out.println("rss = " + rs);
         return rs.toUpperCase();
     }
 
@@ -1583,6 +1570,7 @@ public class StartUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> checkLevel;
     private javax.swing.JLabel dateModified;
     private javax.swing.JLabel dateModifiedLabel;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JComboBox<String> gameLevel;
     private javax.swing.JTextArea hashtagField;
     private javax.swing.JTextArea hintField;

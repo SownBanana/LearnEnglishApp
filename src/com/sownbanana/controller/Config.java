@@ -7,10 +7,12 @@ package com.sownbanana.controller;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 /**
@@ -29,7 +31,7 @@ public class Config {
     public static boolean readConfigFile() {
         boolean check = true;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(WordController.getConfigPath()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(WordController.getConfigPath()), "UTF-8"));
             String line = reader.readLine();
             String[] output = line.split("#");
             gameLevel = output[0];

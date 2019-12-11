@@ -26,7 +26,8 @@ import javax.json.JsonReader;
  * @author SownBanana
  */
 public class Phonetic {
-         private static final String GOOGLE_WORD_DEF_URL = "https://googledictionaryapi.eu-gb.mybluemix.net/?lang=en&define=";
+     private static final String GOOGLE_WORD_DEF_URL = "https://googledictionaryapi.eu-gb.mybluemix.net/?lang=en&define=";
+     private static final String LEXICO = "https://www.lexico.com/en/definition/";
     
      public String getPhonetic(String word){
          String[] eachWord = word.split(" ");
@@ -66,6 +67,83 @@ public class Phonetic {
          }
 //         System.out.println(fullPhonetic);
          return fullPhonetic;
+     }
+    
+     public String getPhoneticLexico(String word){
+         String[] eachWord = word.split(" ");
+//         System.out.println(Arrays.toString(eachWord));
+         String fullPhonetic = "";
+         for (String w : eachWord) {
+             try {
+//                 System.out.println(w);
+                 String getPhoneticURL = LEXICO + w;
+                 URL url = new URL(getPhoneticURL);
+                 URLConnection uRLConnection = url.openConnection();
+                 uRLConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0");
+                 InputStream is = uRLConnection.getInputStream();
+//<editor-fold defaultstate="collapsed" desc=" HTML ">
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                 StringBuffer sb = new StringBuffer();
+                 String s;
+                 while ((s = reader.readLine()) != null) {                     
+                     sb.append(s);
+                 }
+                 String rs = sb.toString();
+                 String[] output = rs.split("<span class=\"phoneticspelling\">");
+                 System.out.println(output.length);
+//                 System.out.println("0" + output[0]);
+//                 System.out.println("=============================");
+//                 System.out.println("1" + output[1]);
+//                 System.out.println("=============================");
+//                 System.out.println("2" + output[2]);
+//                 System.out.println("=============================");
+//                 System.out.println("3" + output[3]);
+                 String phonetic = "";
+                 try {
+                     if (output[2].charAt(0) == '<') {
+                         String[] ipa = output[1].split("/");
+//                     System.out.println("1. "+ ipa[0] + "\n2. "+ ipa[1] +"\n3. "+ ipa[2]);
+                         phonetic = ipa[1];
+                     } else {
+                         String[] ipa = output[2].split("/");
+//                     System.out.println("1. "+ ipa[0] + "\n2. "+ ipa[1] +"\n3. "+ ipa[2]);
+                         phonetic = ipa[1];
+                     }
+                 } catch (ArrayIndexOutOfBoundsException e) {
+                     e.printStackTrace();
+                     try{
+                         String[] ipa = output[1].split("/");
+//                     System.out.println("1. "+ ipa[0] + "\n2. "+ ipa[1] +"\n3. "+ ipa[2]);
+                         phonetic = ipa[1];
+                     }
+                     catch(ArrayIndexOutOfBoundsException ex){
+                         ex.printStackTrace();
+                     }
+                     
+                 }
+                 
+                 
+//                 String 
+                 
+//                 System.out.println(sb);
+//</editor-fold>                           
+                 
+
+//                 JsonReader jsonReader = Json.createReader(is);
+//                 JsonArray ja = jsonReader.readArray();
+//                 JsonObject json = ja.getJsonObject(0);
+//                 jsonReader.close();
+//                 String phonetic = json.getString("phonetic").replaceAll("/", "")+ " ";
+//                 System.out.println(phonetic);
+                 fullPhonetic = fullPhonetic + phonetic + " ";
+             } catch (MalformedURLException ex) {
+                 Logger.getLogger(Phonetic.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (IOException ex) {
+                 Logger.getLogger(Phonetic.class.getName()).log(Level.SEVERE, null, ex);
+             }
+         }
+//         System.out.println(fullPhonetic);
+         return fullPhonetic.trim();
      }
      
      public static void main(String[] args) throws IOException {

@@ -19,6 +19,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import java.util.List;
 import java.util.Vector;
@@ -31,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -39,6 +41,7 @@ import javax.swing.table.DefaultTableModel;
 public class ListWord extends javax.swing.JFrame {
 
     public static List<Word> list;
+    List<Word> searchList;
     DefaultTableModel model;
     String choose;
     Vector vctHeader = new Vector();
@@ -50,6 +53,7 @@ public class ListWord extends javax.swing.JFrame {
     public ListWord() {
         initComponents();
         list = WordController.words;
+        searchList = list;
         System.out.println("list:");
         System.out.println(list.toString());
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -73,12 +77,13 @@ public class ListWord extends javax.swing.JFrame {
         wordTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
+                System.out.println(Arrays.toString(wordTable.getSelectedRows()));
                 JTable table = (JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
                 int row = table.rowAtPoint(point);
                 if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
                     int select = wordTable.getSelectedRow();
-                    Word w = list.get(select);
+                    Word w = searchList.get(select);
                     WordController.editWord(w.getWord());
                 }
             }
@@ -217,7 +222,6 @@ public class ListWord extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(hashtagLabel)
@@ -244,7 +248,8 @@ public class ListWord extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -282,7 +287,7 @@ public class ListWord extends javax.swing.JFrame {
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         int select = wordTable.getSelectedRow();
-        Word w = list.get(select);
+        Word w = searchList.get(select);
         if (select == -1) {
             JOptionPane.showMessageDialog(rootPane, "Chọn một từ để chỉnh sửa!");
         } else {
@@ -291,15 +296,52 @@ public class ListWord extends javax.swing.JFrame {
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        int removeIndex = wordTable.getSelectedRow();
-        if (removeIndex == -1) {
+//        int removeIndex = wordTable.getSelectedRow();
+//        if (removeIndex == -1) {
+//            JOptionPane.showMessageDialog(rootPane, "Chọn một từ để xóa!");
+//        } else {
+//            int check = JOptionPane.showConfirmDialog(rootPane, "Bạn Chắc chắn muốn xoá", "Xoá từ", JOptionPane.YES_NO_OPTION);
+//            System.out.println(check);
+//            if (check == 0) {
+////                Word w = list.get(removeIndex);
+////                list.remove(w);
+////            
+////                WordController.deleteWord(w);
+////                clearTable();
+////                showresult(list);
+//                Word w = searchList.get(removeIndex);
+//                searchList.remove(w);
+//
+//                WordController.deleteWord(w);
+//                clearTable();
+//                showresult(searchList);
+//            }
+//
+//        }
+
+        try {
+            int[] removeIndex = wordTable.getSelectedRows();
+            System.out.println(removeIndex[0]);
+//            System.out.println(removeIndex == null);
+            int check = JOptionPane.showConfirmDialog(rootPane, "Bạn Chắc chắn muốn xoá", "Xoá từ", JOptionPane.YES_NO_OPTION);
+//            System.out.println(check);
+            if (check == 0) {
+                int index = removeIndex[0];
+                List<Word> rmwords = new ArrayList<>();
+                for (int i : removeIndex) {
+                    System.out.println("i = " + i);
+                    Word w = searchList.get(index);
+                    rmwords.add(w);
+                    WordController.deleteWord(w);
+                }
+                searchList.removeAll(rmwords);
+                clearTable();
+                showresult(searchList);
+            }
+
+        } catch (ArrayIndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(rootPane, "Chọn một từ để xóa!");
-        } else {
-            Word w = list.get(removeIndex);
-            list.remove(w);
-            WordController.deleteWord(w);
-            clearTable();
-            showresult(list);
+            e.printStackTrace();
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
@@ -357,8 +399,9 @@ public class ListWord extends javax.swing.JFrame {
         }
 //        list = fillterList;
 //        System.out.println(fillterList);
-        showresult();
-
+//        showresult();
+        searchList = WordController.findLWord(list, searchField.getText());
+        showresult(searchList);
     }//GEN-LAST:event_fillterBtnActionPerformed
 
     private void dateFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dateFieldFocusGained
@@ -372,7 +415,7 @@ public class ListWord extends javax.swing.JFrame {
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
         // TODO add your handling code here:
         clearTable();
-        List<Word> searchList = new ArrayList<>();
+//        searchList = new ArrayList<>();
         searchList = WordController.findLWord(list, searchField.getText());
         showresult(searchList);
     }//GEN-LAST:event_searchFieldKeyReleased
@@ -398,6 +441,14 @@ public class ListWord extends javax.swing.JFrame {
         }
         model = new DefaultTableModel(vctData, vctHeader);
         wordTable.setModel(model);
+        TableColumnModel columnModel = wordTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(30);
+        columnModel.getColumn(1).setPreferredWidth(30);
+        columnModel.getColumn(2).setPreferredWidth(30);
+        columnModel.getColumn(3).setPreferredWidth(30);
+        columnModel.getColumn(4).setPreferredWidth(30);
+        columnModel.getColumn(5).setPreferredWidth(30);
+
     }
 
     public void showresult(List<Word> eList) {

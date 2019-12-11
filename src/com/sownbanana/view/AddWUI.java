@@ -295,6 +295,7 @@ public class AddWUI extends javax.swing.JFrame {
         meanTextArea.setColumns(20);
         meanTextArea.setLineWrap(true);
         meanTextArea.setRows(5);
+        meanTextArea.setWrapStyleWord(true);
         meanTextArea.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 meanTextAreaFocusGained(evt);
@@ -680,6 +681,7 @@ public class AddWUI extends javax.swing.JFrame {
         } else if (!isAutoPhonetic && !"".equals(wordField.getText().trim())) {
             rePhonetic.setVisible(true);
         }
+        if(!wordField.getText().trim().equals(""))  pickImg.setEnabled(true);
     }//GEN-LAST:event_wordFieldFocusLost
 
     private void wordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wordFieldFocusGained
